@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Delivery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .hover-lift { transition: all 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        .sidebar-item.active { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; }
+        .comandas-scroll { max-height: 500px; overflow-y: auto; }
+        .comandas-scroll::-webkit-scrollbar { width: 6px; }
+        .comandas-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+        .comandas-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .comandas-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Barra de Menu Superior -->
+    <nav class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-gray-800 text-xl font-semibold">
+                            <i class="fas fa-store text-orange-500 mr-2"></i>
+                            Painel Admin
+                        </h1>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-1">
+                            <button onclick="showTab('pedidos')" id="tab-pedidos" class="text-gray-600 hover:text-orange-500 px-4 py-2 text-sm font-medium transition-all duration-300 tab-button border-b-2 border-orange-500 text-orange-500">
+                                <i class="fas fa-shopping-cart mr-2"></i>Pedidos
+                            </button>
+                            <button onclick="showTab('configuracoes')" id="tab-configuracoes" class="text-gray-600 hover:text-orange-500 px-4 py-2 text-sm font-medium transition-all duration-300 tab-button border-b-2 border-transparent">
+                                <i class="fas fa-cog mr-2"></i>Configurações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="text-gray-600 text-sm">
+                        <i class="fas fa-user-circle text-gray-400 mr-2"></i>
+                        Admin
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        
+        <!-- Aba Pedidos -->
+        <div id="content-pedidos" class="tab-content">
+            <!-- Toggle Delivery/Salão -->
+            <div class="mb-6 flex items-center justify-end">
+                <div class="relative">
+                    <div class="flex bg-gray-100 rounded-lg p-1">
+                        <button onclick="togglePedidosView('delivery')" id="btn-delivery" class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 pedidos-toggle bg-white text-gray-900 shadow-sm">
+                            <i class="fas fa-motorcycle mr-2"></i>Delivery
+                        </button>
+                        <button onclick="togglePedidosView('salao')" id="btn-salao" class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 pedidos-toggle text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-utensils mr-2"></i>Salão
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel Delivery (Kanban) -->
+            <div id="delivery-panel" class="pedidos-panel">
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <!-- Cabeçalho da Tabela -->
+                    <div class="grid grid-cols-3 bg-gray-50 border-b border-gray-200">
+                        <div class="px-6 py-4 border-r border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-bell text-orange-500 mr-2"></i>Novos Pedidos
+                                </h3>
+                                <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded">3</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 border-r border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-clock text-amber-500 mr-2"></i>Em Preparo
+                                </h3>
+                                <span class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">2</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>Prontos
+                                </h3>
+                                <span class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">1</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Conteúdo das Colunas -->
+                    <div class="grid grid-cols-3 min-h-96">
+                        <!-- Coluna Novos -->
+                        <div class="px-4 py-4 border-r border-gray-200">
+                            <!-- Pedido #001 -->
+                            <div class="py-3 hover:bg-gray-50 transition-colors cursor-pointer" onclick="openPedidoModal('001', 'novo')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#001</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">10:30</div>
+                                        <div class="text-xs text-orange-600 font-medium" id="timer-001">5min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">João Silva</p>
+                                <p class="text-xs text-gray-600 mb-3">2x Hambúrguer, 1x Batata Frita</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ 45,90</span>
+                                    <button onclick="event.stopPropagation(); aceitarPedido('001')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                        Avançar
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="border-t border-gray-200"></div>
+                            
+                            <!-- Pedido #002 -->
+                            <div class="py-3 hover:bg-gray-50 transition-colors cursor-pointer" onclick="openPedidoModal('002', 'novo')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#002</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">10:45</div>
+                                        <div class="text-xs text-orange-600 font-medium" id="timer-002">2min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Maria Santos</p>
+                                <p class="text-xs text-gray-600 mb-3">1x Pizza Margherita</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ 32,00</span>
+                                    <button onclick="event.stopPropagation(); aceitarPedido('002')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                        Avançar
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="border-t border-gray-200"></div>
+                            
+                            <!-- Pedido #025 -->
+                            <div class="py-3 hover:bg-gray-50 transition-colors cursor-pointer" onclick="openPedidoModal('025', 'novo')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#025</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">11:05</div>
+                                        <div class="text-xs text-orange-600 font-medium" id="timer-025">1min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Roberto Lima</p>
+                                <p class="text-xs text-gray-600 mb-3">1x Açaí 500ml, 1x Vitamina</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ 18,50</span>
+                                    <button onclick="event.stopPropagation(); aceitarPedido('025')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                        Avançar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Coluna Preparando -->
+                        <div class="px-4 py-4 border-r border-gray-200">
+                            <!-- Pedido #003 -->
+                            <div class="py-3 hover:bg-amber-50 transition-colors cursor-pointer" onclick="openPedidoModal('003', 'preparo')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#003</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">10:15</div>
+                                        <div class="text-xs text-amber-600 font-medium" id="timer-003">25min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Carlos Oliveira</p>
+                                <p class="text-xs text-gray-600 mb-3">3x Pastel, 1x Refrigerante</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ 28,50</span>
+                                    <button onclick="event.stopPropagation(); finalizarPedido('003')" class="text-xs bg-amber-500 text-white px-3 py-1 rounded hover:bg-amber-600 transition-colors">
+                                        Avançar
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="border-t border-gray-200"></div>
+                            
+                            <!-- Pedido #026 -->
+                            <div class="py-3 hover:bg-amber-50 transition-colors cursor-pointer" onclick="openPedidoModal('026', 'preparo')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#026</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">10:50</div>
+                                        <div class="text-xs text-amber-600 font-medium" id="timer-026">15min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Fernanda Costa</p>
+                                <p class="text-xs text-gray-600 mb-3">2x Pizza Individual, 2x Refrigerante</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ 54,00</span>
+                                    <button onclick="event.stopPropagation(); finalizarPedido('026')" class="text-xs bg-amber-500 text-white px-3 py-1 rounded hover:bg-amber-600 transition-colors">
+                                        Avançar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Coluna Prontos -->
+                        <div class="px-4 py-4">
+                            <!-- Pedido #004 -->
+                            <div class="py-3 hover:bg-green-50 transition-colors cursor-pointer" onclick="openPedidoModal('004', 'pronto')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#004</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">09:50</div>
+                                        <div class="text-xs text-green-600 font-medium" id="timer-004">3min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Ana Costa</p>
+                                <p class="text-xs text-gray-600 mb-3">2x Açaí, 1x Suco Natural</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ 35,00</span>
+                                    <button onclick="event.stopPropagation(); entregarPedido('004')" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors">
+                                        Avançar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel Salão -->
+            <div id="salao-panel" class="pedidos-panel hidden">
+                <!-- Estatísticas do Salão -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg border border-gray-200 p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-chair text-green-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900">6</div>
+                                <div class="text-sm text-gray-500">Mesas Livres</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-gray-200 p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-users text-red-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900">2</div>
+                                <div class="text-sm text-gray-500">Mesas Ocupadas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-gray-200 p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-receipt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900">3</div>
+                                <div class="text-sm text-gray-500">Comandas Ativas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-gray-200 p-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-dollar-sign text-green-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900">R$ 234</div>
+                                <div class="text-sm text-gray-500">Vendas Hoje</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layout Principal -->
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <!-- Mesas do Salão -->
+                    <div class="xl:col-span-2">
+                        <div class="bg-white rounded-lg border border-gray-200">
+                            <!-- Cabeçalho -->
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-800">
+                                        <i class="fas fa-utensils text-orange-500 mr-2"></i>Layout do Salão
+                                    </h3>
+                                    <div class="flex items-center space-x-4 text-sm">
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                            <span class="text-gray-600">Livre</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                            <span class="text-gray-600">Ocupada</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
+                                            <span class="text-gray-600">Reservada</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Grid de Mesas -->
+                            <div class="p-6">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    <!-- Mesa 1 -->
+                                    <div class="bg-gray-50 border-2 border-green-200 rounded-xl p-4 hover:shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(1, 'livre')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-chair text-green-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 01</div>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mx-auto mb-2"></div>
+                                            <div class="text-xs text-gray-500">4 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 2 - Ocupada -->
+                                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-4 hover:shadow-lg hover:border-red-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(2, 'ocupada')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-red-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-users text-red-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 02</div>
+                                            <div class="w-2 h-2 bg-red-500 rounded-full mx-auto mb-1 animate-pulse"></div>
+                                            <div class="text-xs text-red-600 font-medium mb-1">15:30</div>
+                                            <div class="text-xs text-gray-500">6 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 3 -->
+                                    <div class="bg-gray-50 border-2 border-green-200 rounded-xl p-4 hover:shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(3, 'livre')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-chair text-green-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 03</div>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mx-auto mb-2"></div>
+                                            <div class="text-xs text-gray-500">2 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 4 - Reservada -->
+                                    <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 hover:shadow-lg hover:border-amber-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(4, 'reservada')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-amber-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-calendar-check text-amber-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 04</div>
+                                            <div class="w-2 h-2 bg-amber-500 rounded-full mx-auto mb-1"></div>
+                                            <div class="text-xs text-amber-600 font-medium mb-1">16:00</div>
+                                            <div class="text-xs text-gray-500">4 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 5 -->
+                                    <div class="bg-gray-50 border-2 border-green-200 rounded-xl p-4 hover:shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(5, 'livre')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-chair text-green-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 05</div>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mx-auto mb-2"></div>
+                                            <div class="text-xs text-gray-500">8 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 6 - Ocupada -->
+                                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-4 hover:shadow-lg hover:border-red-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(6, 'ocupada')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-red-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-users text-red-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 06</div>
+                                            <div class="w-2 h-2 bg-red-500 rounded-full mx-auto mb-1 animate-pulse"></div>
+                                            <div class="text-xs text-red-600 font-medium mb-1">14:45</div>
+                                            <div class="text-xs text-gray-500">4 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 7 -->
+                                    <div class="bg-gray-50 border-2 border-green-200 rounded-xl p-4 hover:shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(7, 'livre')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-chair text-green-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 07</div>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mx-auto mb-2"></div>
+                                            <div class="text-xs text-gray-500">2 lugares</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mesa 8 -->
+                                    <div class="bg-gray-50 border-2 border-green-200 rounded-xl p-4 hover:shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer" onclick="openMesaModal(8, 'livre')">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                                                <i class="fas fa-chair text-green-600 text-lg"></i>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-800 mb-1">Mesa 08</div>
+                                            <div class="w-2 h-2 bg-green-500 rounded-full mx-auto mb-2"></div>
+                                            <div class="text-xs text-gray-500">6 lugares</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Painel Lateral - Comandas e Ações -->
+                    <div class="xl:col-span-1 space-y-6">
+                        <!-- Comandas Ativas -->
+                        <div class="bg-white rounded-lg border border-gray-200">
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-800">
+                                        <i class="fas fa-receipt text-orange-500 mr-2"></i>Comandas Ativas
+                                    </h3>
+                                    <button class="bg-orange-500 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-orange-600 transition-colors">
+                                        <i class="fas fa-plus mr-1"></i>Nova
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 max-h-96 overflow-y-auto">
+                                <div class="space-y-3">
+                                    <!-- Comanda 1 -->
+                                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 hover:shadow-sm transition-shadow cursor-pointer">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-bold text-gray-800">#C001</span>
+                                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Balcão</span>
+                                        </div>
+                                        <div class="text-xs text-gray-600 mb-2 space-y-1">
+                                            <div>• 1x Café Expresso</div>
+                                            <div>• 1x Pão de Açúcar</div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-900">R$ 8,50</div>
+                                                <div class="text-xs text-gray-500">15:30</div>
+                                            </div>
+                                            <button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 transition-colors">
+                                                Fechar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Comanda 2 -->
+                                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow cursor-pointer">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-bold text-gray-800">#C002</span>
+                                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Viagem</span>
+                                        </div>
+                                        <div class="text-xs text-gray-600 mb-2 space-y-1">
+                                            <div>• 2x Açaí 500ml</div>
+                                            <div>• 1x Suco de Laranja</div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-900">R$ 24,00</div>
+                                                <div class="text-xs text-gray-500">16:15</div>
+                                            </div>
+                                            <button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 transition-colors">
+                                                Fechar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Comanda 3 -->
+                                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 hover:shadow-sm transition-shadow cursor-pointer">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-bold text-gray-800">#C003</span>
+                                            <span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">Mesa 02</span>
+                                        </div>
+                                        <div class="text-xs text-gray-600 mb-2 space-y-1">
+                                            <div>• 2x Hambúrguer Gourmet</div>
+                                            <div>• 2x Batata Frita</div>
+                                            <div>• 2x Refrigerante</div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-900">R$ 67,80</div>
+                                                <div class="text-xs text-gray-500">15:20</div>
+                                            </div>
+                                            <button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 transition-colors">
+                                                Fechar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ações Rápidas -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-bolt text-orange-500 mr-2"></i>Ações Rápidas
+                            </h3>
+                            <div class="space-y-3">
+                                <button class="w-full bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
+                                    <i class="fas fa-plus mr-2"></i>Nova Comanda
+                                </button>
+                                <button class="w-full bg-green-500 text-white py-2.5 px-4 rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
+                                    <i class="fas fa-calendar-plus mr-2"></i>Nova Reserva
+                                </button>
+                                <button class="w-full bg-purple-500 text-white py-2.5 px-4 rounded-lg hover:bg-purple-600 transition-colors text-sm font-medium">
+                                    <i class="fas fa-chart-bar mr-2"></i>Relatório do Dia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Pedidos Finalizados - Delivery -->
+            <div id="finalizados-delivery" class="mt-6 finalizados-modal">
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-lg font-semibold text-gray-800">
+                                    <i class="fas fa-check-double text-green-500 mr-2"></i>Pedidos Finalizados Hoje
+                                </h3>
+                                <span class="text-gray-400">•</span>
+                                <span class="text-lg font-semibold text-gray-800">20</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center space-x-2">
+                                        <label class="text-sm font-medium text-gray-700">Status:</label>
+                                        <select class="text-sm border border-gray-300 rounded px-3 py-1 focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                                            <option>Todos</option>
+                                            <option>Entregues</option>
+                                            <option>Retirados</option>
+                                            <option>Cancelados</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-sm bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
+                                        <i class="fas fa-download mr-2"></i>Exportar
+                                    </button>
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    <span class="font-semibold text-green-600">R$ 824,90</span> em vendas
+                                </div>
+                                <button onclick="toggleFinalizados('delivery')" id="btn-toggle-finalizados-delivery" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                    <i class="fas fa-chevron-down text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="finalizados-content-delivery" class="hidden">
+                        <div class="p-0">
+                            <!-- Lista de Pedidos Finalizados -->
+                            <div onclick="openPedidoFinalizadoModal('005')" class="p-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-sm font-semibold text-gray-900">#005</span>
+                                        <span class="text-xs text-gray-500">16:45</span>
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-700">Entregue</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-bold text-gray-900">R$ 67,50</div>
+                                        <div class="text-xs text-gray-500">32min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Pedro Oliveira</p>
+                                <p class="text-xs text-gray-600">2x Pizza Calabresa, 1x Refrigerante 2L, 1x Sobremesa Pudim</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Atendimentos Finalizados - Salão -->
+            <div id="finalizados-salao" class="mt-6 finalizados-modal hidden">
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-lg font-semibold text-gray-800">
+                                    <i class="fas fa-check-double text-green-500 mr-2"></i>Atendimentos Finalizados Hoje
+                                </h3>
+                                <span class="text-gray-400">•</span>
+                                <span class="text-lg font-semibold text-gray-800">15</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center space-x-2">
+                                        <label class="text-sm font-medium text-gray-700">Tipo:</label>
+                                        <select class="text-sm border border-gray-300 rounded px-3 py-1 focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                                            <option>Todos</option>
+                                            <option>Mesas</option>
+                                            <option>Comandas</option>
+                                        </select>
+                                    </div>
+                                    <button class="text-sm bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
+                                        <i class="fas fa-download mr-2"></i>Exportar
+                                    </button>
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    <span class="font-semibold text-green-600">R$ 567,40</span> em vendas
+                                </div>
+                                <button onclick="toggleFinalizados('salao')" id="btn-toggle-finalizados-salao" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                    <i class="fas fa-chevron-down text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="finalizados-content-salao" class="hidden">
+                        <div class="p-0">
+                            <!-- Lista de Atendimentos Finalizados do Salão -->
+                            <div onclick="openAtendimentoFinalizadoModal('M001')" class="p-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-sm font-semibold text-gray-900">Mesa 05</span>
+                                        <span class="text-xs text-gray-500">16:30 - 17:15</span>
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-700">Finalizada</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-bold text-gray-900">R$ 89,50</div>
+                                        <div class="text-xs text-gray-500">45min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">4 pessoas</p>
+                                <p class="text-xs text-gray-600">2x Pizza Família, 4x Refrigerante, 1x Sobremesa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Configurações -->
+        <div id="content-configuracoes" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Sidebar Configurações -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg card-shadow p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                            <i class="fas fa-cog text-orange-500 mr-2"></i>Configurações
+                        </h3>
+                        <nav class="space-y-2">
+                            <button onclick="showConfigSection('empresa')" class="config-section w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                                <i class="fas fa-briefcase mr-2"></i>Empresa
+                            </button>
+                            <button onclick="showConfigSection('loja-online')" class="config-section w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                                <i class="fas fa-globe mr-2"></i>Loja Online
+                            </button>
+                            <button onclick="showConfigSection('colaboradores')" class="config-section w-full text-left px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                                <i class="fas fa-users mr-2"></i>Colaboradores
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Configurações -->
+                <div class="lg:col-span-3">
+                    <!-- Seção Empresa -->
+                    <div id="config-empresa" class="config-content">
+                        <div class="bg-white rounded-lg card-shadow p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-6">
+                                <i class="fas fa-briefcase text-orange-500 mr-2"></i>Configurações da Empresa
+                            </h3>
+                            <form class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Razão Social</label>
+                                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Nome da empresa">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">CNPJ</label>
+                                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="00.000.000/0000-00">
+                                    </div>
+                                </div>
+                                <div class="pt-4">
+                                    <button type="submit" class="gradient-bg text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                                        <i class="fas fa-save mr-2"></i>Salvar Alterações
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Seção Loja Online -->
+                    <div id="config-loja-online" class="config-content hidden">
+                        <div class="bg-white rounded-lg card-shadow p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-6">
+                                <i class="fas fa-globe text-orange-500 mr-2"></i>Configurações da Loja Online
+                            </h3>
+                            <form class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">URL do Cardápio</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                            cardapio.app/
+                                        </span>
+                                        <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="meu-restaurante">
+                                    </div>
+                                </div>
+                                <div class="pt-4">
+                                    <button type="submit" class="gradient-bg text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                                        <i class="fas fa-save mr-2"></i>Salvar Alterações
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Seção Colaboradores -->
+                    <div id="config-colaboradores" class="config-content hidden">
+                        <div class="bg-white rounded-lg card-shadow p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-semibold text-gray-800">
+                                    <i class="fas fa-users text-orange-500 mr-2"></i>Colaboradores
+                                </h3>
+                                <button class="gradient-bg text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                                    <i class="fas fa-plus mr-2"></i>Adicionar
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Função</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">João Silva</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Garçom</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Ativo</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-orange-600 hover:text-orange-900 mr-3">Editar</button>
+                                                <button class="text-red-600 hover:text-red-900">Excluir</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal da Mesa -->
+    <div id="mesa-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <h3 class="text-lg font-semibold text-gray-800">Mesa <span id="mesa-number">1</span></h3>
+                    <span id="mesa-status" class="text-sm font-semibold px-3 py-1 rounded-full bg-green-100 text-green-700">Livre</span>
+                </div>
+                <button onclick="closeMesaModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="mesa-content">
+                <!-- Conteúdo dinâmico será inserido aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal do Pedido -->
+    <div id="pedido-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[85vh] flex flex-col">
+            <!-- Cabeçalho do Modal -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-100 flex-shrink-0">
+                <div class="flex items-center space-x-2">
+                    <h3 class="text-lg font-semibold text-gray-900">Pedido <span id="pedido-number">#001</span></h3>
+                    <span class="text-gray-400">•</span>
+                    <span id="pedido-status" class="text-xs text-gray-600 font-medium">Novo</span>
+                    <span class="text-gray-400">•</span>
+                    <span class="text-xs text-gray-500" id="pedido-timer">5min</span>
+                </div>
+                <button onclick="closePedidoModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Conteúdo do Modal -->
+            <div id="pedido-content" class="flex-1 overflow-y-auto p-4">
+                <!-- Conteúdo dinâmico será inserido aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Controle de Abas Principais
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('text-orange-500', 'border-orange-500');
+                btn.classList.add('text-gray-600', 'border-transparent');
+            });
+            
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.remove('text-gray-600', 'border-transparent');
+            activeBtn.classList.add('text-orange-500', 'border-orange-500');
+        }
+
+        // Controle de Toggle Delivery/Salão
+        function togglePedidosView(view) {
+            document.querySelectorAll('.pedidos-toggle').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+                btn.classList.add('text-gray-500');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${view}`);
+            activeBtn.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+            activeBtn.classList.remove('text-gray-500');
+            
+            document.querySelectorAll('.pedidos-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            document.getElementById(`${view}-panel`).classList.remove('hidden');
+            
+            document.querySelectorAll('.finalizados-modal').forEach(modal => {
+                modal.classList.add('hidden');
+            });
+            document.getElementById(`finalizados-${view}`).classList.remove('hidden');
+        }
+
+        // Modal da Mesa
+        function openMesaModal(numero, status) {
+            const modal = document.getElementById('mesa-modal');
+            const mesaNumber = document.getElementById('mesa-number');
+            const mesaStatus = document.getElementById('mesa-status');
+            const mesaContent = document.getElementById('mesa-content');
+            
+            mesaNumber.textContent = numero;
+            mesaStatus.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            
+            mesaStatus.className = 'text-sm font-semibold px-3 py-1 rounded-full';
+            if (status === 'livre') {
+                mesaStatus.classList.add('bg-green-100', 'text-green-700');
+            } else if (status === 'ocupada') {
+                mesaStatus.classList.add('bg-red-100', 'text-red-700');
+            } else if (status === 'reservada') {
+                mesaStatus.classList.add('bg-amber-100', 'text-amber-700');
+            }
+            
+            if (status === 'ocupada') {
+                mesaContent.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Comanda Ativa</h4>
+                            <div class="text-sm text-gray-600 space-y-1">
+                                <div>2x Hambúrguer Artesanal - R$ 32,00</div>
+                                <div>1x Batata Frita - R$ 12,00</div>
+                                <div>2x Refrigerante - R$ 8,00</div>
+                            </div>
+                            <div class="border-t pt-2 mt-2">
+                                <div class="font-semibold">Total: R$ 52,00</div>
+                                <div class="text-xs text-gray-500">Iniciado às 15:30</div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
+                                Adicionar Item
+                            </button>
+                            <button class="flex-1 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+                                Fechar Conta
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (status === 'reservada') {
+                mesaContent.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="bg-amber-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Reserva</h4>
+                            <div class="text-sm text-gray-600">
+                                <div>Cliente: João Silva</div>
+                                <div>Horário: 16:00</div>
+                                <div>Pessoas: 4</div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+                                Confirmar Chegada
+                            </button>
+                            <button class="flex-1 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                                Cancelar Reserva
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                mesaContent.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="text-center py-8">
+                            <i class="fas fa-chair text-gray-300 text-4xl mb-4"></i>
+                            <p class="text-gray-500">Mesa disponível</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
+                                Abrir Comanda
+                            </button>
+                            <button class="flex-1 bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">
+                                Reservar Mesa
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeMesaModal() {
+            document.getElementById('mesa-modal').classList.add('hidden');
+        }
+
+        // Mostrar Seção de Configuração
+        function showConfigSection(section) {
+            document.querySelectorAll('.config-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.config-section').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(`config-${section}`).classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        // Toggle Pedidos Finalizados
+        function toggleFinalizados(tipo) {
+            const content = document.getElementById(`finalizados-content-${tipo}`);
+            const button = document.getElementById(`btn-toggle-finalizados-${tipo}`);
+            const icon = button.querySelector('i');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+
+        // Modal do Pedido
+        function openPedidoModal(numero, status) {
+            const modal = document.getElementById('pedido-modal');
+            const pedidoNumber = document.getElementById('pedido-number');
+            const pedidoStatus = document.getElementById('pedido-status');
+            const pedidoContent = document.getElementById('pedido-content');
+            
+            pedidoNumber.textContent = `#${numero}`;
+            
+            const pedidos = {
+                '001': {
+                    cliente: 'João Silva',
+                    telefone: '(11) 99999-1234',
+                    endereco: 'Rua das Flores, 123 - Centro',
+                    horario: '10:30',
+                    itens: [
+                        { nome: 'Hambúrguer Artesanal', qtd: 2, preco: 18.90, obs: 'Sem cebola' },
+                        { nome: 'Batata Frita Grande', qtd: 1, preco: 8.10, obs: '' }
+                    ],
+                    total: 45.90,
+                    pagamento: 'Cartão de Crédito',
+                    observacoes: 'Entregar no portão azul'
+                }
+            };
+            
+            const pedido = pedidos[numero] || pedidos['001'];
+            
+            pedidoStatus.className = 'text-xs text-gray-600 font-medium';
+            const pedidoTimer = document.getElementById('pedido-timer');
+            
+            if (status === 'novo') {
+                pedidoStatus.textContent = 'Novo';
+            } else if (status === 'preparo') {
+                pedidoStatus.textContent = 'Em Preparo';
+            } else if (status === 'pronto') {
+                pedidoStatus.textContent = 'Pronto';
+            }
+            
+            let itensHtml = '';
+            pedido.itens.forEach((item, index) => {
+                itensHtml += `
+                    <div class="flex justify-between items-start text-sm">
+                        <div class="flex-1">
+                            <div class="font-medium">${item.qtd} • ${item.nome}</div>
+                            ${item.obs ? `<div class="text-xs text-gray-500 mt-1">${item.obs}</div>` : ''}
+                        </div>
+                        <span class="font-medium ml-4">R$ ${(item.preco * item.qtd).toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            
+            let botoesHtml = '';
+            if (status === 'novo') {
+                botoesHtml = `
+                    <div class="flex space-x-3">
+                        <button onclick="rejeitarPedido('${numero}')" class="w-24 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
+                            Rejeitar
+                        </button>
+                        <button onclick="aceitarPedido('${numero}')" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
+                            Aceitar Pedido
+                        </button>
+                    </div>
+                `;
+            } else if (status === 'preparo') {
+                botoesHtml = `
+                    <div class="flex space-x-3">
+                        <button onclick="cancelarPedido('${numero}')" class="w-24 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
+                            Cancelar
+                        </button>
+                        <button onclick="finalizarPedido('${numero}')" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
+                            Marcar como Pronto
+                        </button>
+                    </div>
+                `;
+            } else if (status === 'pronto') {
+                botoesHtml = `
+                    <div class="flex space-x-3">
+                        <button onclick="voltarPreparo('${numero}')" class="w-32 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
+                            Voltar ao Preparo
+                        </button>
+                        <button onclick="entregarPedido('${numero}')" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-600 transition-colors">
+                            Marcar como Entregue
+                        </button>
+                    </div>
+                `;
+            }
+            
+            pedidoContent.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-2">
+                            <h4 class="text-sm font-medium text-gray-900">${pedido.cliente}</h4>
+                            <span class="text-gray-400">•</span>
+                            <a href="https://wa.me/55${pedido.telefone.replace(/\D/g, '')}" target="_blank" class="text-sm text-green-600 hover:text-green-700 font-medium transition-colors">
+                                ${pedido.telefone}
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="space-y-2">
+                            ${itensHtml}
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="bg-gray-50 rounded-lg p-3 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Subtotal</span>
+                                <span class="text-sm font-medium">R$ ${pedido.total.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Taxa de entrega</span>
+                                <span class="text-sm font-medium">R$ 5,00</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-gray-900">Total</span>
+                                    <span class="font-bold text-lg text-gray-900">R$ ${(pedido.total + 5.00).toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-xs text-gray-500">Forma de pagamento</span>
+                                <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 rounded">${pedido.pagamento}</span>
+                            </div>
+                        </div>
+                        ${pedido.observacoes ? `
+                        <div class="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <div class="flex items-start space-x-2">
+                                <i class="fas fa-sticky-note text-yellow-600 text-xs mt-0.5"></i>
+                                <div class="text-xs text-yellow-800">
+                                    <span class="font-medium">Observações:</span> ${pedido.observacoes}
+                                </div>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="border-t pt-4 space-y-3">
+                        <div class="text-xs">
+                            <div class="flex items-start space-x-2">
+                                <i class="fas fa-map-marker-alt text-gray-400 mt-0.5"></i>
+                                <a href="https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}" target="_blank" class="text-blue-600 hover:text-blue-700 hover:underline transition-colors">
+                                    ${pedido.endereco}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        ${botoesHtml}
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closePedidoModal() {
+            document.getElementById('pedido-modal').classList.add('hidden');
+        }
+
+        // Funções de ação dos pedidos
+        function aceitarPedido(numero) {
+            alert(`Pedido #${numero} aceito! Movendo para "Em Preparo"`);
+            closePedidoModal();
+        }
+        
+        function rejeitarPedido(numero) {
+            if (confirm(`Tem certeza que deseja rejeitar o pedido #${numero}?`)) {
+                alert(`Pedido #${numero} rejeitado!`);
+                closePedidoModal();
+            }
+        }
+        
+        function finalizarPedido(numero) {
+            alert(`Pedido #${numero} finalizado! Movendo para "Prontos"`);
+            closePedidoModal();
+        }
+        
+        function entregarPedido(numero) {
+            alert(`Pedido #${numero} entregue! Movendo para histórico`);
+            closePedidoModal();
+        }
+        
+        function cancelarPedido(numero) {
+            if (confirm(`Tem certeza que deseja cancelar o pedido #${numero}?`)) {
+                alert(`Pedido #${numero} cancelado!`);
+                closePedidoModal();
+            }
+        }
+        
+        function voltarPreparo(numero) {
+            alert(`Pedido #${numero} voltou para "Em Preparo"`);
+            closePedidoModal();
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            showConfigSection('empresa');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9795b5ec621ee2b1',t:'MTc1NjkwNzM2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
