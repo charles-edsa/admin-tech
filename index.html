@@ -527,6 +527,38 @@
                                 <p class="text-sm text-gray-700 font-medium mb-1">Pedro Oliveira</p>
                                 <p class="text-xs text-gray-600">2x Pizza Calabresa, 1x Refrigerante 2L, 1x Sobremesa Pudim</p>
                             </div>
+                            
+                            <div onclick="openPedidoFinalizadoModal('006')" class="p-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-sm font-semibold text-gray-900">#006</span>
+                                        <span class="text-xs text-gray-500">15:30</span>
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-700">Entregue</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-bold text-gray-900">R$ 42,90</div>
+                                        <div class="text-xs text-gray-500">28min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Ana Silva</p>
+                                <p class="text-xs text-gray-600">1x Hambúrguer Artesanal, 1x Batata Frita, 2x Refrigerante</p>
+                            </div>
+                            
+                            <div onclick="openPedidoFinalizadoModal('007')" class="p-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-sm font-semibold text-gray-900">#007</span>
+                                        <span class="text-xs text-gray-500">14:15</span>
+                                        <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700">Retirado</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-bold text-gray-900">R$ 28,50</div>
+                                        <div class="text-xs text-gray-500">15min</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">Carlos Santos</p>
+                                <p class="text-xs text-gray-600">2x Pizza Individual, 1x Refrigerante</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -875,68 +907,99 @@
                         <!-- Grade de Produtos -->
                         <div class="flex-1 overflow-y-auto p-4">
                             <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4" id="produtos-grid">
-                                <!-- Produto 1 -->
-                                <div onclick="addProdutoToCart('hamburguer-artesanal', 'Hambúrguer Artesanal', 24.90)" class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift">
+                                <!-- Lanches -->
+                                <div onclick="openProdutoModal('hamburguer-artesanal')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="lanches">
                                     <div class="text-center">
                                         <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                                             <i class="fas fa-hamburger text-orange-600 text-xl"></i>
                                         </div>
                                         <h4 class="text-sm font-medium text-gray-900 mb-1">Hambúrguer Artesanal</h4>
                                         <p class="text-xs text-gray-500 mb-2">Pão brioche, carne 180g</p>
-                                        <span class="text-lg font-bold text-gray-900">R$ 24,90</span>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 22,90</span>
                                     </div>
                                 </div>
                                 
-                                <!-- Produto 2 -->
-                                <div onclick="addProdutoToCart('pizza-margherita', 'Pizza Margherita', 32.00)" class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift">
+                                <div onclick="openProdutoModal('pizza-margherita')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="lanches">
                                     <div class="text-center">
                                         <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                                             <i class="fas fa-pizza-slice text-orange-600 text-xl"></i>
                                         </div>
                                         <h4 class="text-sm font-medium text-gray-900 mb-1">Pizza Margherita</h4>
                                         <p class="text-xs text-gray-500 mb-2">Molho, mussarela, manjericão</p>
-                                        <span class="text-lg font-bold text-gray-900">R$ 32,00</span>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 28,00</span>
                                     </div>
                                 </div>
                                 
-                                <!-- Produto 3 -->
-                                <div onclick="addProdutoToCart('cerveja-heineken', 'Cerveja Heineken', 9.00)" class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift">
+                                <div onclick="openProdutoModal('sanduiche-natural')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="lanches">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-bread-slice text-orange-600 text-xl"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Sanduíche Natural</h4>
+                                        <p class="text-xs text-gray-500 mb-2">Pão integral, peito de peru</p>
+                                        <span class="text-lg font-bold text-gray-900">R$ 12,90</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bebidas -->
+                                <div onclick="openProdutoModal('cerveja')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="bebidas">
                                     <div class="text-center">
                                         <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                                             <i class="fas fa-beer text-blue-600 text-xl"></i>
                                         </div>
-                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Cerveja Heineken</h4>
-                                        <p class="text-xs text-gray-500 mb-2">Long neck 330ml</p>
-                                        <span class="text-lg font-bold text-gray-900">R$ 9,00</span>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Cerveja</h4>
+                                        <p class="text-xs text-gray-500 mb-2">Várias marcas disponíveis</p>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 6,00</span>
                                     </div>
                                 </div>
                                 
-                                <!-- Produto 4 -->
-                                <div onclick="addProdutoToCart('batata-frita', 'Batata Frita Grande', 16.50)" class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift">
-                                    <div class="text-center">
-                                        <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                                            <i class="fas fa-french-fries text-yellow-600 text-xl"></i>
-                                        </div>
-                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Batata Frita Grande</h4>
-                                        <p class="text-xs text-gray-500 mb-2">Porção 400g</p>
-                                        <span class="text-lg font-bold text-gray-900">R$ 16,50</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Produto 5 -->
-                                <div onclick="addProdutoToCart('refrigerante', 'Refrigerante Lata', 4.50)" class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift">
+                                <div onclick="openProdutoModal('refrigerante')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="bebidas">
                                     <div class="text-center">
                                         <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                                             <i class="fas fa-glass-whiskey text-red-600 text-xl"></i>
                                         </div>
-                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Refrigerante Lata</h4>
-                                        <p class="text-xs text-gray-500 mb-2">Coca-Cola 350ml</p>
-                                        <span class="text-lg font-bold text-gray-900">R$ 4,50</span>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Refrigerante</h4>
+                                        <p class="text-xs text-gray-500 mb-2">Coca-Cola, Pepsi, Guaraná</p>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 4,50</span>
                                     </div>
                                 </div>
                                 
-                                <!-- Produto 6 -->
-                                <div onclick="addProdutoToCart('pudim', 'Pudim de Leite', 8.90)" class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift">
+                                <div onclick="openProdutoModal('suco-natural')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="bebidas">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-glass-water text-green-600 text-xl"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Suco Natural</h4>
+                                        <p class="text-xs text-gray-500 mb-2">Laranja, limão, maracujá</p>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 8,00</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Porções -->
+                                <div onclick="openProdutoModal('batata-frita')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="porcoes">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-french-fries text-yellow-600 text-xl"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Batata Frita</h4>
+                                        <p class="text-xs text-gray-500 mb-2">Pequena, média ou grande</p>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 12,50</span>
+                                    </div>
+                                </div>
+                                
+                                <div onclick="openProdutoModal('porcao-frango')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="porcoes">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-drumstick-bite text-yellow-600 text-xl"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Porção de Frango</h4>
+                                        <p class="text-xs text-gray-500 mb-2">À passarinho ou empanado</p>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 18,90</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sobremesas -->
+                                <div onclick="openProdutoModal('pudim')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="sobremesas">
                                     <div class="text-center">
                                         <div class="w-16 h-16 bg-pink-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                                             <i class="fas fa-birthday-cake text-pink-600 text-xl"></i>
@@ -944,6 +1007,17 @@
                                         <h4 class="text-sm font-medium text-gray-900 mb-1">Pudim de Leite</h4>
                                         <p class="text-xs text-gray-500 mb-2">Com calda de caramelo</p>
                                         <span class="text-lg font-bold text-gray-900">R$ 8,90</span>
+                                    </div>
+                                </div>
+                                
+                                <div onclick="openProdutoModal('sorvete')" class="produto-item bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-orange-300 hover:shadow-md transition-all duration-200 hover-lift" data-categoria="sobremesas">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-pink-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-ice-cream text-pink-600 text-xl"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900 mb-1">Sorvete</h4>
+                                        <p class="text-xs text-gray-500 mb-2">Diversos sabores</p>
+                                        <span class="text-lg font-bold text-gray-900">A partir de R$ 6,50</span>
                                     </div>
                                 </div>
                             </div>
@@ -983,19 +1057,38 @@
                         </div>
                         
                         <!-- Itens do Carrinho -->
-                        <div class="flex-1 overflow-y-auto p-4">
-                            <div class="flex items-center justify-between mb-4">
+                        <div class="flex-1 overflow-hidden p-4 flex flex-col">
+                            <div class="flex items-center justify-between mb-4 flex-shrink-0">
                                 <h4 class="text-sm font-medium text-gray-900">Itens Selecionados</h4>
                                 <button onclick="clearCart()" class="text-xs text-red-500 hover:text-red-700">
                                     <i class="fas fa-trash mr-1"></i>Limpar
                                 </button>
                             </div>
                             
-                            <div id="cart-items" class="space-y-3">
+                            <div id="cart-items" class="space-y-3 flex-1 overflow-y-auto">
                                 <div class="text-center py-8 text-gray-400">
                                     <i class="fas fa-shopping-cart text-2xl mb-2"></i>
                                     <p class="text-sm">Nenhum item selecionado</p>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Forma de Pagamento -->
+                        <div class="p-4 border-t border-gray-200 flex-shrink-0">
+                            <h4 class="text-sm font-medium text-gray-900 mb-3">Forma de Pagamento</h4>
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <button onclick="setFormaPagamento('dinheiro')" id="pagamento-dinheiro" class="pagamento-toggle px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-money-bill mr-1"></i>Dinheiro
+                                </button>
+                                <button onclick="setFormaPagamento('cartao')" id="pagamento-cartao" class="pagamento-toggle px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-credit-card mr-1"></i>Cartão
+                                </button>
+                                <button onclick="setFormaPagamento('pix')" id="pagamento-pix" class="pagamento-toggle px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-qrcode mr-1"></i>PIX
+                                </button>
+                                <button onclick="setFormaPagamento('fiado')" id="pagamento-fiado" class="pagamento-toggle px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-handshake mr-1"></i>Fiado
+                                </button>
                             </div>
                         </div>
                         
@@ -1048,6 +1141,45 @@
             <!-- Conteúdo do Modal -->
             <div id="pedido-content" class="flex-1 overflow-y-auto p-4">
                 <!-- Conteúdo dinâmico será inserido aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Seleção de Produto -->
+    <div id="produto-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[85vh] flex flex-col">
+            <!-- Cabeçalho do Modal -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+                <h3 id="produto-modal-title" class="text-lg font-semibold text-gray-900">Selecionar Produto</h3>
+                <button onclick="closeProdutoModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Conteúdo do Modal -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <div id="produto-modal-content">
+                    <!-- Conteúdo dinâmico será inserido aqui -->
+                </div>
+            </div>
+            
+            <!-- Rodapé do Modal -->
+            <div class="p-4 border-t border-gray-200 flex-shrink-0">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-900">Quantidade:</span>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="updateModalQuantity(-1)" class="w-8 h-8 bg-gray-100 rounded text-sm hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span id="modal-quantity" class="text-sm font-medium w-8 text-center">1</span>
+                        <button onclick="updateModalQuantity(1)" class="w-8 h-8 bg-gray-100 rounded text-sm hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <button onclick="addSelectedProdutoToCart()" id="btn-add-produto" class="w-full bg-green-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Adicionar ao Carrinho
+                </button>
             </div>
         </div>
     </div>
@@ -1964,6 +2096,104 @@
         let cart = [];
         let destinoVenda = 'balcao';
         let destinoEspecifico = null;
+        let formaPagamento = null;
+        let selectedProduto = null;
+        let modalQuantity = 1;
+
+        // Base de dados dos produtos
+        const produtos = {
+            'hamburguer-artesanal': {
+                nome: 'Hambúrguer Artesanal',
+                categoria: 'lanches',
+                variacoes: [
+                    { nome: 'Simples', preco: 22.90, descricao: 'Pão brioche, carne 180g, alface, tomate' },
+                    { nome: 'Duplo', preco: 28.90, descricao: 'Pão brioche, 2x carne 180g, alface, tomate' },
+                    { nome: 'Bacon', preco: 26.90, descricao: 'Pão brioche, carne 180g, bacon, alface, tomate' }
+                ]
+            },
+            'pizza-margherita': {
+                nome: 'Pizza Margherita',
+                categoria: 'lanches',
+                variacoes: [
+                    { nome: 'Individual', preco: 28.00, descricao: 'Pizza individual 25cm' },
+                    { nome: 'Média', preco: 42.00, descricao: 'Pizza média 30cm' },
+                    { nome: 'Grande', preco: 56.00, descricao: 'Pizza grande 35cm' }
+                ]
+            },
+            'sanduiche-natural': {
+                nome: 'Sanduíche Natural',
+                categoria: 'lanches',
+                variacoes: [
+                    { nome: 'Único', preco: 12.90, descricao: 'Pão integral, peito de peru, queijo, alface' }
+                ]
+            },
+            'cerveja': {
+                nome: 'Cerveja',
+                categoria: 'bebidas',
+                variacoes: [
+                    { nome: 'Skol Lata', preco: 6.00, descricao: 'Lata 350ml' },
+                    { nome: 'Brahma Lata', preco: 6.50, descricao: 'Lata 350ml' },
+                    { nome: 'Heineken Long Neck', preco: 9.00, descricao: 'Long neck 330ml' },
+                    { nome: 'Corona Long Neck', preco: 10.50, descricao: 'Long neck 330ml' }
+                ]
+            },
+            'refrigerante': {
+                nome: 'Refrigerante',
+                categoria: 'bebidas',
+                variacoes: [
+                    { nome: 'Coca-Cola Lata', preco: 4.50, descricao: 'Lata 350ml' },
+                    { nome: 'Pepsi Lata', preco: 4.00, descricao: 'Lata 350ml' },
+                    { nome: 'Guaraná Lata', preco: 4.00, descricao: 'Lata 350ml' },
+                    { nome: 'Coca-Cola 2L', preco: 8.90, descricao: 'Garrafa 2 litros' }
+                ]
+            },
+            'suco-natural': {
+                nome: 'Suco Natural',
+                categoria: 'bebidas',
+                variacoes: [
+                    { nome: 'Laranja 300ml', preco: 8.00, descricao: 'Suco natural de laranja' },
+                    { nome: 'Limão 300ml', preco: 7.50, descricao: 'Suco natural de limão' },
+                    { nome: 'Maracujá 300ml', preco: 9.00, descricao: 'Suco natural de maracujá' },
+                    { nome: 'Acerola 300ml', preco: 8.50, descricao: 'Suco natural de acerola' }
+                ]
+            },
+            'batata-frita': {
+                nome: 'Batata Frita',
+                categoria: 'porcoes',
+                variacoes: [
+                    { nome: 'Pequena', preco: 12.50, descricao: 'Porção 200g' },
+                    { nome: 'Média', preco: 16.50, descricao: 'Porção 300g' },
+                    { nome: 'Grande', preco: 22.90, descricao: 'Porção 500g' }
+                ]
+            },
+            'porcao-frango': {
+                nome: 'Porção de Frango',
+                categoria: 'porcoes',
+                variacoes: [
+                    { nome: 'À Passarinho P', preco: 18.90, descricao: 'Porção 300g' },
+                    { nome: 'À Passarinho G', preco: 28.90, descricao: 'Porção 500g' },
+                    { nome: 'Empanado P', preco: 22.90, descricao: 'Porção 300g' },
+                    { nome: 'Empanado G', preco: 32.90, descricao: 'Porção 500g' }
+                ]
+            },
+            'pudim': {
+                nome: 'Pudim de Leite',
+                categoria: 'sobremesas',
+                variacoes: [
+                    { nome: 'Único', preco: 8.90, descricao: 'Com calda de caramelo' }
+                ]
+            },
+            'sorvete': {
+                nome: 'Sorvete',
+                categoria: 'sobremesas',
+                variacoes: [
+                    { nome: 'Chocolate', preco: 6.50, descricao: '2 bolas' },
+                    { nome: 'Morango', preco: 6.50, descricao: '2 bolas' },
+                    { nome: 'Baunilha', preco: 6.50, descricao: '2 bolas' },
+                    { nome: 'Napolitano', preco: 7.50, descricao: '3 bolas' }
+                ]
+            }
+        };
 
         // Funções do PDV
         function openPDVModal() {
@@ -1980,8 +2210,10 @@
             cart = [];
             destinoVenda = 'balcao';
             destinoEspecifico = null;
+            formaPagamento = null;
             updateCartDisplay();
             setDestinoVenda('balcao');
+            resetFormaPagamento();
             document.getElementById('destino-especifico').classList.add('hidden');
         }
         
@@ -1995,8 +2227,16 @@
             event.target.classList.add('active', 'bg-orange-100', 'text-orange-700');
             event.target.classList.remove('text-gray-600');
             
-            // Aqui você implementaria a filtragem real dos produtos
-            console.log(`Filtrando categoria: ${categoria}`);
+            // Filtrar produtos
+            const produtoItems = document.querySelectorAll('.produto-item');
+            produtoItems.forEach(item => {
+                const itemCategoria = item.getAttribute('data-categoria');
+                if (categoria === 'todos' || itemCategoria === categoria) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
         
         function setDestinoVenda(destino) {
@@ -2164,8 +2404,9 @@
             
             const hasItems = cart.length > 0;
             const hasDestino = destinoVenda === 'balcao' || (selectDestino.value !== '');
+            const hasPagamento = formaPagamento !== null;
             
-            if (hasItems && hasDestino) {
+            if (hasItems && hasDestino && hasPagamento) {
                 btnFinalizar.disabled = false;
                 btnFinalizar.classList.remove('disabled:bg-gray-300', 'disabled:cursor-not-allowed');
             } else {
@@ -2174,8 +2415,121 @@
             }
         }
         
+        // Funções do modal de produto
+        function openProdutoModal(produtoId) {
+            const produto = produtos[produtoId];
+            if (!produto) return;
+            
+            selectedProduto = { id: produtoId, ...produto };
+            modalQuantity = 1;
+            
+            const modal = document.getElementById('produto-modal');
+            const title = document.getElementById('produto-modal-title');
+            const content = document.getElementById('produto-modal-content');
+            const quantitySpan = document.getElementById('modal-quantity');
+            
+            title.textContent = produto.nome;
+            quantitySpan.textContent = modalQuantity;
+            
+            let variacoesHtml = '';
+            produto.variacoes.forEach((variacao, index) => {
+                const isChecked = index === 0 ? 'checked' : '';
+                variacoesHtml += `
+                    <div class="border border-gray-200 rounded-lg p-3 mb-3">
+                        <label class="flex items-start space-x-3 cursor-pointer">
+                            <input type="radio" name="variacao" value="${index}" ${isChecked} class="mt-1">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-900">${variacao.nome}</h4>
+                                        <p class="text-xs text-gray-500 mt-1">${variacao.descricao}</p>
+                                    </div>
+                                    <span class="text-sm font-bold text-gray-900">R$ ${variacao.preco.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            });
+            
+            content.innerHTML = `
+                <div class="space-y-3">
+                    <h4 class="text-sm font-medium text-gray-900 mb-3">Selecione uma opção:</h4>
+                    ${variacoesHtml}
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeProdutoModal() {
+            document.getElementById('produto-modal').classList.add('hidden');
+            selectedProduto = null;
+            modalQuantity = 1;
+        }
+        
+        function updateModalQuantity(delta) {
+            modalQuantity = Math.max(1, modalQuantity + delta);
+            document.getElementById('modal-quantity').textContent = modalQuantity;
+        }
+        
+        function addSelectedProdutoToCart() {
+            if (!selectedProduto) return;
+            
+            const selectedVariacao = document.querySelector('input[name="variacao"]:checked');
+            if (!selectedVariacao) return;
+            
+            const variacaoIndex = parseInt(selectedVariacao.value);
+            const variacao = selectedProduto.variacoes[variacaoIndex];
+            
+            const itemId = `${selectedProduto.id}-${variacaoIndex}`;
+            const itemNome = `${selectedProduto.nome} - ${variacao.nome}`;
+            
+            const existingItem = cart.find(item => item.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantidade += modalQuantity;
+            } else {
+                cart.push({
+                    id: itemId,
+                    nome: itemNome,
+                    preco: variacao.preco,
+                    quantidade: modalQuantity
+                });
+            }
+            
+            updateCartDisplay();
+            updateFinalizarButton();
+            closeProdutoModal();
+        }
+        
+        // Funções de forma de pagamento
+        function setFormaPagamento(forma) {
+            formaPagamento = forma;
+            
+            // Atualizar botões de pagamento
+            document.querySelectorAll('.pagamento-toggle').forEach(btn => {
+                btn.classList.remove('bg-green-100', 'text-green-700', 'border-green-300');
+                btn.classList.add('border-gray-300', 'text-gray-700');
+            });
+            
+            const activeBtn = document.getElementById(`pagamento-${forma}`);
+            activeBtn.classList.add('bg-green-100', 'text-green-700', 'border-green-300');
+            activeBtn.classList.remove('border-gray-300', 'text-gray-700');
+            
+            updateFinalizarButton();
+        }
+        
+        function resetFormaPagamento() {
+            formaPagamento = null;
+            document.querySelectorAll('.pagamento-toggle').forEach(btn => {
+                btn.classList.remove('bg-green-100', 'text-green-700', 'border-green-300');
+                btn.classList.add('border-gray-300', 'text-gray-700');
+            });
+        }
+        
         function finalizarVenda() {
-            if (cart.length === 0) return;
+            if (cart.length === 0 || !formaPagamento) return;
             
             const selectDestino = document.getElementById('select-destino');
             let destinoTexto = '';
@@ -2188,10 +2542,20 @@
             }
             
             const subtotal = cart.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
-            const total = subtotal * 1.1;
+            const taxa = subtotal * 0.1;
+            const total = subtotal + taxa;
             
-            if (confirm(`Confirmar venda de R$ ${total.toFixed(2)} para ${destinoTexto}?`)) {
-                alert(`Venda finalizada com sucesso!\nDestino: ${destinoTexto}\nTotal: R$ ${total.toFixed(2)}`);
+            const formaTexto = {
+                'dinheiro': 'Dinheiro',
+                'cartao': 'Cartão',
+                'pix': 'PIX',
+                'fiado': 'Fiado'
+            }[formaPagamento];
+            
+            let resumoItens = cart.map(item => `${item.quantidade}x ${item.nome}`).join('\n');
+            
+            if (confirm(`Confirmar venda?\n\nDestino: ${destinoTexto}\nPagamento: ${formaTexto}\nTotal: R$ ${total.toFixed(2)}\n\nItens:\n${resumoItens}`)) {
+                alert(`✅ Venda finalizada com sucesso!\n\n📍 Destino: ${destinoTexto}\n💳 Pagamento: ${formaTexto}\n💰 Total: R$ ${total.toFixed(2)}`);
                 closePDVModal();
             }
         }
@@ -2207,5 +2571,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979d3ba7d4d2df39',t:'MTc1Njk4NjI0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979d605330dfdf39',t:'MTc1Njk4Nzc0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
