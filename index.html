@@ -30,38 +30,32 @@
                     <i class="fas fa-bars text-lg"></i>
                 </button>
                 
-                <!-- Desktop User Info -->
-                <div class="hidden md:flex items-center">
-                    <div class="text-gray-600 text-sm">
-                        <i class="fas fa-user-circle text-gray-400 mr-2"></i>
-                        Admin
-                    </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <nav class="flex space-x-8">
+                        <button onclick="switchTab('pedidos')" id="tab-pedidos" class="tab-button text-orange-600 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-orange-500">
+                            <i class="fas fa-clipboard-list mr-2"></i>Pedidos
+                        </button>
+                        <button onclick="switchTab('salao')" id="tab-salao" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300">
+                            <i class="fas fa-utensils mr-2"></i>Salão
+                        </button>
+                        <button onclick="switchTab('kds')" id="tab-kds" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300">
+                            <i class="fas fa-tv mr-2"></i>Painel KDS
+                        </button>
+                        <button onclick="switchTab('entregas')" id="tab-entregas" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300">
+                            <i class="fas fa-truck mr-2"></i>Entregas
+                        </button>
+                        <button onclick="switchTab('catalogo')" id="tab-catalogo" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300">
+                            <i class="fas fa-book mr-2"></i>Catálogo
+                        </button>
+                        <button onclick="switchTab('configuracoes')" id="tab-configuracoes" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300">
+                            <i class="fas fa-cog mr-2"></i>Configurações
+                        </button>
+                    </nav>
                 </div>
             </div>
             
-            <!-- Desktop Navigation -->
-            <div class="hidden md:block">
-                <nav class="flex space-x-8 -mb-px">
-                    <button onclick="switchTab('pedidos')" id="tab-pedidos" class="tab-button border-b-2 border-orange-500 py-2 px-1 text-sm font-medium text-orange-600 flex items-center">
-                        <i class="fas fa-clipboard-list mr-2"></i>Pedidos
-                    </button>
-                    <button onclick="switchTab('salao')" id="tab-salao" class="tab-button border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center">
-                        <i class="fas fa-utensils mr-2"></i>Salão
-                    </button>
-                    <button onclick="switchTab('kds')" id="tab-kds" class="tab-button border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center">
-                        <i class="fas fa-tv mr-2"></i>Painel KDS
-                    </button>
-                    <button onclick="switchTab('entregas')" id="tab-entregas" class="tab-button border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center">
-                        <i class="fas fa-truck mr-2"></i>Entregas
-                    </button>
-                    <button onclick="switchTab('catalogo')" id="tab-catalogo" class="tab-button border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center">
-                        <i class="fas fa-book mr-2"></i>Catálogo
-                    </button>
-                    <button onclick="switchTab('configuracoes')" id="tab-configuracoes" class="tab-button border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center">
-                        <i class="fas fa-cog mr-2"></i>Configurações
-                    </button>
-                </nav>
-            </div>
+
             
             <!-- Mobile Navigation -->
             <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200 py-2">
@@ -166,64 +160,14 @@
                 <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
                     <div class="bg-gray-50 border-b border-gray-200">
                         <div class="px-3 py-3 md:px-6 md:py-4">
-                            <!-- Mobile Header -->
-                            <div class="block md:hidden">
-                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">
-                                    <i class="fas fa-chair text-orange-500 mr-1"></i>Mesas do Salão
-                                </h3>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <div class="flex flex-col items-center space-y-1">
-                                        <div class="flex items-center space-x-1">
-                                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                            <span class="text-xs text-gray-600">Livre</span>
-                                        </div>
-                                        <span class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">5</span>
-                                    </div>
-                                    <div class="flex flex-col items-center space-y-1">
-                                        <div class="flex items-center space-x-1">
-                                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-                                            <span class="text-xs text-gray-600">Ocupada</span>
-                                        </div>
-                                        <span class="bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">2</span>
-                                    </div>
-                                    <div class="flex flex-col items-center space-y-1">
-                                        <div class="flex items-center space-x-1">
-                                            <div class="w-2 h-2 bg-amber-500 rounded-full"></div>
-                                            <span class="text-xs text-gray-600">Reservada</span>
-                                        </div>
-                                        <span class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">1</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Desktop Header -->
-                            <div class="hidden md:flex items-center justify-between">
-                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                    <i class="fas fa-chair text-orange-500 mr-2"></i>Mesas do Salão
-                                </h3>
-                                <div class="flex items-center space-x-6">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                        <span class="text-sm text-gray-600">Livre</span>
-                                        <span class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">5</span>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                        <span class="text-sm text-gray-600">Ocupada</span>
-                                        <span class="bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">2</span>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-3 h-3 bg-amber-500 rounded-full"></div>
-                                        <span class="text-sm text-gray-600">Reservada</span>
-                                        <span class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">1</span>
-                                    </div>
-                                </div>
-                            </div>
+                            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                <i class="fas fa-chair text-orange-500 mr-2"></i>Mesas do Salão
+                            </h3>
                         </div>
                     </div>
                     
                     <div class="p-3 md:p-6">
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4" id="mesas-grid">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4" id="mesas-grid">
                             <!-- Mesas serão inseridas dinamicamente -->
                         </div>
                     </div>
@@ -235,30 +179,14 @@
                 <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
                     <div class="bg-gray-50 border-b border-gray-200">
                         <div class="px-3 py-3 md:px-6 md:py-4">
-                            <!-- Mobile Header -->
-                            <div class="block md:hidden space-y-3">
-                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                    <i class="fas fa-receipt text-orange-500 mr-1"></i>Comandas Ativas
-                                </h3>
-                                <button onclick="novaComandaAvulsa()" class="w-full bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                    <i class="fas fa-plus mr-2"></i>Nova Comanda
-                                </button>
-                            </div>
-                            
-                            <!-- Desktop Header -->
-                            <div class="hidden md:flex items-center justify-between">
-                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                    <i class="fas fa-receipt text-orange-500 mr-2"></i>Comandas Ativas
-                                </h3>
-                                <button onclick="novaComandaAvulsa()" class="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                    <i class="fas fa-plus mr-2"></i>Nova Comanda
-                                </button>
-                            </div>
+                            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                <i class="fas fa-receipt text-orange-500 mr-2"></i>Comandas Ativas
+                            </h3>
                         </div>
                     </div>
                     
                     <div class="p-3 md:p-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4" id="comandas-grid">
+                        <div class="space-y-3 md:space-y-4" id="comandas-grid">
                             <!-- Comandas serão inseridas dinamicamente -->
                         </div>
                     </div>
@@ -403,18 +331,19 @@
     </div>
 
     <!-- Modal da Mesa -->
-    <div id="mesa-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden p-2">
-        <div class="bg-white rounded-lg p-4 md:p-6 w-full max-w-md mx-2 md:mx-4">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center space-x-2 md:space-x-3">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-800">Mesa <span id="mesa-number">1</span></h3>
-                    <span id="mesa-status" class="text-xs md:text-sm font-semibold px-2 md:px-3 py-1 rounded-full bg-green-100 text-green-700">Livre</span>
+    <div id="mesa-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden p-2 md:p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] md:max-h-[85vh] flex flex-col mx-2 md:mx-0">
+            <div class="flex items-center justify-between p-3 md:p-4 border-b border-gray-100 flex-shrink-0">
+                <div class="flex items-center space-x-2">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-900">Mesa <span id="mesa-number">1</span></h3>
+                    <span id="mesa-status" class="text-xs font-medium px-2 py-1 rounded bg-green-100 text-green-700">Livre</span>
                 </div>
-                <button onclick="closeMesaModal()" class="text-gray-400 hover:text-gray-600 p-1">
-                    <i class="fas fa-times text-lg md:text-xl"></i>
+                <button onclick="closeMesaModal()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                    <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
-            <div id="mesa-content">
+            
+            <div id="mesa-content" class="flex-1 overflow-y-auto p-3 md:p-4">
                 <!-- Conteúdo dinâmico será inserido aqui -->
             </div>
         </div>
@@ -712,11 +641,30 @@
 
         let mesasData = {
             1: { status: 'livre', lugares: 4 },
-            2: { status: 'ocupada', lugares: 4, pessoas: 4, tempo: '45min', comanda: 'C002' },
+            2: { 
+                status: 'ocupada', 
+                lugares: 4, 
+                tempo: '45min',
+                atendente: 'Carlos Silva',
+                taxaGarcom: true,
+                clientes: [
+                    { id: 1, nome: 'João Santos', pedidos: ['Hambúrguer', 'Refrigerante'], total: 28.90, pago: false, taxaServico: true },
+                    { id: 2, nome: 'Maria Santos', pedidos: ['Pizza Individual'], total: 22.00, pago: false, taxaServico: true }
+                ]
+            },
             3: { status: 'livre', lugares: 2 },
             4: { status: 'reservada', lugares: 6, cliente: 'João Silva', pessoas: 4, horario: '16:00' },
             5: { status: 'livre', lugares: 8 },
-            6: { status: 'ocupada', lugares: 2, pessoas: 2, tempo: '1h20min', comanda: 'C006' },
+            6: { 
+                status: 'ocupada', 
+                lugares: 2, 
+                tempo: '1h20min',
+                atendente: 'Ana Costa',
+                taxaGarcom: false,
+                clientes: [
+                    { id: 1, nome: 'Pedro Lima', pedidos: ['Sanduíche', 'Suco'], total: 22.90, pago: true, taxaServico: false }
+                ]
+            },
             7: { status: 'livre', lugares: 2 },
             8: { status: 'livre', lugares: 6 }
         };
@@ -894,83 +842,56 @@
                 return;
             }
             
-            container.innerHTML = pedidosBalcaoData.map(pedido => {
+            container.innerHTML = pedidosBalcaoData.map((pedido, index) => {
                 return `
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 md:p-4 hover:bg-gray-100 transition-colors cursor-pointer" onclick="openPedidoBalcaoModal('${pedido.id}')">
-                        <!-- Mobile Layout -->
-                        <div class="block md:hidden">
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-base font-semibold text-gray-900">#${pedido.id}</span>
-                                    <span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'retirada' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}">
-                                        ${pedido.tipo === 'retirada' ? 'Retirada' : 'Local'}
-                                    </span>
+                    <div class="${index > 0 ? 'border-t border-gray-200 pt-3 md:pt-4' : ''}">
+                        <div class="hover:bg-gray-50 transition-colors cursor-pointer rounded-lg p-3" onclick="openPedidoBalcaoModal('${pedido.id}')">
+                            <!-- Mobile Layout -->
+                            <div class="block md:hidden">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">${pedido.hora}</div>
+                                        <div class="text-xs text-green-600 font-medium">Aguardando ${pedido.tempoEspera}</div>
+                                    </div>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-xs text-gray-500">${pedido.hora}</div>
-                                    <div class="text-xs text-green-600 font-medium">Aguardando ${pedido.tempoEspera}</div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
-                                    <i class="fas fa-check-circle mr-1"></i>Pronto
-                                </span>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <p class="text-sm font-medium text-gray-900">${pedido.cliente}</p>
-                                <p class="text-xs text-gray-600 mt-1">${pedido.itens.join(', ')}</p>
-                            </div>
-                            
-                            <div class="flex justify-between items-center">
-                                <span class="text-base font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                ${pedido.tipo === 'retirada' ? 
-                                    `<button onclick="event.stopPropagation(); entregarPedidoBalcao('${pedido.id}')" class="bg-orange-500 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-orange-600 transition-colors">
-                                        <i class="fas fa-hand-holding mr-1"></i>Entregar
-                                    </button>` :
-                                    `<button onclick="event.stopPropagation(); vincularPedidoBalcao('${pedido.id}')" class="bg-purple-500 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-purple-600 transition-colors">
-                                        <i class="fas fa-link mr-1"></i>Vincular
-                                    </button>`
-                                }
-                            </div>
-                        </div>
-                        
-                        <!-- Desktop Layout -->
-                        <div class="hidden md:block">
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="flex items-center space-x-3">
-                                    <span class="text-lg font-semibold text-gray-900">#${pedido.id}</span>
-                                    <span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'retirada' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}">
-                                        ${pedido.tipo === 'retirada' ? 'Retirada' : 'Local'}
-                                    </span>
-                                    <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
-                                        <i class="fas fa-check-circle mr-1"></i>Pronto
-                                    </span>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-sm text-gray-500">${pedido.hora}</div>
-                                    <div class="text-sm text-green-600 font-medium">Aguardando ${pedido.tempoEspera}</div>
+                                <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
+                                <p class="text-xs text-gray-600 mb-3">${pedido.itens.join(', ')}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
+                                    ${pedido.tipo === 'retirada' ? 
+                                        `<button onclick="event.stopPropagation(); entregarPedidoBalcao('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                            Entregar
+                                        </button>` :
+                                        `<button onclick="event.stopPropagation(); vincularPedidoBalcao('${pedido.id}')" class="text-xs bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 transition-colors">
+                                            Vincular
+                                        </button>`
+                                    }
                                 </div>
                             </div>
                             
-                            <div class="flex justify-between items-center mb-3">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">${pedido.cliente}</p>
-                                    <p class="text-xs text-gray-600">${pedido.itens.join(', ')}</p>
+                            <!-- Desktop Layout -->
+                            <div class="hidden md:block">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">${pedido.hora}</div>
+                                        <div class="text-xs text-green-600 font-medium">Aguardando ${pedido.tempoEspera}</div>
+                                    </div>
                                 </div>
-                                <span class="text-lg font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                            </div>
-                            
-                            <div class="flex justify-end">
-                                ${pedido.tipo === 'retirada' ? 
-                                    `<button onclick="event.stopPropagation(); entregarPedidoBalcao('${pedido.id}')" class="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                        <i class="fas fa-hand-holding mr-1"></i>Entregar
-                                    </button>` :
-                                    `<button onclick="event.stopPropagation(); vincularPedidoBalcao('${pedido.id}')" class="bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-600 transition-colors">
-                                        <i class="fas fa-link mr-1"></i>Vincular
-                                    </button>`
-                                }
+                                <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
+                                <p class="text-xs text-gray-600 mb-3">${pedido.itens.join(', ')}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
+                                    ${pedido.tipo === 'retirada' ? 
+                                        `<button onclick="event.stopPropagation(); entregarPedidoBalcao('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                            Entregar
+                                        </button>` :
+                                        `<button onclick="event.stopPropagation(); vincularPedidoBalcao('${pedido.id}')" class="text-xs bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 transition-colors">
+                                            Vincular
+                                        </button>`
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1010,7 +931,7 @@
         function atualizarPainelMesas() {
             const mesasContainer = document.getElementById('mesas-grid');
             
-            mesasContainer.innerHTML = Object.keys(mesasData).map(numero => {
+            mesasContainer.innerHTML = Object.keys(mesasData).map((numero) => {
                 const mesa = mesasData[numero];
                 const statusColors = {
                     livre: { bg: 'green', icon: 'chair' },
@@ -1020,34 +941,25 @@
                 const color = statusColors[mesa.status];
                 
                 return `
-                    <div onclick="openMesaModal(${numero}, '${mesa.status}')" class="bg-white border-2 border-${color.bg}-200 rounded-lg p-4 cursor-pointer hover:bg-${color.bg}-50 hover:border-${color.bg}-300 transition-all duration-200 hover-lift">
+                    <div onclick="openMesaModal(${numero}, '${mesa.status}')" class="bg-white border border-gray-200 rounded-lg p-4 hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer">
                         <div class="text-center">
                             <div class="w-12 h-12 bg-${color.bg}-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                                <i class="fas fa-${color.icon} text-${color.bg}-600"></i>
+                                <i class="fas fa-${color.icon} text-${color.bg}-600 text-lg"></i>
                             </div>
-                            <div class="text-sm font-semibold text-gray-900 mb-1">Mesa ${numero.toString().padStart(2, '0')}</div>
-                            <div class="text-xs text-gray-500 mb-1">${mesa.status === 'ocupada' ? `${mesa.pessoas} pessoas` : mesa.status === 'reservada' ? `${mesa.pessoas} pessoas` : `${mesa.lugares} lugares`}</div>
-                            ${mesa.tempo ? `<div class="text-xs text-${color.bg}-600 font-medium mb-2">${mesa.tempo || mesa.horario}</div>` : '<div class="mb-2"></div>'}
-                            <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-${color.bg}-100 text-${color.bg}-700">${mesa.status.charAt(0).toUpperCase() + mesa.status.slice(1)}</span>
+                            <h4 class="text-sm font-semibold text-gray-900 mb-1">Mesa ${numero.toString().padStart(2, '0')}</h4>
+                            <div class="text-xs text-gray-500 mb-2">
+                                ${mesa.status === 'ocupada' ? `${mesa.clientes ? mesa.clientes.length : 0}/${mesa.lugares} pessoas` : mesa.status === 'reservada' ? `${mesa.pessoas} pessoas` : `${mesa.lugares} lugares`}
+                            </div>
+                            <div class="flex items-center justify-center space-x-1 mb-2">
+                                <div class="w-2 h-2 bg-${color.bg}-500 rounded-full"></div>
+                                <span class="text-xs text-gray-600">${mesa.status.charAt(0).toUpperCase() + mesa.status.slice(1)}</span>
+                            </div>
+                            ${mesa.tempo || mesa.horario ? `<div class="text-xs text-${color.bg}-600 font-medium">${mesa.tempo || mesa.horario}</div>` : ''}
+                            ${mesa.atendente ? `<div class="text-xs text-gray-500 mt-1">${mesa.atendente}</div>` : ''}
                         </div>
                     </div>
                 `;
             }).join('');
-
-            // Atualizar contadores
-            const livres = Object.values(mesasData).filter(m => m.status === 'livre').length;
-            const ocupadas = Object.values(mesasData).filter(m => m.status === 'ocupada').length;
-            const reservadas = Object.values(mesasData).filter(m => m.status === 'reservada').length;
-            
-            const mesasPanel = document.getElementById('mesas-panel');
-            if (mesasPanel) {
-                const contadores = mesasPanel.querySelectorAll('.flex.items-center.space-x-6 > div span');
-                if (contadores.length >= 3) {
-                    contadores[0].textContent = livres;
-                    contadores[1].textContent = ocupadas;
-                    contadores[2].textContent = reservadas;
-                }
-            }
         }
 
         // Atualização dinâmica das comandas
@@ -1056,30 +968,30 @@
             const comandasAtivas = Object.keys(comandasData).filter(id => comandasData[id].status === 'ativa' || comandasData[id].status === 'pendente');
             
             if (comandasContainer) {
-                comandasContainer.innerHTML = comandasAtivas.map(id => {
+                comandasContainer.innerHTML = comandasAtivas.map((id, index) => {
                     const comanda = comandasData[id];
                     const color = comanda.status === 'ativa' ? 'blue' : 'amber';
                     
                     return `
-                        <div onclick="openComandaAvulsaModal('${id}', '${comanda.status}')" class="bg-white border border-${color}-200 rounded-lg p-4 cursor-pointer hover:bg-${color}-50 hover:border-${color}-300 transition-all duration-200 hover-lift">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 bg-${color}-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-${comanda.status === 'ativa' ? 'receipt' : 'clock'} text-${color}-600"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-semibold text-gray-900">#${id}</div>
+                        <div class="${index > 0 ? 'border-t border-gray-200 pt-3 md:pt-4' : ''}">
+                            <div onclick="openComandaAvulsaModal('${id}', '${comanda.status}')" class="hover:bg-gray-50 transition-colors cursor-pointer rounded-lg p-3">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-sm font-semibold text-gray-900">#${id}</span>
+                                    <div class="text-right">
                                         <div class="text-xs text-gray-500">${comanda.cliente}</div>
+                                        <div class="text-xs text-${color}-600 font-medium">${comanda.tempo}</div>
                                     </div>
                                 </div>
-                                <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-${color}-100 text-${color}-700">${comanda.status === 'ativa' ? 'Ativa' : 'Pendente'}</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="text-right">
-                                    <div class="text-lg font-bold text-gray-900">R$ ${comanda.total.toFixed(2)}</div>
-                                    <div class="text-xs text-${color}-600 font-medium">${comanda.tempo}</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-2 h-2 bg-${color}-500 rounded-full"></div>
+                                        <span class="text-xs text-gray-600">${comanda.status === 'ativa' ? 'Ativa' : 'Pendente'}</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-bold text-gray-900">R$ ${comanda.total.toFixed(2)}</div>
+                                        <div class="text-xs text-gray-500">${comanda.itens} ${comanda.itens === 1 ? 'item' : 'itens'}</div>
+                                    </div>
                                 </div>
-                                <div class="text-xs text-gray-500">${comanda.itens} ${comanda.itens === 1 ? 'item' : 'itens'}</div>
                             </div>
                         </div>
                     `;
@@ -1095,65 +1007,222 @@
             const mesaContent = document.getElementById('mesa-content');
             
             mesaNumber.textContent = numero;
-            mesaStatus.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            mesaStatus.style.display = 'none'; // Ocultar o status do cabeçalho
             
-            mesaStatus.className = 'text-sm font-semibold px-3 py-1 rounded-full';
             if (status === 'livre') {
-                mesaStatus.classList.add('bg-green-100', 'text-green-700');
                 mesaContent.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="bg-green-50 rounded-lg p-3 text-center">
-                            <div class="text-sm text-green-700">Esta mesa está livre e pronta para uso</div>
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <span class="text-sm font-medium text-green-700">Livre</span>
+                            <span class="text-sm text-gray-500">-</span>
                         </div>
-                        <div class="border-t pt-4">
-                            <div class="flex space-x-3">
-                                <button onclick="reservarMesa(${numero})" class="w-24 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
-                                    Reservar
-                                </button>
-                                <button onclick="ocuparMesa(${numero})" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
-                                    Ocupar Mesa
-                                </button>
+                        
+                        <div class="text-center py-4">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-chair text-green-600 text-xl"></i>
                             </div>
+                            <p class="text-sm text-gray-600">Mesa disponível para ocupação</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Lugares</span>
+                                <div class="flex items-center space-x-3">
+                                    <button onclick="adjustLugares(${numero}, -1)" class="w-8 h-8 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                        <i class="fas fa-minus text-xs text-gray-600"></i>
+                                    </button>
+                                    <span id="lugares-${numero}" class="text-sm font-medium text-gray-900 w-6 text-center">${mesasData[numero].lugares}</span>
+                                    <button onclick="adjustLugares(${numero}, 1)" class="w-8 h-8 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                        <i class="fas fa-plus text-xs text-gray-600"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="reservarMesa(${numero})" class="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                                Reservar
+                            </button>
+                            <button onclick="ocuparMesa(${numero})" class="flex-1 bg-green-500 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+                                Ocupar
+                            </button>
                         </div>
                     </div>
                 `;
             } else if (status === 'ocupada') {
-                mesaStatus.classList.add('bg-red-100', 'text-red-700');
+                const mesa = mesasData[numero];
+                const totalMesa = mesa.clientes ? mesa.clientes.reduce((sum, cliente) => sum + cliente.total, 0) : 0;
+                const totalComTaxa = mesa.taxaGarcom ? totalMesa * 1.1 : totalMesa;
+                
                 mesaContent.innerHTML = `
                     <div class="space-y-4">
-                        <div class="bg-red-50 rounded-lg p-3">
-                            <div class="text-sm text-red-700 mb-2">Mesa ocupada há ${numero === 2 ? '45min' : '1h20min'}</div>
-                            <div class="text-xs text-gray-600">${numero === 2 ? '4' : '2'} pessoas • Comanda #C00${numero}</div>
-                        </div>
-                        <div class="border-t pt-4">
-                            <div class="flex space-x-3">
-                                <button onclick="liberarMesa(${numero})" class="w-20 border border-gray-300 text-gray-700 py-2 px-2 rounded text-xs font-medium hover:bg-gray-50 transition-colors">
-                                    Liberar
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Status:</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm font-medium text-red-700">Ocupada</span>
+                                    <span class="text-sm text-gray-500">${mesa.tempo}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Atendente:</span>
+                                <button onclick="trocarAtendente(${numero})" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                    ${mesa.atendente || 'Definir'}
                                 </button>
-                                <button onclick="verComanda('C00${numero}')" class="flex-1 bg-amber-500 text-white py-2 px-3 rounded text-xs font-medium hover:bg-amber-600 transition-colors">
-                                    Ver Comanda
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-sm font-medium text-gray-900">Clientes (${mesa.clientes ? mesa.clientes.length : 0}/${mesa.lugares})</span>
+                                <button onclick="adicionarCliente(${numero})" class="text-xs bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                    Adicionar
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                ${mesa.clientes ? mesa.clientes.map((cliente, index) => `
+                                    <div class="${index > 0 ? 'border-t border-gray-200 pt-4' : ''}">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <span class="text-sm font-medium text-gray-900">${cliente.nome}</span>
+                                            <span class="text-xs px-2 py-1 rounded ${cliente.pago ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">
+                                                ${cliente.pago ? 'Pago' : 'Pendente'}
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="space-y-2 mb-3">
+                                            ${cliente.pedidos && cliente.pedidos.length > 0 ? cliente.pedidos.map(pedido => {
+                                                // Simular dados de produtos com detalhes
+                                                const produtos = [
+                                                    { nome: 'Hambúrguer', preco: 22.90, quantidade: 1, detalhes: 'Sem cebola, extra bacon' },
+                                                    { nome: 'Refrigerante', preco: 6.00, quantidade: 1, detalhes: null },
+                                                    { nome: 'Pizza Individual', preco: 22.00, quantidade: 1, detalhes: 'Borda recheada, extra queijo' },
+                                                    { nome: 'Sanduíche', preco: 14.90, quantidade: 1, detalhes: 'Sem maionese' },
+                                                    { nome: 'Suco', preco: 8.00, quantidade: 1, detalhes: null },
+                                                    { nome: 'Batata Frita', preco: 12.50, quantidade: 1, detalhes: null }
+                                                ];
+                                                const produto = produtos.find(p => pedido.includes(p.nome)) || { nome: pedido, preco: 15.00, quantidade: 1, detalhes: null };
+                                                
+                                                return `
+                                                    <div class="text-xs text-gray-700">
+                                                        <div>${produto.quantidade} • ${produto.nome} • R$ ${produto.preco.toFixed(2)}</div>
+                                                        ${produto.detalhes ? `<div class="text-xs text-gray-500 ml-3 mt-1">${produto.detalhes}</div>` : ''}
+                                                    </div>
+                                                `;
+                                            }).join('') : '<div class="text-xs text-gray-500 italic">Nenhum pedido</div>'}
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between mb-3">
+                                            <span class="text-xs text-gray-600">Taxa de serviço (10%)</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" ${cliente.taxaServico !== false ? 'checked' : ''} onchange="toggleTaxaCliente(${numero}, ${cliente.id})" class="sr-only peer">
+                                                <div class="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <div class="text-sm">
+                                                <span class="text-gray-600">Subtotal: </span>
+                                                <span class="font-medium text-gray-900">R$ ${cliente.total.toFixed(2)}</span>
+                                                ${cliente.taxaServico !== false ? `<span class="text-xs text-gray-500 ml-1">(+10%: R$ ${(cliente.total * 1.1).toFixed(2)})</span>` : ''}
+                                            </div>
+                                            ${!cliente.pago ? `
+                                                <div class="relative">
+                                                    <button onclick="togglePagamentoMenu(${numero}, ${cliente.id})" id="btn-pagar-${numero}-${cliente.id}" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors">
+                                                        Pagar
+                                                    </button>
+                                                    <div id="menu-pagamento-${numero}-${cliente.id}" class="hidden absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-32">
+                                                        <button onclick="processarPagamento(${numero}, ${cliente.id}, 'pix')" class="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-t-lg">
+                                                            <i class="fas fa-qrcode mr-2"></i>PIX
+                                                        </button>
+                                                        <button onclick="processarPagamento(${numero}, ${cliente.id}, 'dinheiro')" class="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">
+                                                            <i class="fas fa-money-bill mr-2"></i>Dinheiro
+                                                        </button>
+                                                        <button onclick="processarPagamento(${numero}, ${cliente.id}, 'cartao')" class="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">
+                                                            <i class="fas fa-credit-card mr-2"></i>Cartão
+                                                        </button>
+                                                        <button onclick="processarPagamento(${numero}, ${cliente.id}, 'online')" class="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-b-lg">
+                                                            <i class="fas fa-globe mr-2"></i>Online
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                `).join('') : '<div class="text-center py-4 text-gray-500 text-sm">Nenhum cliente</div>'}
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-600">Subtotal da Mesa</span>
+                                <span class="text-sm text-gray-900">R$ ${totalMesa.toFixed(2)}</span>
+                            </div>
+                            ${mesa.clientes && mesa.clientes.some(c => c.taxaServico !== false) ? `
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-gray-500">Taxa de serviço (10%)</span>
+                                    <span class="text-xs text-gray-500">R$ ${(mesa.clientes.reduce((sum, c) => sum + (c.taxaServico !== false ? c.total * 0.1 : 0), 0)).toFixed(2)}</span>
+                                </div>
+                            ` : ''}
+                            <div class="border-t border-gray-200 pt-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-900">Total da Mesa</span>
+                                    <span class="text-lg font-bold text-orange-500">R$ ${(mesa.clientes ? mesa.clientes.reduce((sum, c) => sum + (c.taxaServico !== false ? c.total * 1.1 : c.total), 0) : 0).toFixed(2)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex space-x-3">
+                                <button onclick="editarMesa(${numero})" class="w-24 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-50">
+                                    Editar
+                                </button>
+                                <button onclick="finalizarAtendimento(${numero})" class="flex-1 bg-green-500 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-green-600">
+                                    Finalizar Atendimento
                                 </button>
                             </div>
                         </div>
                     </div>
                 `;
             } else if (status === 'reservada') {
-                mesaStatus.classList.add('bg-amber-100', 'text-amber-700');
+                const mesa = mesasData[numero];
                 mesaContent.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="bg-amber-50 rounded-lg p-3">
-                            <div class="text-sm text-amber-700 mb-2">Reservada para 16:00</div>
-                            <div class="text-xs text-gray-600">João Silva • 4 pessoas</div>
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <span class="text-sm font-medium text-amber-700">Reservada</span>
+                            <span class="text-sm text-gray-500">${mesa.horario}</span>
                         </div>
-                        <div class="border-t pt-4">
-                            <div class="flex space-x-3">
-                                <button onclick="cancelarReserva(${numero})" class="w-24 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
-                                    Cancelar
-                                </button>
-                                <button onclick="confirmarChegada(${numero})" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
-                                    Confirmar Chegada
-                                </button>
+                        
+                        <div class="text-center py-4">
+                            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-clock text-amber-600 text-xl"></i>
                             </div>
+                            <p class="text-sm text-gray-600">Aguardando chegada</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Cliente</span>
+                                <span class="text-sm font-medium text-gray-900">${mesa.cliente}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Pessoas</span>
+                                <span class="text-sm font-medium text-gray-900">${mesa.pessoas}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Lugares</span>
+                                <span class="text-sm font-medium text-gray-900">${mesa.lugares}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="cancelarReserva(${numero})" class="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-50">
+                                Cancelar
+                            </button>
+                            <button onclick="confirmarChegada(${numero})" class="flex-1 bg-green-500 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-green-600">
+                                Confirmar Chegada
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1295,13 +1364,7 @@
                         </span>
                     </div>
                     
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-3">
-                        <div class="flex items-center space-x-2">
-                            <i class="fas fa-check-circle text-green-600"></i>
-                            <span class="text-sm font-medium text-green-800">Pedido Pronto</span>
-                        </div>
-                        <p class="text-xs text-green-700 mt-1">Este pedido foi preparado pela cozinha e está aguardando ${pedido.tipo === 'retirada' ? 'retirada pelo cliente' : 'vinculação à mesa ou comanda'}.</p>
-                    </div>
+
                     
                     <div class="border-t pt-4">
                         <div class="space-y-3">
@@ -1750,19 +1813,29 @@
         }
 
         // Funções de ação das mesas
+        function adjustLugares(numero, delta) {
+            const mesa = mesasData[numero];
+            const novoLugares = Math.max(1, Math.min(12, mesa.lugares + delta));
+            mesa.lugares = novoLugares;
+            document.getElementById(`lugares-${numero}`).textContent = novoLugares;
+            atualizarPainelMesas();
+        }
+
         function ocuparMesa(numero) {
             mesasData[numero].status = 'ocupada';
-            mesasData[numero].pessoas = 2;
             mesasData[numero].tempo = '1min';
-            mesasData[numero].comanda = `C${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`;
+            mesasData[numero].atendente = 'Garçom Padrão';
+            mesasData[numero].taxaGarcom = true;
+            mesasData[numero].clientes = [];
             atualizarPainelMesas();
-            showNotification(`Mesa ${numero} ocupada! Nova comanda criada.`, 'success');
+            showNotification(`Mesa ${numero} ocupada!`, 'success');
             closeMesaModal();
         }
         
         function liberarMesa(numero) {
             if (confirm(`Tem certeza que deseja liberar a mesa ${numero}?`)) {
-                mesasData[numero] = { status: 'livre', lugares: mesasData[numero].lugares };
+                const lugares = mesasData[numero].lugares;
+                mesasData[numero] = { status: 'livre', lugares: lugares };
                 atualizarPainelMesas();
                 showNotification(`Mesa ${numero} liberada!`, 'success');
                 closeMesaModal();
@@ -1782,7 +1855,9 @@
         function confirmarChegada(numero) {
             mesasData[numero].status = 'ocupada';
             mesasData[numero].tempo = '1min';
-            mesasData[numero].comanda = `C${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`;
+            mesasData[numero].atendente = 'Garçom Padrão';
+            mesasData[numero].taxaGarcom = true;
+            mesasData[numero].clientes = [];
             delete mesasData[numero].horario;
             atualizarPainelMesas();
             showNotification(`Chegada confirmada! Mesa ${numero} agora está ocupada.`, 'success');
@@ -1791,9 +1866,445 @@
         
         function cancelarReserva(numero) {
             if (confirm(`Tem certeza que deseja cancelar a reserva da mesa ${numero}?`)) {
-                mesasData[numero] = { status: 'livre', lugares: mesasData[numero].lugares };
+                const lugares = mesasData[numero].lugares;
+                mesasData[numero] = { status: 'livre', lugares: lugares };
                 atualizarPainelMesas();
                 showNotification(`Reserva da mesa ${numero} cancelada!`, 'warning');
+                closeMesaModal();
+            }
+        }
+
+        function trocarAtendente(numero) {
+            const atendentes = ['Carlos Silva', 'Ana Costa', 'João Santos', 'Maria Oliveira', 'Pedro Lima'];
+            const atendenteAtual = mesasData[numero].atendente;
+            const outrosAtendentes = atendentes.filter(a => a !== atendenteAtual);
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-sm">
+                    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Trocar Atendente</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-2">
+                            ${outrosAtendentes.map(atendente => `
+                                <button onclick="setAtendente(${numero}, '${atendente}'); this.closest('.fixed').remove();" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded">
+                                    ${atendente}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function setAtendente(numero, atendente) {
+            mesasData[numero].atendente = atendente;
+            atualizarPainelMesas();
+            showNotification(`Atendente da mesa ${numero} alterado para ${atendente}!`, 'success');
+            openMesaModal(numero, 'ocupada');
+        }
+
+        function toggleTaxaGarcom(numero) {
+            mesasData[numero].taxaGarcom = !mesasData[numero].taxaGarcom;
+            atualizarPainelMesas();
+            showNotification(`Taxa do garçom ${mesasData[numero].taxaGarcom ? 'ativada' : 'desativada'} para mesa ${numero}!`, 'success');
+            openMesaModal(numero, 'ocupada');
+        }
+
+        function toggleTaxaCliente(numeroMesa, clienteId) {
+            const cliente = mesasData[numeroMesa].clientes.find(c => c.id === clienteId);
+            if (cliente) {
+                cliente.taxaServico = cliente.taxaServico === false ? true : false;
+                atualizarPainelMesas();
+                showNotification(`Taxa de serviço ${cliente.taxaServico !== false ? 'ativada' : 'desativada'} para ${cliente.nome}!`, 'success');
+                openMesaModal(numeroMesa, 'ocupada');
+            }
+        }
+
+        function adicionarCliente(numero) {
+            const nome = prompt('Nome do cliente:');
+            if (nome && nome.trim()) {
+                if (!mesasData[numero].clientes) {
+                    mesasData[numero].clientes = [];
+                }
+                const novoId = Math.max(0, ...mesasData[numero].clientes.map(c => c.id)) + 1;
+                mesasData[numero].clientes.push({
+                    id: novoId,
+                    nome: nome.trim(),
+                    pedidos: [],
+                    total: 0,
+                    pago: false,
+                    taxaServico: true
+                });
+                atualizarPainelMesas();
+                showNotification(`Cliente ${nome} adicionado à mesa ${numero}!`, 'success');
+                openMesaModal(numero, 'ocupada');
+            }
+        }
+
+        function editarCliente(numeroMesa, clienteId) {
+            const cliente = mesasData[numeroMesa].clientes.find(c => c.id === clienteId);
+            if (!cliente) return;
+            
+            const novoNome = prompt('Novo nome do cliente:', cliente.nome);
+            if (novoNome && novoNome.trim()) {
+                cliente.nome = novoNome.trim();
+                atualizarPainelMesas();
+                showNotification(`Nome do cliente alterado!`, 'success');
+                openMesaModal(numeroMesa, 'ocupada');
+            }
+        }
+
+        function marcarComoPago(numeroMesa, clienteId) {
+            const cliente = mesasData[numeroMesa].clientes.find(c => c.id === clienteId);
+            if (cliente) {
+                cliente.pago = true;
+                atualizarPainelMesas();
+                showNotification(`Pagamento de ${cliente.nome} marcado como pago!`, 'success');
+                openMesaModal(numeroMesa, 'ocupada');
+            }
+        }
+
+        function transferirMesa(numeroOrigem) {
+            const mesasDisponiveis = Object.keys(mesasData).filter(n => 
+                n != numeroOrigem && (mesasData[n].status === 'livre' || mesasData[n].status === 'ocupada')
+            );
+            
+            if (mesasDisponiveis.length === 0) {
+                alert('Não há mesas disponíveis para transferência.');
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-sm">
+                    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Transferir Mesa ${numeroOrigem}</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-2">
+                            ${mesasDisponiveis.map(n => `
+                                <button onclick="confirmarTransferencia(${numeroOrigem}, ${n}); this.closest('.fixed').remove();" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center justify-between">
+                                    <span>Mesa ${n.toString().padStart(2, '0')}</span>
+                                    <span class="text-xs text-gray-500">${mesasData[n].status === 'livre' ? 'Livre' : 'Ocupada'}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function confirmarTransferencia(origem, destino) {
+            if (confirm(`Confirma a transferência da Mesa ${origem} para a Mesa ${destino}?`)) {
+                const dadosOrigem = { ...mesasData[origem] };
+                const lugaresDestino = mesasData[destino].lugares;
+                
+                // Se mesa destino estiver ocupada, mesclar clientes
+                if (mesasData[destino].status === 'ocupada') {
+                    if (!mesasData[destino].clientes) mesasData[destino].clientes = [];
+                    if (dadosOrigem.clientes) {
+                        dadosOrigem.clientes.forEach(cliente => {
+                            const novoId = Math.max(0, ...mesasData[destino].clientes.map(c => c.id)) + 1;
+                            mesasData[destino].clientes.push({ ...cliente, id: novoId });
+                        });
+                    }
+                } else {
+                    // Mesa destino livre, transferir tudo
+                    mesasData[destino] = { ...dadosOrigem, lugares: lugaresDestino };
+                }
+                
+                // Liberar mesa origem
+                mesasData[origem] = { status: 'livre', lugares: dadosOrigem.lugares };
+                
+                atualizarPainelMesas();
+                showNotification(`Mesa ${origem} transferida para Mesa ${destino}!`, 'success');
+                closeMesaModal();
+            }
+        }
+
+        function adjustLugaresMesa(numero) {
+            const lugaresAtuais = mesasData[numero].lugares;
+            const novosLugares = prompt(`Quantidade de lugares (atual: ${lugaresAtuais}):`, lugaresAtuais);
+            
+            if (novosLugares && !isNaN(novosLugares)) {
+                const lugares = Math.max(1, Math.min(12, parseInt(novosLugares)));
+                mesasData[numero].lugares = lugares;
+                atualizarPainelMesas();
+                showNotification(`Mesa ${numero} agora tem ${lugares} lugares!`, 'success');
+                openMesaModal(numero, 'ocupada');
+            }
+        }
+
+        function editarMesa(numero) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+                    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Editar Mesa ${numero}</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        <!-- Tipo de Conta -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="tipoConta" value="individual" ${mesasData[numero].tipoConta !== 'conjunta' ? 'checked' : ''} class="mr-2">
+                                    <span class="text-sm text-gray-700">Individual (cada cliente paga separado)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="tipoConta" value="conjunta" ${mesasData[numero].tipoConta === 'conjunta' ? 'checked' : ''} class="mr-2">
+                                    <span class="text-sm text-gray-700">Conjunta (conta única)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Transferir Atendente -->
+                        <div class="border-t border-gray-200 pt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Transferir Atendente</label>
+                            <select id="select-atendente-${numero}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Selecione um atendente...</option>
+                                <option value="Carlos Silva" ${mesasData[numero].atendente === 'Carlos Silva' ? 'selected' : ''}>Carlos Silva</option>
+                                <option value="Ana Costa" ${mesasData[numero].atendente === 'Ana Costa' ? 'selected' : ''}>Ana Costa</option>
+                                <option value="João Santos" ${mesasData[numero].atendente === 'João Santos' ? 'selected' : ''}>João Santos</option>
+                                <option value="Maria Oliveira" ${mesasData[numero].atendente === 'Maria Oliveira' ? 'selected' : ''}>Maria Oliveira</option>
+                                <option value="Pedro Lima" ${mesasData[numero].atendente === 'Pedro Lima' ? 'selected' : ''}>Pedro Lima</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Juntar Mesas -->
+                        <div class="border-t border-gray-200 pt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Juntar com Outra Mesa</label>
+                            <select id="select-juntar-mesa-${numero}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Selecione uma mesa...</option>
+                                ${Object.keys(mesasData).filter(n => n != numero && (mesasData[n].status === 'livre' || mesasData[n].status === 'ocupada')).map(n => 
+                                    `<option value="${n}">Mesa ${n.toString().padStart(2, '0')} (${mesasData[n].status})</option>`
+                                ).join('')}
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">Os clientes serão unidos na mesa selecionada</p>
+                        </div>
+                        
+                        <!-- Transferir Pedidos -->
+                        <div class="border-t border-gray-200 pt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Transferir Pedidos para Outra Mesa</label>
+                            <select id="select-transferir-pedidos-${numero}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Selecione uma mesa...</option>
+                                ${Object.keys(mesasData).filter(n => n != numero && (mesasData[n].status === 'livre' || mesasData[n].status === 'ocupada')).map(n => 
+                                    `<option value="${n}">Mesa ${n.toString().padStart(2, '0')} (${mesasData[n].status})</option>`
+                                ).join('')}
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">Apenas os pedidos serão transferidos, clientes permanecem</p>
+                        </div>
+                        
+                        <!-- Botões de Ação -->
+                        <div class="border-t border-gray-200 pt-4 flex space-x-3">
+                            <button onclick="this.closest('.fixed').remove()" class="w-20 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50">
+                                Cancelar
+                            </button>
+                            <button onclick="salvarEdicaoMesa(${numero}); this.closest('.fixed').remove();" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-600">
+                                Salvar Alterações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function salvarEdicaoMesa(numero) {
+            const mesa = mesasData[numero];
+            
+            // Salvar tipo de conta
+            const tipoConta = document.querySelector('input[name="tipoConta"]:checked')?.value;
+            if (tipoConta) {
+                mesa.tipoConta = tipoConta;
+            }
+            
+            // Transferir atendente
+            const novoAtendente = document.getElementById(`select-atendente-${numero}`)?.value;
+            if (novoAtendente && novoAtendente !== mesa.atendente) {
+                mesa.atendente = novoAtendente;
+                showNotification(`Atendente da Mesa ${numero} alterado para ${novoAtendente}!`, 'success');
+            }
+            
+            // Juntar mesas
+            const mesaParaJuntar = document.getElementById(`select-juntar-mesa-${numero}`)?.value;
+            if (mesaParaJuntar) {
+                juntarMesas(numero, mesaParaJuntar);
+                return; // Sai da função pois a mesa foi juntada
+            }
+            
+            // Transferir pedidos
+            const mesaParaTransferir = document.getElementById(`select-transferir-pedidos-${numero}`)?.value;
+            if (mesaParaTransferir) {
+                transferirPedidosMesa(numero, mesaParaTransferir);
+            }
+            
+            atualizarPainelMesas();
+            openMesaModal(numero, 'ocupada'); // Reabrir modal atualizado
+        }
+
+        function juntarMesas(mesaOrigem, mesaDestino) {
+            const dadosOrigem = mesasData[mesaOrigem];
+            const dadosDestino = mesasData[mesaDestino];
+            
+            if (confirm(`Confirma juntar Mesa ${mesaOrigem} com Mesa ${mesaDestino}?\nTodos os clientes serão unidos.`)) {
+                // Se mesa destino estiver livre, ocupar
+                if (dadosDestino.status === 'livre') {
+                    mesasData[mesaDestino] = {
+                        ...dadosOrigem,
+                        lugares: dadosOrigem.lugares + dadosDestino.lugares
+                    };
+                } else {
+                    // Mesa destino ocupada, mesclar clientes
+                    if (!dadosDestino.clientes) dadosDestino.clientes = [];
+                    if (dadosOrigem.clientes) {
+                        dadosOrigem.clientes.forEach(cliente => {
+                            const novoId = Math.max(0, ...dadosDestino.clientes.map(c => c.id)) + 1;
+                            dadosDestino.clientes.push({ ...cliente, id: novoId });
+                        });
+                    }
+                    dadosDestino.lugares += dadosOrigem.lugares;
+                }
+                
+                // Liberar mesa origem
+                mesasData[mesaOrigem] = { status: 'livre', lugares: dadosOrigem.lugares };
+                
+                atualizarPainelMesas();
+                showNotification(`Mesa ${mesaOrigem} juntada com Mesa ${mesaDestino}!`, 'success');
+                closeMesaModal();
+            }
+        }
+
+        function transferirPedidosMesa(mesaOrigem, mesaDestino) {
+            const dadosOrigem = mesasData[mesaOrigem];
+            const dadosDestino = mesasData[mesaDestino];
+            
+            if (!dadosOrigem.clientes || dadosOrigem.clientes.length === 0) {
+                showNotification('Não há pedidos para transferir!', 'warning');
+                return;
+            }
+            
+            if (confirm(`Confirma transferir todos os pedidos da Mesa ${mesaOrigem} para Mesa ${mesaDestino}?`)) {
+                // Se mesa destino estiver livre, ocupar apenas com os pedidos
+                if (dadosDestino.status === 'livre') {
+                    mesasData[mesaDestino] = {
+                        status: 'ocupada',
+                        lugares: dadosDestino.lugares,
+                        tempo: '1min',
+                        atendente: dadosOrigem.atendente || 'Garçom Padrão',
+                        taxaGarcom: dadosOrigem.taxaGarcom || true,
+                        clientes: dadosOrigem.clientes.map(cliente => ({ ...cliente }))
+                    };
+                } else {
+                    // Mesa destino ocupada, adicionar pedidos aos clientes existentes
+                    if (!dadosDestino.clientes) dadosDestino.clientes = [];
+                    dadosOrigem.clientes.forEach(cliente => {
+                        const novoId = Math.max(0, ...dadosDestino.clientes.map(c => c.id)) + 1;
+                        dadosDestino.clientes.push({ ...cliente, id: novoId });
+                    });
+                }
+                
+                // Limpar pedidos da mesa origem (manter clientes sem pedidos)
+                dadosOrigem.clientes.forEach(cliente => {
+                    cliente.pedidos = [];
+                    cliente.total = 0;
+                    cliente.pago = false;
+                });
+                
+                atualizarPainelMesas();
+                showNotification(`Pedidos transferidos da Mesa ${mesaOrigem} para Mesa ${mesaDestino}!`, 'success');
+            }
+        }
+
+        function finalizarAtendimento(numero) {
+            const mesa = mesasData[numero];
+            const totalMesa = mesa.clientes ? mesa.clientes.reduce((sum, cliente) => sum + cliente.total, 0) : 0;
+            const totalComTaxa = mesa.taxaGarcom ? totalMesa * 1.1 : totalMesa;
+            
+            if (confirm(`Finalizar atendimento da Mesa ${numero}?\nTotal: R$ ${totalComTaxa.toFixed(2)}`)) {
+                const lugares = mesa.lugares;
+                mesasData[numero] = { status: 'livre', lugares: lugares };
+                atualizarPainelMesas();
+                showNotification(`Atendimento da Mesa ${numero} finalizado! Total: R$ ${totalComTaxa.toFixed(2)}`, 'success');
+                closeMesaModal();
+            }
+        }
+
+        function togglePagamentoMenu(numeroMesa, clienteId) {
+            const menu = document.getElementById(`menu-pagamento-${numeroMesa}-${clienteId}`);
+            const allMenus = document.querySelectorAll('[id^="menu-pagamento-"]');
+            
+            // Fechar todos os outros menus
+            allMenus.forEach(m => {
+                if (m.id !== `menu-pagamento-${numeroMesa}-${clienteId}`) {
+                    m.classList.add('hidden');
+                }
+            });
+            
+            // Toggle do menu atual
+            menu.classList.toggle('hidden');
+        }
+
+        function processarPagamento(numeroMesa, clienteId, formaPagamento) {
+            const cliente = mesasData[numeroMesa].clientes.find(c => c.id === clienteId);
+            if (cliente) {
+                cliente.pago = true;
+                cliente.formaPagamento = formaPagamento;
+                
+                const formasPagamento = {
+                    'pix': 'PIX',
+                    'dinheiro': 'Dinheiro',
+                    'cartao': 'Cartão',
+                    'online': 'Pagamento Online'
+                };
+                
+                atualizarPainelMesas();
+                showNotification(`Pagamento de ${cliente.nome} processado via ${formasPagamento[formaPagamento]}!`, 'success');
+                
+                // Fechar menu de pagamento
+                const menu = document.getElementById(`menu-pagamento-${numeroMesa}-${clienteId}`);
+                if (menu) menu.classList.add('hidden');
+                
+                // Reabrir modal para atualizar
+                openMesaModal(numeroMesa, 'ocupada');
+            }
+        }
+
+        // Fechar menus de pagamento ao clicar fora
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('[id^="btn-pagar-"]') && !event.target.closest('[id^="menu-pagamento-"]')) {
+                document.querySelectorAll('[id^="menu-pagamento-"]').forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            }
+        });
+
+        function fecharConta(numero) {
+            const mesa = mesasData[numero];
+            const totalMesa = mesa.clientes ? mesa.clientes.reduce((sum, cliente) => sum + cliente.total, 0) : 0;
+            const totalComTaxa = mesa.taxaGarcom ? totalMesa * 1.1 : totalMesa;
+            
+            if (confirm(`Fechar conta da Mesa ${numero}?\nTotal: R$ ${totalComTaxa.toFixed(2)}`)) {
+                const lugares = mesa.lugares;
+                mesasData[numero] = { status: 'livre', lugares: lugares };
+                atualizarPainelMesas();
+                showNotification(`Conta da Mesa ${numero} fechada! Total: R$ ${totalComTaxa.toFixed(2)}`, 'success');
                 closeMesaModal();
             }
         }
@@ -2083,37 +2594,57 @@
             if (!comandaData) return;
             
             const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-2 md:p-4';
             modal.innerHTML = `
-                <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-                    <div class="flex items-center justify-between p-4 border-b border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-900">Comanda ${comanda}</h3>
-                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
-                            <i class="fas fa-times"></i>
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] md:max-h-[85vh] flex flex-col mx-2 md:mx-0">
+                    <div class="flex items-center justify-between p-3 md:p-4 border-b border-gray-100 flex-shrink-0">
+                        <div class="flex items-center space-x-2">
+                            <h3 class="text-base md:text-lg font-semibold text-gray-900">Comanda ${comanda}</h3>
+                            <span class="text-xs font-medium px-2 py-1 rounded ${status === 'ativa' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'}">
+                                ${status === 'ativa' ? 'Ativa' : 'Pendente'}
+                            </span>
+                        </div>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                            <i class="fas fa-times text-lg"></i>
                         </button>
                     </div>
-                    <div class="p-4">
+                    
+                    <div class="flex-1 overflow-y-auto p-3 md:p-4">
                         <div class="space-y-4">
                             <div>
-                                <h4 class="text-sm font-medium text-gray-900">${comandaData.cliente}</h4>
-                                <p class="text-sm text-gray-500">Tempo: ${comandaData.tempo}</p>
+                                <div class="text-sm text-gray-600 mb-2">Cliente</div>
+                                <div class="text-sm font-medium text-gray-900">${comandaData.cliente}</div>
                             </div>
-                            <div class="bg-gray-50 rounded-lg p-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-semibold text-gray-900">Total</span>
-                                    <span class="font-bold text-gray-900">R$ ${comandaData.total.toFixed(2)}</span>
+                            
+                            <div class="border-t pt-4">
+                                <div class="text-sm text-gray-600 mb-2">Tempo de Mesa</div>
+                                <div class="text-sm text-gray-700">${comandaData.tempo}</div>
+                            </div>
+                            
+                            <div class="border-t pt-4">
+                                <div class="text-sm text-gray-600 mb-2">Itens</div>
+                                <div class="text-sm text-gray-700">${comandaData.itens} ${comandaData.itens === 1 ? 'item' : 'itens'} consumidos</div>
+                            </div>
+                            
+                            <div class="border-t pt-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-gray-900">Total da Comanda</span>
+                                    <span class="text-sm font-bold text-orange-500">R$ ${comandaData.total.toFixed(2)}</span>
                                 </div>
                             </div>
-                            <div class="flex space-x-3">
-                                ${status === 'ativa' ? `
-                                    <button onclick="fecharComanda('${comanda}'); this.closest('.fixed').remove();" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
-                                        Fechar Comanda
-                                    </button>
-                                ` : `
-                                    <button onclick="receberPagamento('${comanda}'); this.closest('.fixed').remove();" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-600 transition-colors">
-                                        Receber Pagamento
-                                    </button>
-                                `}
+                            
+                            <div class="border-t pt-4">
+                                <div class="flex space-x-3">
+                                    ${status === 'ativa' ? `
+                                        <button onclick="fecharComanda('${comanda}'); this.closest('.fixed').remove();" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
+                                            <i class="fas fa-check mr-2"></i>Fechar Comanda
+                                        </button>
+                                    ` : `
+                                        <button onclick="receberPagamento('${comanda}'); this.closest('.fixed').remove();" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-600 transition-colors">
+                                            <i class="fas fa-credit-card mr-2"></i>Receber Pagamento
+                                        </button>
+                                    `}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2215,5 +2746,5 @@
             }, 30000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980328f9d25164e1',t:'MTc1ODA1NTAyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9805d0bb3583e105',t:'MTc1ODA4Mjg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
