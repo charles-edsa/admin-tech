@@ -332,6 +332,8 @@
                     telefone: '5511999991234',
                     telefoneFormatado: '(11) 99999-1234',
                     total: 45.90,
+                    formaPagamento: 'Pix',
+                    statusPagamento: 'Pago',
                     itens: [
                         { nome: 'Hambúrguer Artesanal', quantidade: 2, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
                         { nome: 'Batata Frita', quantidade: 1, observacoes: ['Tamanho grande', 'Com bacon'] },
@@ -349,6 +351,8 @@
                     telefone: '5511988885678',
                     telefoneFormatado: '(11) 98888-5678',
                     total: 32.50,
+                    formaPagamento: 'Online',
+                    statusPagamento: 'Pendente',
                     itens: [
                         { nome: 'Pizza Margherita', quantidade: 1, observacoes: ['Tamanho médio', 'Borda recheada'] },
                         { nome: 'Refrigerante', quantidade: 1, observacoes: ['Guaraná 350ml'] }
@@ -367,6 +371,8 @@
                     telefone: '5511955557890',
                     telefoneFormatado: '(11) 95555-7890',
                     total: 28.90,
+                    formaPagamento: 'Dinheiro',
+                    statusPagamento: 'Pendente',
                     itens: [
                         { nome: 'Sanduíche Natural', quantidade: 1, observacoes: ['Pão integral', 'Frango desfiado', 'Sem maionese'] },
                         { nome: 'Suco de Laranja', quantidade: 1, observacoes: ['300ml', 'Sem açúcar'] }
@@ -385,6 +391,8 @@
                     telefone: '5511977779012',
                     telefoneFormatado: '(11) 97777-9012',
                     total: 38.50,
+                    formaPagamento: 'Maquininha',
+                    statusPagamento: 'Pago',
                     itens: [
                         { nome: 'Pizza Calabresa', quantidade: 1, observacoes: ['Tamanho médio', 'Extra queijo', 'Cebola roxa'] },
                         { nome: 'Refrigerante', quantidade: 1, observacoes: ['Pepsi 350ml'] }
@@ -403,6 +411,8 @@
                     telefone: '5511966663456',
                     telefoneFormatado: '(11) 96666-3456',
                     total: 52.00,
+                    formaPagamento: 'Pix',
+                    statusPagamento: 'Pago',
                     itens: [
                         { nome: 'Hambúrguer Gourmet', quantidade: 2, observacoes: ['Carne angus 200g', 'Queijo brie', 'Rúcula'] },
                         { nome: 'Onion Rings', quantidade: 1, observacoes: ['Porção grande', 'Molho barbecue'] },
@@ -422,6 +432,8 @@
                     telefone: '5511944445555',
                     telefoneFormatado: '(11) 94444-5555',
                     total: 35.90,
+                    formaPagamento: 'Online',
+                    statusPagamento: 'Pago',
                     itens: [
                         { nome: 'Pizza Margherita', quantidade: 1, observacoes: ['Tamanho médio', 'Massa fina'] },
                         { nome: 'Refrigerante', quantidade: 1, observacoes: ['Sprite 350ml'] }
@@ -441,6 +453,8 @@
                     telefone: '5511911112222',
                     telefoneFormatado: '(11) 91111-2222',
                     total: 42.50,
+                    formaPagamento: 'Dinheiro',
+                    statusPagamento: 'Pendente',
                     itens: [
                         { nome: 'Pizza Calabresa', quantidade: 1, observacoes: ['Tamanho grande', 'Borda catupiry', 'Azeitona'] },
                         { nome: 'Refrigerante', quantidade: 1, observacoes: ['Fanta 350ml'] }
@@ -459,6 +473,8 @@
                     telefone: '5511922223333',
                     telefoneFormatado: '(11) 92222-3333',
                     total: 29.90,
+                    formaPagamento: 'Maquininha',
+                    statusPagamento: 'Pago',
                     itens: [
                         { nome: 'Hambúrguer Simples', quantidade: 2, observacoes: ['Pão tradicional', 'Carne 120g'] },
                         { nome: 'Batata Frita', quantidade: 1, observacoes: ['Tamanho médio'] }
@@ -611,7 +627,7 @@
                                     <div class="space-y-2">
                                         <div class="flex items-center justify-between">
                                             <span class="text-sm text-gray-600">Itens:</span>
-                                            <span class="text-sm font-medium text-gray-900">${pedido.itens.length}</span>
+                                            <span class="text-sm font-medium text-gray-900">${pedido.itens.reduce((total, item) => total + item.quantidade, 0)}</span>
                                         </div>
                                         
                                         <div class="space-y-2">
@@ -656,7 +672,19 @@
                                 </div>
                                 
                                 <!-- 4. Rodapé com Total e Botão -->
-                                <div class="border-t border-gray-200 pt-3">
+                                <div class="border-t border-gray-200 pt-3 space-y-3">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">Forma de Pagamento:</span>
+                                            <span class="text-sm font-medium text-gray-900">${pedido.formaPagamento}</span>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">Status do Pagamento:</span>
+                                            <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="flex justify-between items-center">
                                         <span class="text-lg font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
                                         <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
@@ -747,7 +775,7 @@
                                 <div class="border-t border-gray-200 pt-2">
                                     <div class="flex items-center justify-between mb-1">
                                         <span class="text-xs text-gray-600">Itens:</span>
-                                        <span class="text-xs font-medium text-gray-900">${pedido.itens.length}</span>
+                                        <span class="text-xs font-medium text-gray-900">${pedido.itens.reduce((total, item) => total + item.quantidade, 0)}</span>
                                     </div>
                                     
                                     <div class="space-y-1">
@@ -792,7 +820,19 @@
                                 </div>
                                 
                                 <!-- 4. Rodapé com Total e Botão -->
-                                <div class="border-t border-gray-200 pt-2">
+                                <div class="border-t border-gray-200 pt-2 space-y-2">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs text-gray-600">Forma de Pagamento:</span>
+                                            <span class="text-xs font-medium text-gray-900">${pedido.formaPagamento}</span>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs text-gray-600">Status do Pagamento:</span>
+                                            <span class="text-xs font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="flex justify-between items-center">
                                         <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
                                         <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-${config.color}-600 transition-colors">
@@ -905,5 +945,5 @@
             atualizarAba('pedidos'); // Carregar aba inicial
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980bb638b7b8e012',t:'MTc1ODE0NDcwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980bce7ac1fc6d7b',t:'MTc1ODE0NTY5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
