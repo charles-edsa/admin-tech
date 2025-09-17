@@ -94,74 +94,72 @@
 
         <!-- Conteúdo da Aba Pedidos -->
         <div id="content-pedidos" class="tab-content">
-            <!-- Cabeçalho com Toggle Mobile/Desktop -->
-            <div class="mb-4 md:mb-6">
-                <!-- Mobile Layout -->
-                <div class="block md:hidden">
-                    <div class="flex bg-gray-100 rounded-lg p-1 mb-4">
-                        <button onclick="switchPedidosView('balcao')" id="view-pedidos-balcao" class="pedidos-view-toggle flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm text-center">
-                            <i class="fas fa-store mr-1"></i>Balcão
-                        </button>
-                        <button onclick="switchPedidosView('delivery')" id="view-pedidos-delivery" class="pedidos-view-toggle flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-500 hover:text-gray-700 text-center">
-                            <i class="fas fa-motorcycle mr-1"></i>Delivery
-                        </button>
+            <!-- Mobile Layout -->
+            <div class="block md:hidden space-y-4">
+                <!-- Aguardando Mobile -->
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-amber-50 border-b border-amber-200 px-3 py-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-amber-700 uppercase tracking-wide">
+                                <i class="fas fa-clock text-amber-500 mr-1"></i>Aguardando
+                            </h3>
+                            <span id="contador-aguardando-mobile" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">3</span>
+                        </div>
+                    </div>
+                    <div id="coluna-aguardando-mobile" class="p-3">
+                        <!-- Conteúdo será inserido dinamicamente -->
                     </div>
                 </div>
-                
-                <!-- Desktop Layout -->
-                <div class="hidden md:flex items-center justify-between">
-                    <div class="flex bg-gray-100 rounded-lg p-1">
-                        <button onclick="switchPedidosView('balcao')" id="view-pedidos-balcao-desktop" class="pedidos-view-toggle px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm">
-                            <i class="fas fa-store mr-2"></i>Balcão
-                        </button>
-                        <button onclick="switchPedidosView('delivery')" id="view-pedidos-delivery-desktop" class="pedidos-view-toggle px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-motorcycle mr-2"></i>Delivery
-                        </button>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <div class="text-sm text-gray-600">
-                            <span id="total-pedidos-count">8 pedidos ativos</span>
+
+                <!-- Prontos Mobile -->
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-green-50 border-b border-green-200 px-3 py-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-green-700 uppercase tracking-wide">
+                                <i class="fas fa-check-circle text-green-500 mr-1"></i>Prontos
+                            </h3>
+                            <span id="contador-prontos-mobile" class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">2</span>
                         </div>
+                    </div>
+                    <div id="coluna-prontos-mobile" class="p-3">
+                        <!-- Conteúdo será inserido dinamicamente -->
                     </div>
                 </div>
             </div>
 
-            <!-- Painel Balcão -->
-            <div id="pedidos-balcao-panel" class="pedidos-panel">
+            <!-- Desktop Layout -->
+            <div id="pedidos-panel" class="hidden md:block">
                 <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="bg-gray-50 border-b border-gray-200 px-3 py-3 md:px-6 md:py-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-base md:text-lg font-semibold text-gray-900">
-                                <i class="fas fa-store text-orange-500 mr-1 md:mr-2"></i>Pedidos Balcão
-                            </h3>
-                            <span id="contador-balcao" class="bg-orange-100 text-orange-700 text-xs md:text-sm font-medium px-2 md:px-3 py-1 rounded">4 pedidos</span>
+                    <!-- Cabeçalho das Colunas -->
+                    <div class="grid grid-cols-2 bg-gray-50 border-b border-gray-200">
+                        <div class="px-6 py-4 border-r border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-clock text-amber-500 mr-2"></i>Aguardando
+                                </h3>
+                                <span id="contador-aguardando" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">3</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>Prontos
+                                </h3>
+                                <span id="contador-prontos" class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">2</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="p-3 md:p-6">
-                        <div id="pedidos-balcao" class="space-y-3 md:space-y-4">
-                            <!-- Pedidos serão inseridos dinamicamente -->
+                    <!-- Conteúdo das Colunas -->
+                    <div class="grid grid-cols-2 min-h-96">
+                        <!-- Coluna Aguardando -->
+                        <div id="coluna-aguardando" class="border-r border-gray-200 bg-white">
+                            <!-- Conteúdo será inserido dinamicamente -->
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Painel Delivery -->
-            <div id="pedidos-delivery-panel" class="pedidos-panel hidden">
-                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="bg-gray-50 border-b border-gray-200 px-3 py-3 md:px-6 md:py-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-base md:text-lg font-semibold text-gray-900">
-                                <i class="fas fa-motorcycle text-blue-500 mr-1 md:mr-2"></i>Pedidos Delivery
-                            </h3>
-                            <span id="contador-delivery" class="bg-blue-100 text-blue-700 text-xs md:text-sm font-medium px-2 md:px-3 py-1 rounded">4 pedidos</span>
-                        </div>
-                    </div>
-                    
-                    <div class="p-3 md:p-6">
-                        <div id="pedidos-delivery" class="space-y-3 md:space-y-4">
-                            <!-- Pedidos serão inseridos dinamicamente -->
+                        <!-- Coluna Prontos -->
+                        <div id="coluna-prontos" class="bg-white">
+                            <!-- Conteúdo será inserido dinamicamente -->
                         </div>
                     </div>
                 </div>
@@ -649,23 +647,65 @@
     </div>
 
     <script>
+        // Sistema de geração de IDs universais
+        let contadorPedidos = {
+            delivery: 1,    // D001, D002, D003...
+            balcao: 1,      // B001, B002, B003...
+            mesa: 1,        // M001, M002, M003...
+            comanda: 1      // C001, C002, C003...
+        };
+
+        function gerarIdPedido(tipo, categoria = null) {
+            let prefixo = '';
+            let contador = 0;
+            
+            if (tipo === 'delivery') {
+                prefixo = 'D';
+                contador = contadorPedidos.delivery++;
+            } else if (tipo === 'balcao') {
+                prefixo = 'B';
+                contador = contadorPedidos.balcao++;
+            } else if (tipo === 'mesa') {
+                prefixo = 'M';
+                contador = contadorPedidos.mesa++;
+            } else if (tipo === 'comanda') {
+                prefixo = 'C';
+                contador = contadorPedidos.comanda++;
+            }
+            
+            return `${prefixo}${contador.toString().padStart(3, '0')}`;
+        }
+
         // Estado global do sistema - Fluxo contínuo de pedidos
         let pedidosData = {
             novos: [
-                { id: '001', cliente: 'João Silva', telefone: '(11) 99999-1234', total: 45.90, itens: ['2x Hambúrguer', '1x Batata Frita'], tempo: '5min', hora: '10:30', tipo: 'delivery', endereco: 'Rua das Flores, 123 - Centro', distancia: '1.2 km' },
-                { id: '002', cliente: 'Maria Santos', telefone: '(11) 98888-5678', total: 32.00, itens: ['1x Pizza Margherita'], tempo: '2min', hora: '10:45', tipo: 'balcao' },
-                { id: '025', cliente: 'Roberto Lima', telefone: '(11) 97777-9012', total: 18.50, itens: ['1x Açaí 500ml', '1x Vitamina'], tempo: '1min', hora: '11:05', tipo: 'delivery', endereco: 'Rua Augusta, 789 - Consolação', distancia: '0.8 km' }
+                { id: 'D001', cliente: 'João Silva', telefone: '(11) 99999-1234', total: 45.90, itens: ['2x Hambúrguer', '1x Batata Frita'], tempo: '5min', hora: '10:30', tipo: 'delivery', endereco: 'Rua das Flores, 123 - Centro', distancia: '1.2 km' },
+                { id: 'B001', cliente: 'Maria Santos', telefone: '(11) 98888-5678', total: 32.00, itens: ['1x Pizza Margherita'], tempo: '2min', hora: '10:45', tipo: 'balcao' },
+                { id: 'D002', cliente: 'Roberto Lima', telefone: '(11) 97777-9012', total: 18.50, itens: ['1x Açaí 500ml', '1x Vitamina'], tempo: '1min', hora: '11:05', tipo: 'delivery', endereco: 'Rua Augusta, 789 - Consolação', distancia: '0.8 km' }
             ],
             preparo: [
-                { id: '003', cliente: 'Carlos Oliveira', telefone: '(11) 96666-3456', total: 28.50, itens: ['3x Pastel', '1x Refrigerante'], tempo: '25min', hora: '10:15', tipo: 'balcao' },
-                { id: '026', cliente: 'Fernanda Costa', telefone: '(11) 95555-7890', total: 54.00, itens: ['2x Pizza Individual', '2x Refrigerante'], tempo: '15min', hora: '10:50', tipo: 'delivery', endereco: 'Rua Oscar Freire, 321 - Jardins', distancia: '3.5 km' }
+                { id: 'B002', cliente: 'Carlos Oliveira', telefone: '(11) 96666-3456', total: 28.50, itens: ['3x Pastel', '1x Refrigerante'], tempo: '25min', hora: '10:15', tipo: 'balcao' },
+                { id: 'D003', cliente: 'Fernanda Costa', telefone: '(11) 95555-7890', total: 54.00, itens: ['2x Pizza Individual', '2x Refrigerante'], tempo: '15min', hora: '10:50', tipo: 'delivery', endereco: 'Rua Oscar Freire, 321 - Jardins', distancia: '3.5 km' }
+            ]
+        };
+
+        // Pedidos na aba Pedidos - Nova estrutura
+        let pedidosAbaData = {
+            aguardando: [
+                { id: 'D004', cliente: 'Lucas Pereira', telefone: '(11) 91234-5678', total: 38.50, itens: ['1x Pizza Calabresa', '1x Refrigerante'], tempo: '2min', hora: '11:25', tipo: 'delivery', endereco: 'Av. Brasil, 456 - Vila Nova', distancia: '2.3 km' },
+                { id: 'B003', cliente: 'Carla Santos', telefone: '(11) 98765-4321', total: 24.90, itens: ['1x Hambúrguer', '1x Batata'], tempo: '1min', hora: '11:30', tipo: 'balcao' },
+                { id: 'D005', cliente: 'Rafael Costa', telefone: '(11) 95555-1111', total: 42.00, itens: ['2x Sanduíche Natural', '2x Suco'], tempo: '3min', hora: '11:20', tipo: 'delivery', endereco: 'Rua das Palmeiras, 789 - Centro', distancia: '1.8 km' }
+            ],
+            prontos: [
+                { id: 'D006', cliente: 'Amanda Silva', telefone: '(11) 92222-7777', total: 35.90, itens: ['1x Pizza Margherita', '1x Refrigerante'], tempo: '5min', hora: '10:45', tipo: 'delivery', endereco: 'Rua dos Jardins, 321 - Bela Vista', distancia: '2.1 km', entregador: null },
+                { id: 'B004', cliente: 'Bruno Lima', telefone: '(11) 93333-8888', total: 28.50, itens: ['2x Hambúrguer'], tempo: '3min', hora: '10:50', tipo: 'balcao', entregador: null }
             ]
         };
 
         // Pedidos em entrega (aba Entregas)
         let pedidosEntregaData = [
             { 
-                id: 'E001', 
+                id: 'D007', 
                 cliente: 'Pedro Santos', 
                 telefone: '(11) 91111-2222', 
                 total: 42.50, 
@@ -678,7 +718,7 @@
                 status: 'saindo'
             },
             { 
-                id: 'E002', 
+                id: 'D008', 
                 cliente: 'Ana Lima', 
                 telefone: '(11) 92222-3333', 
                 total: 28.90, 
@@ -692,71 +732,7 @@
             }
         ];
 
-        let pedidosBalcaoData = [
-            { id: 'B001', cliente: 'Pedro Santos', telefone: '(11) 91111-2222', total: 28.90, itens: ['1x Hambúrguer', '1x Refrigerante'], tempoEspera: '3min', hora: '11:15', tipo: 'retirada' },
-            { id: 'B002', cliente: 'Ana Silva', telefone: '(11) 92222-3333', total: 42.50, itens: ['2x Pizza Individual', '1x Suco'], tempoEspera: '1min', hora: '11:20', tipo: 'local' },
-            { id: 'B003', cliente: 'Carlos Lima', telefone: '(11) 93333-4444', total: 35.00, itens: ['1x Pizza Margherita', '1x Batata'], tempoEspera: '8min', hora: '10:55', tipo: 'retirada' },
-            { id: 'B004', cliente: 'Maria Costa', telefone: '(11) 94444-5555', total: 22.90, itens: ['1x Sanduíche', '1x Suco Natural'], tempoEspera: '12min', hora: '10:45', tipo: 'local' }
-        ];
 
-        let pedidosDeliveryData = [
-            { 
-                id: 'D001', 
-                cliente: 'João Silva', 
-                telefone: '(11) 99999-1234', 
-                total: 45.90, 
-                itens: ['2x Hambúrguer', '1x Batata Frita'], 
-                tempoEspera: '25min', 
-                hora: '10:30',
-                endereco: 'Rua das Flores, 123 - Centro',
-                distancia: '1.2 km',
-                status: 'preparando',
-                entregador: null,
-                previsaoEntrega: '11:15'
-            },
-            { 
-                id: 'D002', 
-                cliente: 'Maria Santos', 
-                telefone: '(11) 98888-5678', 
-                total: 32.00, 
-                itens: ['1x Pizza Margherita'], 
-                tempoEspera: '15min', 
-                hora: '10:45',
-                endereco: 'Av. Paulista, 456 - Bela Vista',
-                distancia: '2.8 km',
-                status: 'pronto',
-                entregador: 'Carlos Moto',
-                previsaoEntrega: '11:30'
-            },
-            { 
-                id: 'D003', 
-                cliente: 'Roberto Lima', 
-                telefone: '(11) 97777-9012', 
-                total: 18.50, 
-                itens: ['1x Açaí 500ml', '1x Vitamina'], 
-                tempoEspera: '5min', 
-                hora: '11:05',
-                endereco: 'Rua Augusta, 789 - Consolação',
-                distancia: '0.8 km',
-                status: 'saiu_entrega',
-                entregador: 'Ana Bike',
-                previsaoEntrega: '11:25'
-            },
-            { 
-                id: 'D004', 
-                cliente: 'Fernanda Costa', 
-                telefone: '(11) 95555-7890', 
-                total: 54.00, 
-                itens: ['2x Pizza Individual', '2x Refrigerante'], 
-                tempoEspera: '30min', 
-                hora: '10:20',
-                endereco: 'Rua Oscar Freire, 321 - Jardins',
-                distancia: '3.5 km',
-                status: 'preparando',
-                entregador: null,
-                previsaoEntrega: '11:45'
-            }
-        ];
 
         let mesasData = {
             1: { status: 'livre', lugares: 4 },
@@ -791,9 +767,15 @@
         let comandasData = {
             'C001': { cliente: 'João Silva', total: 34.50, tempo: '25min', status: 'ativa', itens: 2 },
             'C002': { cliente: 'Maria Santos', total: 18.90, tempo: '12min', status: 'ativa', itens: 1 },
-            'C004': { cliente: 'Carlos Lima', total: 67.20, tempo: 'Aguardando', status: 'pendente', itens: 4 },
-            'C006': { cliente: 'Ana Costa', total: 45.30, tempo: '1h20min', status: 'ativa', itens: 3 }
+            'C003': { cliente: 'Carlos Lima', total: 67.20, tempo: 'Aguardando', status: 'pendente', itens: 4 },
+            'C004': { cliente: 'Ana Costa', total: 45.30, tempo: '1h20min', status: 'ativa', itens: 3 }
         };
+
+        // Atualizar contadores baseado nos dados existentes
+        contadorPedidos.delivery = 9;  // Próximo será D009
+        contadorPedidos.balcao = 5;    // Próximo será B005
+        contadorPedidos.mesa = 1;      // Próximo será M001
+        contadorPedidos.comanda = 5;   // Próximo será C005
 
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
@@ -955,154 +937,145 @@
             });
         }
 
-        // Atualização dinâmica dos pedidos do Balcão
-        function atualizarPainelBalcao() {
-            const container = document.getElementById('pedidos-balcao');
-            const contador = document.getElementById('contador-balcao');
-            
-            // Atualizar contador
-            contador.textContent = `${pedidosBalcaoData.length} ${pedidosBalcaoData.length === 1 ? 'pedido' : 'pedidos'}`;
-            
-            if (pedidosBalcaoData.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-gray-400">
-                        <i class="fas fa-store text-3xl mb-3"></i>
-                        <p class="text-sm">Nenhum pedido no balcão</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = pedidosBalcaoData.map((pedido, index) => {
-                return `
-                    <div class="${index > 0 ? 'border-t border-gray-200 pt-3 md:pt-4' : ''}">
-                        <div class="hover:bg-gray-50 transition-colors cursor-pointer rounded-lg p-3" onclick="openPedidoBalcaoModal('${pedido.id}')">
-                            <!-- Mobile Layout -->
-                            <div class="block md:hidden">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
-                                    <div class="text-right">
-                                        <div class="text-xs text-gray-500">${pedido.hora}</div>
-                                        <div class="text-xs text-green-600 font-medium">Aguardando ${pedido.tempoEspera}</div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
-                                <p class="text-xs text-gray-600 mb-3">${pedido.itens.join(', ')}</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                    ${pedido.tipo === 'retirada' ? 
-                                        `<button onclick="event.stopPropagation(); entregarPedidoBalcao('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
-                                            Entregar
-                                        </button>` :
-                                        `<button onclick="event.stopPropagation(); vincularPedidoBalcao('${pedido.id}')" class="text-xs bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 transition-colors">
-                                            Vincular
-                                        </button>`
-                                    }
-                                </div>
-                            </div>
-                            
-                            <!-- Desktop Layout -->
-                            <div class="hidden md:block">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
-                                    <div class="text-right">
-                                        <div class="text-xs text-gray-500">${pedido.hora}</div>
-                                        <div class="text-xs text-green-600 font-medium">Aguardando ${pedido.tempoEspera}</div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
-                                <p class="text-xs text-gray-600 mb-3">${pedido.itens.join(', ')}</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                    ${pedido.tipo === 'retirada' ? 
-                                        `<button onclick="event.stopPropagation(); entregarPedidoBalcao('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
-                                            Entregar
-                                        </button>` :
-                                        `<button onclick="event.stopPropagation(); vincularPedidoBalcao('${pedido.id}')" class="text-xs bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 transition-colors">
-                                            Vincular
-                                        </button>`
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+        // Atualização dinâmica da nova aba Pedidos
+        function atualizarPainelPedidos() {
+            const colunas = {
+                aguardando: document.getElementById('coluna-aguardando'),
+                prontos: document.getElementById('coluna-prontos')
+            };
 
-        // Atualização dinâmica dos pedidos Delivery
-        function atualizarPainelDelivery() {
-            const container = document.getElementById('pedidos-delivery');
-            const contador = document.getElementById('contador-delivery');
+            const colunasMobile = {
+                aguardando: document.getElementById('coluna-aguardando-mobile'),
+                prontos: document.getElementById('coluna-prontos-mobile')
+            };
+
+            // Atualizar contadores desktop
+            const contadorAguardando = document.getElementById('contador-aguardando');
+            const contadorProntos = document.getElementById('contador-prontos');
             
-            // Atualizar contador
-            contador.textContent = `${pedidosDeliveryData.length} ${pedidosDeliveryData.length === 1 ? 'pedido' : 'pedidos'}`;
+            if (contadorAguardando) contadorAguardando.textContent = pedidosAbaData.aguardando.length;
+            if (contadorProntos) contadorProntos.textContent = pedidosAbaData.prontos.length;
+
+            // Atualizar contadores mobile
+            const contadorAguardandoMobile = document.getElementById('contador-aguardando-mobile');
+            const contadorProntosMobile = document.getElementById('contador-prontos-mobile');
             
-            if (pedidosDeliveryData.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-gray-400">
-                        <i class="fas fa-motorcycle text-3xl mb-3"></i>
-                        <p class="text-sm">Nenhum pedido delivery</p>
+            if (contadorAguardandoMobile) contadorAguardandoMobile.textContent = pedidosAbaData.aguardando.length;
+            if (contadorProntosMobile) contadorProntosMobile.textContent = pedidosAbaData.prontos.length;
+
+            // Renderizar pedidos desktop e mobile
+            Object.keys(colunas).forEach(status => {
+                const coluna = colunas[status];
+                const colunaMobile = colunasMobile[status];
+                const pedidos = pedidosAbaData[status];
+                
+                const emptyContent = `
+                    <div class="p-6 text-center text-gray-400">
+                        <i class="fas fa-${status === 'aguardando' ? 'clock' : 'check-circle'} text-2xl mb-2"></i>
+                        <p class="text-sm">Nenhum pedido</p>
                     </div>
                 `;
-                return;
-            }
-            
-            container.innerHTML = pedidosDeliveryData.map((pedido, index) => {
-                return `
-                    <div class="${index > 0 ? 'border-t border-gray-200 pt-3 md:pt-4' : ''}">
-                        <div class="hover:bg-gray-50 transition-colors cursor-pointer rounded-lg p-3" onclick="openPedidoDeliveryModal('${pedido.id}')">
-                            <!-- Mobile Layout -->
-                            <div class="block md:hidden">
-                                <div class="flex justify-between items-start mb-2">
+
+                const emptyContentMobile = `
+                    <div class="text-center py-6 text-gray-400">
+                        <i class="fas fa-${status === 'aguardando' ? 'clock' : 'check-circle'} text-xl mb-2"></i>
+                        <p class="text-sm">Nenhum pedido</p>
+                    </div>
+                `;
+                
+                if (pedidos.length === 0) {
+                    if (coluna) coluna.innerHTML = emptyContent;
+                    if (colunaMobile) colunaMobile.innerHTML = emptyContentMobile;
+                    return;
+                }
+                
+                const pedidosHTML = pedidos.map((pedido, index) => `
+                    <div class="px-4 py-4 ${index > 0 ? 'border-t border-gray-200' : ''}">
+                        <div class="hover:bg-${status === 'aguardando' ? 'amber' : 'green'}-50 transition-colors cursor-pointer rounded-lg p-3" onclick="openPedidoAbaModal('${pedido.id}', '${status}')">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center space-x-2">
                                     <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
-                                    <div class="text-right">
-                                        <div class="text-xs text-gray-500">${pedido.hora}</div>
-                                        <div class="text-xs text-blue-600 font-medium">Aguardando</div>
-                                    </div>
+                                    ${pedido.tipo ? `<span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'delivery' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}">
+                                        <i class="fas fa-${pedido.tipo === 'delivery' ? 'motorcycle' : 'store'} mr-1"></i>${pedido.tipo === 'delivery' ? 'Delivery' : 'Balcão'}
+                                    </span>` : ''}
                                 </div>
-                                <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
-                                <p class="text-xs text-gray-600 mb-2">${pedido.itens.join(', ')}</p>
-                                <div class="flex items-center text-xs text-gray-500 mb-3">
-                                    <i class="fas fa-map-marker-alt mr-1"></i>
-                                    <span class="truncate">${pedido.endereco}</span>
-                                    <span class="ml-2 text-blue-600">${pedido.distancia}</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                    <button onclick="event.stopPropagation(); mandarParaProducao('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
-                                        Mandar p/ Produção
-                                    </button>
+                                <div class="text-right">
+                                    <div class="text-xs text-gray-500">${pedido.hora}</div>
+                                    <div class="text-xs text-${status === 'aguardando' ? 'amber' : 'green'}-600 font-medium">${pedido.tempo}</div>
                                 </div>
                             </div>
-                            
-                            <!-- Desktop Layout -->
-                            <div class="hidden md:block">
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
-                                    <div class="text-right">
-                                        <div class="text-xs text-gray-500">${pedido.hora}</div>
-                                        <div class="text-xs text-blue-600 font-medium">Aguardando</div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
-                                <p class="text-xs text-gray-600 mb-2">${pedido.itens.join(', ')}</p>
+                            <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
+                            <p class="text-xs text-gray-600 mb-2">${pedido.itens.join(', ')}</p>
+                            ${pedido.endereco && pedido.tipo === 'delivery' ? `
                                 <div class="flex items-center text-xs text-gray-500 mb-3">
                                     <i class="fas fa-map-marker-alt mr-1"></i>
                                     <span class="truncate">${pedido.endereco}</span>
-                                    <span class="ml-2 text-blue-600">${pedido.distancia}</span>
+                                    ${pedido.distancia ? `<span class="ml-2 text-blue-600">${pedido.distancia}</span>` : ''}
                                 </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                    <button onclick="event.stopPropagation(); mandarParaProducao('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
-                                        Mandar p/ Produção
-                                    </button>
-                                </div>
+                            ` : '<div class="mb-1"></div>'}
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
+                                ${status === 'aguardando' ? 
+                                    `<button onclick="event.stopPropagation(); aceitarPedidoAba('${pedido.id}')" class="text-xs bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors">
+                                        Aceitar
+                                    </button>` :
+                                    pedido.tipo === 'delivery' ?
+                                        `<button onclick="event.stopPropagation(); designarEntregador('${pedido.id}')" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors">
+                                            Designar
+                                        </button>` :
+                                        `<button onclick="event.stopPropagation(); entregarPedidoPronto('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                            Entregar
+                                        </button>`
+                                }
                             </div>
                         </div>
                     </div>
-                `;
-            }).join('');
+                `).join('');
+
+                const pedidosMobileHTML = pedidos.map(pedido => `
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 mb-3 cursor-pointer hover:bg-gray-50" onclick="openPedidoAbaModal('${pedido.id}', '${status}')">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
+                                ${pedido.tipo ? `<span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'delivery' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}">
+                                    <i class="fas fa-${pedido.tipo === 'delivery' ? 'motorcycle' : 'store'} mr-1"></i>${pedido.tipo === 'delivery' ? 'Delivery' : 'Balcão'}
+                                </span>` : ''}
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs text-gray-500">${pedido.hora}</div>
+                                <div class="text-xs text-${status === 'aguardando' ? 'amber' : 'green'}-600 font-medium">${pedido.tempo}</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 font-medium mb-1">${pedido.cliente}</p>
+                        <p class="text-xs text-gray-600 mb-2">${pedido.itens.join(', ')}</p>
+                        ${pedido.endereco && pedido.tipo === 'delivery' ? `
+                            <div class="flex items-center text-xs text-gray-500 mb-3">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                <span class="truncate">${pedido.endereco}</span>
+                                ${pedido.distancia ? `<span class="ml-2 text-blue-600">${pedido.distancia}</span>` : ''}
+                            </div>
+                        ` : '<div class="mb-1"></div>'}
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
+                            ${status === 'aguardando' ? 
+                                `<button onclick="event.stopPropagation(); aceitarPedidoAba('${pedido.id}')" class="text-xs bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors">
+                                    Aceitar
+                                </button>` :
+                                pedido.tipo === 'delivery' ?
+                                    `<button onclick="event.stopPropagation(); designarEntregador('${pedido.id}')" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors">
+                                        Designar
+                                    </button>` :
+                                    `<button onclick="event.stopPropagation(); entregarPedidoPronto('${pedido.id}')" class="text-xs bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition-colors">
+                                        Entregar
+                                    </button>`
+                            }
+                        </div>
+                    </div>
+                `).join('');
+                
+                if (coluna) coluna.innerHTML = pedidosHTML;
+                if (colunaMobile) colunaMobile.innerHTML = pedidosMobileHTML;
+            });
         }
 
         // Atualização dinâmica dos pedidos em Entrega
@@ -1159,7 +1132,7 @@
                                     <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
                                     ${pedido.status !== 'entregue' ? `
                                         <button onclick="event.stopPropagation(); confirmarEntrega('${pedido.id}')" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors">
-                                            Confirmar Entrega
+                                            Confirmar
                                         </button>
                                     ` : `
                                         <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded font-medium">
@@ -1194,7 +1167,7 @@
                                     <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
                                     ${pedido.status !== 'entregue' ? `
                                         <button onclick="event.stopPropagation(); confirmarEntrega('${pedido.id}')" class="text-xs bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors">
-                                            Confirmar Entrega
+                                            Confirmar
                                         </button>
                                     ` : `
                                         <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded font-medium">
@@ -1209,68 +1182,7 @@
             }).join('');
         }
 
-        // Função para mandar pedido delivery para produção (KDS)
-        function mandarParaProducao(numero) {
-            const pedidoIndex = pedidosDeliveryData.findIndex(p => p.id === numero);
-            if (pedidoIndex !== -1) {
-                const pedido = pedidosDeliveryData[pedidoIndex];
-                
-                // Criar pedido no KDS baseado no pedido delivery
-                const novoPedidoKDS = {
-                    id: pedido.id,
-                    cliente: pedido.cliente,
-                    telefone: pedido.telefone,
-                    total: pedido.total,
-                    itens: pedido.itens,
-                    tempo: '0min',
-                    hora: pedido.hora,
-                    tipo: 'delivery',
-                    endereco: pedido.endereco,
-                    distancia: pedido.distancia
-                };
-                
-                // Adicionar aos novos pedidos do KDS
-                pedidosData.novos.push(novoPedidoKDS);
-                
-                // Remover da lista de delivery
-                pedidosDeliveryData.splice(pedidoIndex, 1);
-                
-                // Atualizar painéis
-                atualizarPainelDelivery();
-                atualizarPainelKDS();
-                atualizarContadorTotalPedidos();
-                
-                showNotification(`Pedido #${numero} enviado para produção!`, 'success');
-            }
-        }
 
-        // Controle da visualização dos Pedidos
-        function switchPedidosView(view) {
-            document.querySelectorAll('.pedidos-view-toggle').forEach(btn => {
-                btn.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
-                btn.classList.add('text-gray-500');
-            });
-            
-            // Update both mobile and desktop toggles
-            const mobileToggle = document.getElementById(`view-pedidos-${view}`);
-            const desktopToggle = document.getElementById(`view-pedidos-${view}-desktop`);
-            
-            if (mobileToggle) {
-                mobileToggle.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
-                mobileToggle.classList.remove('text-gray-500');
-            }
-            
-            if (desktopToggle) {
-                desktopToggle.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
-                desktopToggle.classList.remove('text-gray-500');
-            }
-            
-            document.querySelectorAll('.pedidos-panel').forEach(panel => {
-                panel.classList.add('hidden');
-            });
-            
-            document.getElementById(`pedidos-${view}-panel`).classList.remove('hidden');
-        }
 
         // Controle da visualização do Salão
         function switchSalaoView(view) {
@@ -1610,156 +1522,7 @@
 
 
 
-        // Modal do Pedido do Balcão
-        function openPedidoBalcaoModal(numero) {
-            const modal = document.getElementById('pedido-modal');
-            const pedidoNumber = document.getElementById('pedido-number');
-            const pedidoContent = document.getElementById('pedido-content');
-            
-            pedidoNumber.textContent = `#${numero}`;
-            
-            const pedidosBalcao = {
-                'B001': { 
-                    cliente: 'Pedro Santos', 
-                    telefone: '(11) 91111-2222', 
-                    total: 28.90, 
-                    tipo: 'retirada',
-                    formaPagamento: 'PIX',
-                    observacoes: 'Cliente aguardando no balcão.',
-                    itens: [
-                        { quantidade: 1, nome: 'Hambúrguer', configuracao: 'Sem cebola', observacao: 'Obs.: Bem passado', preco: 22.90 },
-                        { quantidade: 1, nome: 'Refrigerante', configuracao: null, observacao: null, preco: 6.00 }
-                    ]
-                },
-                'B002': { 
-                    cliente: 'Ana Silva', 
-                    telefone: '(11) 92222-3333', 
-                    total: 42.50, 
-                    tipo: 'local',
-                    formaPagamento: 'Cartão',
-                    observacoes: 'Cliente quer sentar próximo à janela.',
-                    itens: [
-                        { quantidade: 2, nome: 'Pizza Individual', configuracao: 'Margherita e Calabresa', observacao: null, preco: 18.00 },
-                        { quantidade: 1, nome: 'Suco', configuracao: 'Laranja', observacao: 'Obs.: Sem açúcar', preco: 6.50 }
-                    ]
-                },
-                'B003': { 
-                    cliente: 'Carlos Lima', 
-                    telefone: '(11) 93333-4444', 
-                    total: 35.00, 
-                    tipo: 'retirada',
-                    formaPagamento: 'Dinheiro',
-                    observacoes: 'Troco para R$ 50,00.',
-                    itens: [
-                        { quantidade: 1, nome: 'Pizza Margherita', configuracao: 'Borda recheada', observacao: 'Obs.: Extra queijo', preco: 28.00 },
-                        { quantidade: 1, nome: 'Batata', configuracao: null, observacao: null, preco: 7.00 }
-                    ]
-                },
-                'B004': { 
-                    cliente: 'Maria Costa', 
-                    telefone: '(11) 94444-5555', 
-                    total: 22.90, 
-                    tipo: 'local',
-                    formaPagamento: 'PIX',
-                    observacoes: 'Cliente prefere mesa no fundo.',
-                    itens: [
-                        { quantidade: 1, nome: 'Sanduíche', configuracao: 'Natural de frango', observacao: 'Obs.: Sem maionese', preco: 14.90 },
-                        { quantidade: 1, nome: 'Suco Natural', configuracao: 'Laranja', observacao: null, preco: 8.00 }
-                    ]
-                }
-            };
-            
-            const pedido = pedidosBalcao[numero];
-            
-            // Todos os pedidos do balcão estão prontos, apenas aguardando retirada/vinculação
-            const botoes = pedido.tipo === 'retirada' ? 
-                `<button onclick="entregarPedidoBalcao('${numero}')" class="w-full bg-orange-500 text-white py-2 px-4 rounded font-medium hover:bg-orange-600 transition-colors">
-                    <i class="fas fa-hand-holding mr-2"></i>Entregar ao Cliente
-                </button>` :
-                `<button onclick="vincularPedidoBalcao('${numero}')" class="w-full bg-purple-500 text-white py-2 px-4 rounded font-medium hover:bg-purple-600 transition-colors">
-                    <i class="fas fa-link mr-2"></i>Vincular à Mesa/Comanda
-                </button>`;
-            
-            const telefoneFormatado = pedido.telefone.replace(/\D/g, '');
-            
-            pedidoContent.innerHTML = `
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
-                            <span class="text-gray-400">•</span>
-                            <button onclick="window.open('https://wa.me/55${telefoneFormatado}', '_blank')" class="text-sm text-green-600 hover:text-green-800 transition-colors">
-                                ${pedido.telefone}
-                            </button>
-                        </div>
-                        <span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'retirada' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}">
-                            ${pedido.tipo === 'retirada' ? 'Para Retirada' : 'Consumo Local'}
-                        </span>
-                    </div>
-                    
 
-                    
-                    <div class="border-t pt-4">
-                        <div class="space-y-3">
-                            ${pedido.itens.map(item => `
-                                <div class="flex justify-between items-start">
-                                    <div class="flex-1">
-                                        <div class="text-sm text-gray-900">${item.quantidade} • ${item.nome}</div>
-                                        ${item.configuracao ? `<div class="text-xs text-gray-500 mt-1">${item.configuracao}</div>` : ''}
-                                        ${item.observacao ? `<div class="text-xs text-gray-500 mt-1">${item.observacao}</div>` : ''}
-                                    </div>
-                                    <div class="text-sm font-medium text-gray-900 ml-3">
-                                        R$ ${(item.preco * item.quantidade).toFixed(2)}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="border-t pt-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm font-medium text-gray-900">Total</span>
-                            <span class="text-sm font-bold text-orange-500">R$ ${pedido.total.toFixed(2)}</span>
-                        </div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm text-gray-600">Forma de Pagamento</span>
-                            <span class="text-xs font-medium text-gray-700">
-                                ${pedido.formaPagamento}
-                            </span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Status do Pagamento</span>
-                            <span class="text-xs font-medium px-2 py-1 rounded bg-green-100 text-green-700">
-                                Confirmado
-                            </span>
-                        </div>
-                    </div>
-                    
-                    ${pedido.observacoes ? `
-                        <div class="border-t pt-4">
-                            <div>
-                                <span class="text-sm font-medium text-gray-900 block mb-1">Observações do Pedido</span>
-                                <div class="text-sm text-gray-700">
-                                    ${pedido.observacoes}
-                                </div>
-                            </div>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="border-t pt-4">
-                        <div class="flex space-x-3">
-                            ${botoes}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modal.classList.remove('hidden');
-        }
-
-        function closePedidoBalcaoModal() {
-            document.getElementById('pedido-modal').classList.add('hidden');
-        }
 
         // Modal do Pedido de Entrega
         function openPedidoEntregaModal(numero) {
@@ -1767,7 +1530,7 @@
             const pedidoNumber = document.getElementById('pedido-number');
             const pedidoContent = document.getElementById('pedido-content');
             
-            pedidoNumber.textContent = `#${numero}`;
+            pedidoNumber.textContent = numero;
             
             const pedido = pedidosEntregaData.find(p => p.id === numero);
             if (!pedido) return;
@@ -1841,7 +1604,7 @@
                         <div class="flex space-x-3">
                             ${pedido.status !== 'entregue' ? `
                                 <button onclick="confirmarEntrega('${numero}'); closePedidoModal();" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
-                                    <i class="fas fa-check mr-2"></i>Confirmar Entrega
+                                    <i class="fas fa-check mr-2"></i>Confirmar
                                 </button>
                             ` : `
                                 <button onclick="finalizarEntrega('${numero}'); closePedidoModal();" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-600 transition-colors">
@@ -1862,7 +1625,7 @@
             if (pedidoIndex !== -1) {
                 pedidosEntregaData[pedidoIndex].status = 'entregue';
                 atualizarPainelEntregas();
-                showNotification(`Entrega #${numero} confirmada!`, 'success');
+                showNotification(`Entrega ${numero} confirmada!`, 'success');
             }
         }
 
@@ -1872,159 +1635,11 @@
             if (pedidoIndex !== -1) {
                 pedidosEntregaData.splice(pedidoIndex, 1);
                 atualizarPainelEntregas();
-                showNotification(`Entrega #${numero} arquivada!`, 'success');
+                showNotification(`Entrega ${numero} arquivada!`, 'success');
             }
         }
 
-        // Modal do Pedido Delivery
-        function openPedidoDeliveryModal(numero) {
-            const modal = document.getElementById('pedido-modal');
-            const pedidoNumber = document.getElementById('pedido-number');
-            const pedidoContent = document.getElementById('pedido-content');
-            
-            pedidoNumber.textContent = `#${numero}`;
-            
-            const pedidosDelivery = {
-                'D001': { 
-                    cliente: 'João Silva', 
-                    telefone: '(11) 99999-1234', 
-                    total: 45.90, 
-                    endereco: 'Rua das Flores, 123 - Centro',
-                    distancia: '1.2 km',
-                    formaPagamento: 'PIX automático',
-                    observacoes: 'Entregar no portão azul. Tocar campainha 2 vezes.',
-                    itens: [
-                        { quantidade: 2, nome: 'Hambúrguer', configuracao: 'Sem cebola, extra bacon', observacao: 'Obs.: Bem passado, por favor', preco: 22.90 },
-                        { quantidade: 1, nome: 'Batata Frita', configuracao: null, observacao: null, preco: 12.50 }
-                    ]
-                },
-                'D002': { 
-                    cliente: 'Maria Santos', 
-                    telefone: '(11) 98888-5678', 
-                    total: 32.00, 
-                    endereco: 'Av. Paulista, 456 - Bela Vista',
-                    distancia: '2.8 km',
-                    formaPagamento: 'Cartão online',
-                    observacoes: 'Apartamento 15B. Interfone não funciona, ligar antes.',
-                    itens: [
-                        { quantidade: 1, nome: 'Pizza Margherita', configuracao: 'Borda recheada', observacao: 'Obs.: Extra queijo, se possível', preco: 32.00 }
-                    ]
-                },
-                'D003': { 
-                    cliente: 'Roberto Lima', 
-                    telefone: '(11) 97777-9012', 
-                    total: 18.50, 
-                    endereco: 'Rua Augusta, 789 - Consolação',
-                    distancia: '0.8 km',
-                    formaPagamento: 'Dinheiro',
-                    observacoes: 'Troco para R$ 50,00.',
-                    itens: [
-                        { quantidade: 1, nome: 'Açaí 500ml', configuracao: 'Com granola e banana', observacao: null, preco: 12.00 },
-                        { quantidade: 1, nome: 'Vitamina', configuracao: null, observacao: 'Obs.: Sem açúcar', preco: 6.50 }
-                    ]
-                },
-                'D004': { 
-                    cliente: 'Fernanda Costa', 
-                    telefone: '(11) 95555-7890', 
-                    total: 54.00, 
-                    endereco: 'Rua Oscar Freire, 321 - Jardins',
-                    distancia: '3.5 km',
-                    formaPagamento: 'PIX automático',
-                    observacoes: 'Prédio comercial, entrada pela lateral.',
-                    itens: [
-                        { quantidade: 2, nome: 'Pizza Individual', configuracao: 'Calabresa e Margherita', observacao: null, preco: 22.00 },
-                        { quantidade: 2, nome: 'Refrigerante', configuracao: null, observacao: 'Obs.: Bem gelado', preco: 4.50 }
-                    ]
-                }
-            };
-            
-            const pedido = pedidosDelivery[numero];
-            
-            const telefoneFormatado = pedido.telefone.replace(/\D/g, '');
-            
-            pedidoContent.innerHTML = `
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
-                            <span class="text-gray-400">•</span>
-                            <button onclick="window.open('https://wa.me/55${telefoneFormatado}', '_blank')" class="text-sm text-green-600 hover:text-green-800 transition-colors">
-                                ${pedido.telefone}
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t pt-4">
-                        <div class="space-y-3">
-                            ${pedido.itens.map(item => `
-                                <div class="flex justify-between items-start">
-                                    <div class="flex-1">
-                                        <div class="text-sm text-gray-900">${item.quantidade} • ${item.nome}</div>
-                                        ${item.configuracao ? `<div class="text-xs text-gray-500 mt-1">${item.configuracao}</div>` : ''}
-                                        ${item.observacao ? `<div class="text-xs text-gray-500 mt-1">${item.observacao}</div>` : ''}
-                                    </div>
-                                    <div class="text-sm font-medium text-gray-900 ml-3">
-                                        R$ ${(item.preco * item.quantidade).toFixed(2)}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="border-t pt-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm font-medium text-gray-900">Total</span>
-                            <span class="text-sm font-bold text-orange-500">R$ ${pedido.total.toFixed(2)}</span>
-                        </div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm text-gray-600">Forma de Pagamento</span>
-                            <span class="text-xs font-medium text-gray-700">
-                                ${pedido.formaPagamento}
-                            </span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Status do Pagamento</span>
-                            <span class="text-xs font-medium px-2 py-1 rounded bg-green-100 text-green-700">
-                                Confirmado
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t pt-4">
-                        <div class="space-y-3">
-                            <div>
-                                <span class="text-sm font-medium text-gray-900 block mb-1">Endereço de Entrega</span>
-                                <button onclick="window.open('https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}', '_blank')" class="text-sm text-blue-600 hover:text-blue-800 transition-colors text-left">
-                                    <i class="fas fa-map-marker-alt mr-1"></i>${pedido.endereco}
-                                </button>
-                                <div class="text-xs text-gray-500 mt-1">
-                                    <i class="fas fa-route mr-1"></i>Distância: ${pedido.distancia}
-                                </div>
-                            </div>
-                            
-                            ${pedido.observacoes ? `
-                                <div>
-                                    <span class="text-sm font-medium text-gray-900 block mb-1">Observações do Pedido</span>
-                                    <div class="text-sm text-gray-700">
-                                        ${pedido.observacoes}
-                                    </div>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                    
-                    <div class="border-t pt-4">
-                        <div class="flex space-x-3">
-                            <button onclick="mandarParaProducao('${numero}'); closePedidoModal();" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded font-medium hover:bg-orange-600 transition-colors">
-                                <i class="fas fa-utensils mr-2"></i>Mandar p/ Produção
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modal.classList.remove('hidden');
-        }
+
 
         // Modal do Pedido
         function openPedidoModal(numero, status) {
@@ -2032,7 +1647,7 @@
             const pedidoNumber = document.getElementById('pedido-number');
             const pedidoContent = document.getElementById('pedido-content');
             
-            pedidoNumber.textContent = `#${numero}`;
+            pedidoNumber.textContent = numero;
             
             // Buscar pedido nos dados do KDS
             let pedido = null;
@@ -2166,48 +1781,231 @@
                 pedidosData.novos = pedidosData.novos.filter(p => p.id !== numero);
                 pedidosData.preparo.push(pedido);
                 atualizarPainelKDS();
-                showNotification(`Pedido #${numero} aceito e enviado para preparo!`, 'success');
+                showNotification(`Pedido ${numero} aceito e enviado para preparo!`, 'success');
             }
             closePedidoModal();
         }
 
-        function entregarPedidoBalcao(numero) {
-            const index = pedidosBalcaoData.findIndex(p => p.id === numero);
-            if (index !== -1) {
-                pedidosBalcaoData.splice(index, 1);
-                atualizarPainelBalcao();
-                atualizarContadorTotalPedidos();
-                showNotification(`Pedido #${numero} entregue ao cliente!`, 'success');
-                closePedidoBalcaoModal();
+        // Funções da nova aba Pedidos
+        function aceitarPedidoAba(numero) {
+            const pedido = pedidosAbaData.aguardando.find(p => p.id === numero);
+            if (pedido) {
+                // Remover de aguardando
+                pedidosAbaData.aguardando = pedidosAbaData.aguardando.filter(p => p.id !== numero);
+                
+                // Adicionar ao KDS (novos pedidos)
+                const novoPedidoKDS = {
+                    id: pedido.id,
+                    cliente: pedido.cliente,
+                    telefone: pedido.telefone,
+                    total: pedido.total,
+                    itens: pedido.itens,
+                    tempo: '0min',
+                    hora: pedido.hora,
+                    tipo: pedido.tipo,
+                    endereco: pedido.endereco,
+                    distancia: pedido.distancia
+                };
+                
+                pedidosData.novos.push(novoPedidoKDS);
+                
+                atualizarPainelPedidos();
+                atualizarPainelKDS();
+                showNotification(`Pedido ${numero} aceito e enviado para produção!`, 'success');
             }
         }
 
-        function vincularPedidoBalcao(numero) {
-            const index = pedidosBalcaoData.findIndex(p => p.id === numero);
-            if (index !== -1) {
-                pedidosBalcaoData.splice(index, 1);
-                atualizarPainelBalcao();
-                atualizarContadorTotalPedidos();
-                showNotification(`Pedido #${numero} vinculado!`, 'success');
-                closePedidoBalcaoModal();
+        function designarEntregador(numero) {
+            const pedido = pedidosAbaData.prontos.find(p => p.id === numero);
+            if (pedido && pedido.tipo === 'delivery') {
+                // Remover de prontos
+                pedidosAbaData.prontos = pedidosAbaData.prontos.filter(p => p.id !== numero);
+                
+                // Enviar para aba Entregas
+                const entregadores = ['Carlos Moto', 'João Bike', 'Ana Delivery', 'Pedro Express'];
+                const entregadorSelecionado = entregadores[Math.floor(Math.random() * entregadores.length)];
+                
+                const agora = new Date();
+                const tempoSaida = `${agora.getHours().toString().padStart(2, '0')}:${agora.getMinutes().toString().padStart(2, '0')}`;
+                const previsaoEntrega = `${(agora.getHours() + 1).toString().padStart(2, '0')}:${(agora.getMinutes() + 30).toString().padStart(2, '0')}`;
+                
+                const pedidoEntrega = {
+                    id: pedido.id,
+                    cliente: pedido.cliente,
+                    telefone: pedido.telefone,
+                    total: pedido.total,
+                    itens: pedido.itens,
+                    endereco: pedido.endereco,
+                    distancia: pedido.distancia,
+                    entregador: entregadorSelecionado,
+                    tempoSaida: tempoSaida,
+                    previsaoEntrega: previsaoEntrega,
+                    status: 'saindo'
+                };
+                
+                pedidosEntregaData.push(pedidoEntrega);
+                
+                atualizarPainelPedidos();
+                atualizarPainelEntregas();
+                showNotification(`Pedido ${numero} despachado para entrega com ${entregadorSelecionado}!`, 'success');
             }
         }
 
+        function entregarPedidoPronto(numero) {
+            const pedido = pedidosAbaData.prontos.find(p => p.id === numero);
+            if (pedido && pedido.tipo === 'balcao') {
+                // Remover de prontos
+                pedidosAbaData.prontos = pedidosAbaData.prontos.filter(p => p.id !== numero);
+                
+                atualizarPainelPedidos();
+                showNotification(`Pedido ${numero} entregue ao cliente!`, 'success');
+            }
+        }
 
+        // Modal da nova aba Pedidos
+        function openPedidoAbaModal(numero, status) {
+            const modal = document.getElementById('pedido-modal');
+            const pedidoNumber = document.getElementById('pedido-number');
+            const pedidoContent = document.getElementById('pedido-content');
+            
+            pedidoNumber.textContent = numero;
+            
+            // Buscar pedido nos dados da aba
+            let pedido = null;
+            if (pedidosAbaData.aguardando.find(p => p.id === numero)) {
+                pedido = pedidosAbaData.aguardando.find(p => p.id === numero);
+            } else if (pedidosAbaData.prontos.find(p => p.id === numero)) {
+                pedido = pedidosAbaData.prontos.find(p => p.id === numero);
+            }
+            
+            if (!pedido) return;
+            
+            let botoes = '';
+            if (status === 'aguardando') {
+                botoes = `
+                    <button onclick="rejeitarPedidoAba('${numero}')" class="w-20 border border-gray-300 text-gray-700 py-2 px-3 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
+                        Rejeitar
+                    </button>
+                    <button onclick="aceitarPedidoAba('${numero}'); closePedidoModal();" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-600 transition-colors">
+                        Aceitar
+                    </button>
+                `;
+            } else if (status === 'prontos') {
+                if (pedido.tipo === 'delivery') {
+                    botoes = `
+                        <button onclick="designarEntregador('${numero}'); closePedidoModal();" class="flex-1 bg-green-500 text-white py-2 px-4 rounded font-medium hover:bg-green-600 transition-colors">
+                            Designar
+                        </button>
+                    `;
+                } else {
+                    botoes = `
+                        <button onclick="entregarPedidoPronto('${numero}'); closePedidoModal();" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded font-medium hover:bg-orange-600 transition-colors">
+                            Entregar ao Cliente
+                        </button>
+                    `;
+                }
+            }
+            
+            const telefoneFormatado = pedido.telefone.replace(/\D/g, '');
+            
+            pedidoContent.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
+                            <span class="text-gray-400">•</span>
+                            <button onclick="window.open('https://wa.me/55${telefoneFormatado}', '_blank')" class="text-sm text-green-600 hover:text-green-800 transition-colors">
+                                ${pedido.telefone}
+                            </button>
+                        </div>
+                        ${pedido.tipo ? `<span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'delivery' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}">
+                            <i class="fas fa-${pedido.tipo === 'delivery' ? 'motorcycle' : 'store'} mr-1"></i>${pedido.tipo === 'delivery' ? 'Delivery' : 'Balcão'}
+                        </span>` : ''}
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="space-y-3">
+                            ${pedido.itens.map(item => `
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <div class="text-sm text-gray-900">${item}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-gray-900">Total</span>
+                            <span class="text-sm font-bold text-orange-500">R$ ${pedido.total.toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Forma de Pagamento</span>
+                            <span class="text-xs font-medium text-gray-700">
+                                ${pedido.tipo === 'delivery' ? 'PIX automático' : 'Cartão'}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Status do Pagamento</span>
+                            <span class="text-xs font-medium px-2 py-1 rounded bg-green-100 text-green-700">
+                                Confirmado
+                            </span>
+                        </div>
+                    </div>
+                    
+                    ${pedido.endereco && pedido.tipo === 'delivery' ? `
+                        <div class="border-t pt-4">
+                            <div class="space-y-2">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-900 block mb-1">Endereço de Entrega</span>
+                                    <button onclick="window.open('https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}', '_blank')" class="text-sm text-blue-600 hover:text-blue-800 transition-colors text-left">
+                                        <i class="fas fa-map-marker-alt mr-1"></i>${pedido.endereco}
+                                    </button>
+                                    ${pedido.distancia ? `<div class="text-xs text-gray-500 mt-1">
+                                        <i class="fas fa-route mr-1"></i>Distância: ${pedido.distancia}
+                                    </div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    ` : pedido.tipo === 'balcao' ? `
+                        <div class="border-t pt-4">
+                            <div class="space-y-2">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-900 block mb-1">Tipo de Pedido</span>
+                                    <div class="text-sm text-orange-600 font-medium">
+                                        <i class="fas fa-store mr-1"></i>Para retirada no balcão
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="border-t pt-4">
+                        <div class="flex space-x-3">
+                            ${botoes}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
 
-        function atualizarContadorTotalPedidos() {
-            const totalPedidos = pedidosBalcaoData.length + pedidosDeliveryData.length;
-            const contadorElement = document.getElementById('total-pedidos-count');
-            if (contadorElement) {
-                contadorElement.textContent = `${totalPedidos} ${totalPedidos === 1 ? 'pedido ativo' : 'pedidos ativos'}`;
+        function rejeitarPedidoAba(numero) {
+            if (confirm(`Tem certeza que deseja rejeitar o pedido ${numero}?`)) {
+                pedidosAbaData.aguardando = pedidosAbaData.aguardando.filter(p => p.id !== numero);
+                atualizarPainelPedidos();
+                showNotification(`Pedido ${numero} rejeitado!`, 'error');
+                closePedidoModal();
             }
         }
         
         function rejeitarPedido(numero) {
-            if (confirm(`Tem certeza que deseja rejeitar o pedido #${numero}?`)) {
+            if (confirm(`Tem certeza que deseja rejeitar o pedido ${numero}?`)) {
                 pedidosData.novos = pedidosData.novos.filter(p => p.id !== numero);
                 atualizarPainelKDS();
-                showNotification(`Pedido #${numero} rejeitado!`, 'error');
+                showNotification(`Pedido ${numero} rejeitado!`, 'error');
                 closePedidoModal();
             }
         }
@@ -2218,53 +2016,31 @@
                 // Remover da preparação
                 pedidosData.preparo = pedidosData.preparo.filter(p => p.id !== numero);
                 
-                // Direcionar para o setor apropriado
+                // Enviar para aba Pedidos (coluna Prontos)
+                const pedidoPronto = {
+                    id: pedido.id,
+                    cliente: pedido.cliente,
+                    telefone: pedido.telefone,
+                    total: pedido.total,
+                    itens: pedido.itens,
+                    tempo: '0min',
+                    hora: pedido.hora,
+                    tipo: pedido.tipo,
+                    endereco: pedido.endereco,
+                    distancia: pedido.distancia,
+                    entregador: null
+                };
+                
+                pedidosAbaData.prontos.push(pedidoPronto);
+                
                 if (pedido.tipo === 'delivery') {
-                    // Enviar para aba Entregas
-                    const entregadores = ['Carlos Moto', 'João Bike', 'Ana Delivery', 'Pedro Express'];
-                    const entregadorSelecionado = entregadores[Math.floor(Math.random() * entregadores.length)];
-                    
-                    const agora = new Date();
-                    const tempoSaida = `${agora.getHours().toString().padStart(2, '0')}:${agora.getMinutes().toString().padStart(2, '0')}`;
-                    const previsaoEntrega = `${(agora.getHours() + 1).toString().padStart(2, '0')}:${(agora.getMinutes() + 30).toString().padStart(2, '0')}`;
-                    
-                    const pedidoEntrega = {
-                        id: pedido.id,
-                        cliente: pedido.cliente,
-                        telefone: pedido.telefone,
-                        total: pedido.total,
-                        itens: pedido.itens,
-                        endereco: pedido.endereco,
-                        distancia: pedido.distancia,
-                        entregador: entregadorSelecionado,
-                        tempoSaida: tempoSaida,
-                        previsaoEntrega: previsaoEntrega,
-                        status: 'saindo'
-                    };
-                    
-                    pedidosEntregaData.push(pedidoEntrega);
-                    showNotification(`Pedido #${numero} finalizado e despachado para entrega com ${entregadorSelecionado}!`, 'success');
-                    atualizarPainelEntregas();
+                    showNotification(`Pedido ${numero} finalizado e pronto para designar entregador!`, 'success');
                 } else {
-                    // Pedido balcão - enviar para aba Pedidos (Balcão)
-                    const pedidoBalcao = {
-                        id: pedido.id,
-                        cliente: pedido.cliente,
-                        telefone: pedido.telefone,
-                        total: pedido.total,
-                        itens: pedido.itens,
-                        tempoEspera: '0min',
-                        hora: pedido.hora,
-                        tipo: 'retirada'
-                    };
-                    
-                    pedidosBalcaoData.push(pedidoBalcao);
-                    showNotification(`Pedido #${numero} finalizado e enviado para retirada no balcão!`, 'success');
-                    atualizarPainelBalcao();
-                    atualizarContadorTotalPedidos();
+                    showNotification(`Pedido ${numero} finalizado e pronto para retirada!`, 'success');
                 }
                 
                 atualizarPainelKDS();
+                atualizarPainelPedidos();
             }
             closePedidoModal();
         }
@@ -2272,10 +2048,10 @@
 
         
         function cancelarPedido(numero) {
-            if (confirm(`Tem certeza que deseja cancelar o pedido #${numero}?`)) {
+            if (confirm(`Tem certeza que deseja cancelar o pedido ${numero}?`)) {
                 pedidosData.preparo = pedidosData.preparo.filter(p => p.id !== numero);
                 atualizarPainelKDS();
-                showNotification(`Pedido #${numero} cancelado!`, 'error');
+                showNotification(`Pedido ${numero} cancelado!`, 'error');
                 closePedidoModal();
             }
         }
@@ -2288,7 +2064,7 @@
                 pedidosData.preparo = pedidosData.preparo.filter(p => p.id !== numero);
                 pedidosData.novos.push(pedido);
                 atualizarPainelKDS();
-                showNotification(`Pedido #${numero} voltou para novos!`, 'warning');
+                showNotification(`Pedido ${numero} voltou para novos!`, 'warning');
             }
             closePedidoModal();
         }
@@ -3076,7 +2852,19 @@
             const subtotal = cart.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
             const total = subtotal * 1.1;
             
-            alert(`✅ Venda finalizada com sucesso!\n💰 Total: R$ ${total.toFixed(2)}`);
+            // Gerar ID baseado no destino
+            let novoId = '';
+            if (destinoVenda === 'balcao') {
+                novoId = gerarIdPedido('balcao');
+            } else if (destinoVenda === 'mesa') {
+                novoId = gerarIdPedido('mesa');
+            } else if (destinoVenda === 'comanda') {
+                novoId = gerarIdPedido('comanda');
+            } else if (destinoVenda === 'delivery') {
+                novoId = gerarIdPedido('delivery');
+            }
+            
+            alert(`✅ Venda finalizada com sucesso!\n🆔 Pedido: ${novoId}\n💰 Total: R$ ${total.toFixed(2)}`);
             closePDVModal();
         }
         
@@ -3146,7 +2934,7 @@
         }
 
         function novaComandaAvulsa() {
-            const novoId = `C${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`;
+            const novoId = gerarIdPedido('comanda');
             comandasData[novoId] = {
                 cliente: 'Cliente Avulso',
                 total: 0,
@@ -3178,10 +2966,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializar painéis dinâmicos
             atualizarPainelKDS();
-            atualizarPainelBalcao();
-            atualizarPainelDelivery();
+            atualizarPainelPedidos();
             atualizarPainelEntregas();
-            atualizarContadorTotalPedidos();
             atualizarPainelMesas();
             atualizarPainelComandas();
             
@@ -3205,21 +2991,15 @@
                     }
                 });
 
-                // Simular mudanças nos tempos dos pedidos do balcão
-                pedidosBalcaoData.forEach(pedido => {
-                    const tempoAtual = parseInt(pedido.tempoEspera);
-                    if (!isNaN(tempoAtual)) {
-                        pedido.tempoEspera = `${tempoAtual + 1}min`;
-                    }
-                });
-
-                // Simular mudanças nos tempos dos pedidos delivery
-                pedidosDeliveryData.forEach(pedido => {
-                    if (pedido.status !== 'pronto') {
-                        const tempoAtual = parseInt(pedido.tempoEspera);
-                        if (!isNaN(tempoAtual)) {
-                            pedido.tempoEspera = `${tempoAtual + 1}min`;
-                        }
+                // Simular mudanças nos tempos dos pedidos da aba Pedidos
+                ['aguardando', 'prontos'].forEach(status => {
+                    if (pedidosAbaData[status]) {
+                        pedidosAbaData[status].forEach(pedido => {
+                            const tempoAtual = parseInt(pedido.tempo);
+                            if (!isNaN(tempoAtual)) {
+                                pedido.tempo = `${tempoAtual + 1}min`;
+                            }
+                        });
                     }
                 });
                 
@@ -3247,14 +3027,12 @@
                 
                 // Atualizar painéis
                 atualizarPainelKDS();
-                atualizarPainelBalcao();
-                atualizarPainelDelivery();
+                atualizarPainelPedidos();
                 atualizarPainelEntregas();
-                atualizarContadorTotalPedidos();
                 atualizarPainelMesas();
                 atualizarPainelComandas();
             }, 30000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98089c2ed56d8125',t:'MTc1ODExMjE3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9808ef79c15ee128',t:'MTc1ODExNTU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
