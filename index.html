@@ -812,6 +812,9 @@
                 renderizarPedidosMobile(pedidosData.aguardando, 'coluna-aguardando-mobile', 'aguardando');
                 renderizarPedidosMobile(pedidosData.prontos, 'coluna-prontos-mobile', 'prontos');
                 
+            } else if (tabName === 'salao') {
+                renderizarMesas();
+                
             } else if (tabName === 'kds') {
                 renderizarPedidos(pedidosData.novos, 'coluna-novos', 'novos');
                 renderizarPedidos(pedidosData.preparo, 'coluna-preparo', 'preparo');
@@ -1068,10 +1071,303 @@
             }, 3000);
         }
 
-        // Funções do salão (placeholder)
+        // Dados do salão
+        const salaoData = {
+            mesas: [
+                { numero: 1, status: 'livre', pessoas: 0, maxPessoas: 4, pedido: null, tempo: null },
+                { numero: 2, status: 'ocupada', pessoas: 2, maxPessoas: 4, pedido: 'S001', tempo: '14:20' },
+                { numero: 3, status: 'livre', pessoas: 0, maxPessoas: 2, pedido: null, tempo: null },
+                { numero: 4, status: 'ocupada', pessoas: 4, maxPessoas: 6, pedido: 'S002', tempo: '14:15' },
+                { numero: 5, status: 'livre', pessoas: 0, maxPessoas: 4, pedido: null, tempo: null },
+                { numero: 6, status: 'reservada', pessoas: 0, maxPessoas: 8, pedido: null, tempo: '15:00' },
+                { numero: 7, status: 'livre', pessoas: 0, maxPessoas: 2, pedido: null, tempo: null },
+                { numero: 8, status: 'ocupada', pessoas: 3, maxPessoas: 4, pedido: 'S003', tempo: '14:10' },
+                { numero: 9, status: 'livre', pessoas: 0, maxPessoas: 4, pedido: null, tempo: null },
+                { numero: 10, status: 'livre', pessoas: 0, maxPessoas: 6, pedido: null, tempo: null },
+                { numero: 11, status: 'ocupada', pessoas: 2, maxPessoas: 2, pedido: 'S004', tempo: '14:25' },
+                { numero: 12, status: 'livre', pessoas: 0, maxPessoas: 4, pedido: null, tempo: null }
+            ],
+            comandas: [
+                {
+                    id: 'S001',
+                    mesa: 2,
+                    cliente: 'Família Silva',
+                    pessoas: 2,
+                    itens: [
+                        { nome: 'Hambúrguer Artesanal', quantidade: 2, preco: 25.90, status: 'preparando' },
+                        { nome: 'Batata Frita', quantidade: 1, preco: 12.90, status: 'pronto' },
+                        { nome: 'Refrigerante', quantidade: 2, preco: 6.50, status: 'servido' }
+                    ],
+                    total: 71.20,
+                    tempo: '14:20',
+                    status: 'ativa'
+                },
+                {
+                    id: 'S002',
+                    mesa: 4,
+                    cliente: 'Grupo de Amigos',
+                    pessoas: 4,
+                    itens: [
+                        { nome: 'Pizza Margherita', quantidade: 2, preco: 32.90, status: 'preparando' },
+                        { nome: 'Pizza Calabresa', quantidade: 1, preco: 29.90, status: 'preparando' },
+                        { nome: 'Refrigerante', quantidade: 4, preco: 6.50, status: 'servido' }
+                    ],
+                    total: 121.70,
+                    tempo: '14:15',
+                    status: 'ativa'
+                },
+                {
+                    id: 'S003',
+                    mesa: 8,
+                    cliente: 'Casal Santos',
+                    pessoas: 3,
+                    itens: [
+                        { nome: 'Sanduíche Natural', quantidade: 2, preco: 18.90, status: 'pronto' },
+                        { nome: 'Suco de Laranja', quantidade: 2, preco: 8.90, status: 'servido' },
+                        { nome: 'Café', quantidade: 1, preco: 4.50, status: 'servido' }
+                    ],
+                    total: 51.20,
+                    tempo: '14:10',
+                    status: 'ativa'
+                },
+                {
+                    id: 'S004',
+                    mesa: 11,
+                    cliente: 'João e Maria',
+                    pessoas: 2,
+                    itens: [
+                        { nome: 'Hambúrguer Gourmet', quantidade: 1, preco: 28.90, status: 'preparando' },
+                        { nome: 'Salada Caesar', quantidade: 1, preco: 22.90, status: 'pronto' },
+                        { nome: 'Água', quantidade: 2, preco: 3.50, status: 'servido' }
+                    ],
+                    total: 55.30,
+                    tempo: '14:25',
+                    status: 'ativa'
+                }
+            ]
+        };
+
+        // Funções do salão
         function alternarVisualizacao(tipo) {
-            // Implementação básica para o salão
-            console.log('Alternando visualização para:', tipo);
+            // Atualizar botões
+            document.querySelectorAll('#btn-mesas, #btn-comandas').forEach(btn => {
+                btn.classList.remove('bg-orange-100', 'text-orange-700');
+                btn.classList.add('text-gray-600');
+            });
+            
+            const btnAtivo = document.getElementById(`btn-${tipo}`);
+            btnAtivo.classList.add('bg-orange-100', 'text-orange-700');
+            btnAtivo.classList.remove('text-gray-600');
+            
+            // Mostrar/esconder views
+            document.querySelectorAll('.salao-view').forEach(view => {
+                view.classList.add('hidden');
+            });
+            
+            document.getElementById(`view-${tipo}`).classList.remove('hidden');
+            
+            // Renderizar conteúdo
+            if (tipo === 'mesas') {
+                renderizarMesas();
+            } else if (tipo === 'comandas') {
+                renderizarComandas();
+            }
+        }
+
+        function renderizarMesas() {
+            const container = document.getElementById('grade-mesas');
+            if (!container) return;
+            
+            const mesasHTML = salaoData.mesas.map(mesa => {
+                const statusConfig = {
+                    'livre': { 
+                        bg: 'bg-green-100 hover:bg-green-200', 
+                        border: 'border-green-300', 
+                        text: 'text-green-700',
+                        icon: 'check-circle',
+                        label: 'Livre'
+                    },
+                    'ocupada': { 
+                        bg: 'bg-red-100 hover:bg-red-200', 
+                        border: 'border-red-300', 
+                        text: 'text-red-700',
+                        icon: 'users',
+                        label: 'Ocupada'
+                    },
+                    'reservada': { 
+                        bg: 'bg-yellow-100 hover:bg-yellow-200', 
+                        border: 'border-yellow-300', 
+                        text: 'text-yellow-700',
+                        icon: 'clock',
+                        label: 'Reservada'
+                    }
+                };
+                
+                const config = statusConfig[mesa.status];
+                
+                return `
+                    <div onclick="abrirDetalheMesa(${mesa.numero})" class="cursor-pointer ${config.bg} ${config.border} ${config.text} border-2 rounded-lg p-4 transition-all duration-200 transform hover:scale-105">
+                        <div class="text-center space-y-2">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-${config.icon} text-lg"></i>
+                            </div>
+                            
+                            <div>
+                                <div class="font-bold text-lg">Mesa ${mesa.numero}</div>
+                                <div class="text-xs font-medium">${config.label}</div>
+                            </div>
+                            
+                            <div class="text-xs">
+                                <div>${mesa.pessoas}/${mesa.maxPessoas} pessoas</div>
+                                ${mesa.tempo ? `<div class="mt-1">${mesa.tempo}</div>` : ''}
+                            </div>
+                            
+                            ${mesa.pedido ? `
+                                <div class="text-xs bg-white bg-opacity-50 rounded px-2 py-1">
+                                    #${mesa.pedido}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = mesasHTML;
+        }
+
+        function renderizarComandas() {
+            const container = document.getElementById('lista-comandas');
+            if (!container) return;
+            
+            if (salaoData.comandas.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-gray-500">
+                        <i class="fas fa-receipt text-2xl mb-3"></i>
+                        <p class="text-base font-medium">Nenhuma comanda ativa</p>
+                        <p class="text-sm text-gray-400 mt-1">As comandas aparecerão aqui quando houver pedidos</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const comandasHTML = salaoData.comandas.map(comanda => `
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-lg font-bold text-gray-900">#${comanda.id}</span>
+                                <span class="text-sm px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                                    Mesa ${comanda.mesa}
+                                </span>
+                            </div>
+                            <span class="text-sm text-gray-600">${comanda.tempo}</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Cliente:</span>
+                                        <span class="text-sm font-medium text-gray-900">${comanda.cliente}</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Pessoas:</span>
+                                        <span class="text-sm font-medium text-gray-900">${comanda.pessoas}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Itens:</span>
+                                        <span class="text-sm font-medium text-gray-900">${comanda.itens.reduce((total, item) => total + item.quantidade, 0)}</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Total:</span>
+                                        <span class="text-lg font-bold text-gray-900">R$ ${comanda.total.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="space-y-2">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Itens do Pedido:</h4>
+                                ${comanda.itens.map(item => {
+                                    const statusConfig = {
+                                        'preparando': { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Preparando' },
+                                        'pronto': { bg: 'bg-green-100', text: 'text-green-700', label: 'Pronto' },
+                                        'servido': { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Servido' }
+                                    };
+                                    const config = statusConfig[item.status];
+                                    
+                                    return `
+                                        <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50">
+                                            <div class="flex-1">
+                                                <div class="text-sm font-medium text-gray-900">${item.quantidade}x ${item.nome}</div>
+                                                <div class="text-xs text-gray-600">R$ ${item.preco.toFixed(2)} cada</div>
+                                            </div>
+                                            <span class="text-xs px-2 py-1 rounded-full ${config.bg} ${config.text} font-medium">
+                                                ${config.label}
+                                            </span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-2">
+                            <button onclick="adicionarItem('${comanda.id}')" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-plus mr-1"></i>Adicionar Item
+                            </button>
+                            <button onclick="fecharComanda('${comanda.id}')" class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+                                <i class="fas fa-check mr-1"></i>Fechar Conta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = comandasHTML;
+        }
+
+        function abrirDetalheMesa(numeroMesa) {
+            const mesa = salaoData.mesas.find(m => m.numero === numeroMesa);
+            if (!mesa) return;
+            
+            mostrarNotificacao(`Mesa ${numeroMesa} - Status: ${mesa.status}`, 'info');
+        }
+
+        function adicionarItem(comandaId) {
+            mostrarNotificacao(`Funcionalidade de adicionar item em desenvolvimento`, 'info');
+        }
+
+        function fecharComanda(comandaId) {
+            const comandaIndex = salaoData.comandas.findIndex(c => c.id === comandaId);
+            if (comandaIndex !== -1) {
+                const comanda = salaoData.comandas[comandaIndex];
+                
+                // Liberar mesa
+                const mesa = salaoData.mesas.find(m => m.numero === comanda.mesa);
+                if (mesa) {
+                    mesa.status = 'livre';
+                    mesa.pessoas = 0;
+                    mesa.pedido = null;
+                    mesa.tempo = null;
+                }
+                
+                // Remover comanda
+                salaoData.comandas.splice(comandaIndex, 1);
+                
+                // Atualizar visualização
+                renderizarComandas();
+                renderizarMesas();
+                
+                mostrarNotificacao(`Comanda #${comandaId} fechada com sucesso!`, 'success');
+            }
         }
 
         // Inicialização
@@ -1081,5 +1377,5 @@
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98121f6057e764fc',t:'MTc1ODIxMTkyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98122529408364fc',t:'MTc1ODIxMjE1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
