@@ -349,166 +349,22 @@
         </div>
     </div>
 
-
-
     <script>
-
-
-        // Sistema de dados do salão
-        
+        // Sistema de dados do salão (apenas para exibição)
         let salaoData = {
             mesas: [
-                { 
-                    id: 1, 
-                    capacidade: 2, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 2, 
-                    capacidade: 4, 
-                    status: 'ocupada', 
-                    cliente: 'Família Silva', 
-                    horario: '14:30', 
-                    total: 85.50, 
-                    pessoas: 4,
-                    taxaServico: true,
-                    pedidos: [
-                        { id: 'P001', itens: ['Pizza Margherita', 'Refrigerante 2L'], valor: 65.50, status: 'entregue', horario: '14:35' },
-                        { id: 'P002', itens: ['Sobremesa'], valor: 20.00, status: 'entregue', horario: '15:10' }
-                    ],
-                    pagamentos: []
-                },
-                { 
-                    id: 3, 
-                    capacidade: 2, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 4, 
-                    capacidade: 6, 
-                    status: 'reservada', 
-                    cliente: 'João Santos', 
-                    horario: '15:00', 
-                    total: 0, 
-                    pessoas: 6,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 5, 
-                    capacidade: 4, 
-                    status: 'ocupada', 
-                    cliente: 'Casal Oliveira', 
-                    horario: '14:15', 
-                    total: 42.90, 
-                    pessoas: 2,
-                    taxaServico: true,
-                    pedidos: [
-                        { id: 'P003', itens: ['Hambúrguer Duplo', 'Batata Frita', 'Refrigerante'], valor: 42.90, status: 'entregue', horario: '14:25' }
-                    ],
-                    pagamentos: []
-                },
-                { 
-                    id: 6, 
-                    capacidade: 2, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 7, 
-                    capacidade: 8, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 8, 
-                    capacidade: 4, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 9, 
-                    capacidade: 2, 
-                    status: 'ocupada', 
-                    cliente: 'Maria Costa', 
-                    horario: '14:45', 
-                    total: 28.50, 
-                    pessoas: 1,
-                    taxaServico: false,
-                    pedidos: [
-                        { id: 'P004', itens: ['Salada Caesar', 'Suco Natural'], valor: 28.50, status: 'entregue', horario: '14:50' }
-                    ],
-                    pagamentos: []
-                },
-                { 
-                    id: 10, 
-                    capacidade: 4, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 11, 
-                    capacidade: 2, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                },
-                { 
-                    id: 12, 
-                    capacidade: 6, 
-                    status: 'livre', 
-                    cliente: null, 
-                    horario: null, 
-                    total: 0, 
-                    pessoas: 0,
-                    taxaServico: false,
-                    pedidos: [],
-                    pagamentos: []
-                }
+                { id: 1, capacidade: 2, status: 'livre' },
+                { id: 2, capacidade: 4, status: 'ocupada' },
+                { id: 3, capacidade: 2, status: 'livre' },
+                { id: 4, capacidade: 6, status: 'reservada' },
+                { id: 5, capacidade: 4, status: 'ocupada' },
+                { id: 6, capacidade: 2, status: 'livre' },
+                { id: 7, capacidade: 8, status: 'livre' },
+                { id: 8, capacidade: 4, status: 'livre' },
+                { id: 9, capacidade: 2, status: 'ocupada' },
+                { id: 10, capacidade: 4, status: 'livre' },
+                { id: 11, capacidade: 2, status: 'livre' },
+                { id: 12, capacidade: 6, status: 'livre' }
             ],
             comandas: [
                 { id: 'C001', status: 'ativa' },
@@ -735,8 +591,6 @@
             
             // Atualizar dados da aba
             atualizarAba(tabName);
-            
-
         }
 
         function atualizarContadores() {
@@ -1078,7 +932,7 @@
             atualizarContadores();
         }
 
-        // Funções do Salão
+        // Funções do Salão (apenas visuais)
         function alternarVisualizacao(tipo) {
             // Atualizar botões
             document.getElementById('btn-mesas').classList.remove('bg-orange-100', 'text-orange-700');
@@ -1117,7 +971,7 @@
                 const config = statusConfig[mesa.status];
                 
                 return `
-                    <div onclick="gerenciarMesa(${mesa.id})" class="bg-white border-2 border-${config.color}-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-all hover:border-${config.color}-300">
+                    <div class="bg-white border-2 border-${config.color}-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-all hover:border-${config.color}-300">
                         <div class="text-center space-y-2">
                             <div class="flex items-center justify-center">
                                 <i class="fas fa-${config.icon} text-${config.color}-500 text-2xl"></i>
@@ -1152,7 +1006,7 @@
             }
 
             const comandasHTML = comandasAtivas.map(comanda => `
-                <div class="p-6 hover:bg-gray-50 transition-colors">
+                <div class="p-6 hover:bg-gray-50 transition-colors cursor-pointer">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
@@ -1168,53 +1022,6 @@
 
             container.innerHTML = comandasHTML;
         }
-
-        function gerenciarMesa(mesaId) {
-            const mesa = salaoData.mesas.find(m => m.id === mesaId);
-            if (!mesa) return;
-
-            if (mesa.status === 'livre') {
-                const acao = confirm('Mesa livre. Deseja ocupar (OK) ou reservar (Cancelar)?');
-                if (acao) {
-                    ocuparMesa(mesa);
-                } else {
-                    reservarMesa(mesa);
-                }
-            } else {
-                const info = `Mesa ${mesa.id}\nCliente: ${mesa.cliente}\nStatus: ${mesa.status}\nTotal: R$ ${mesa.total.toFixed(2)}`;
-                alert(info);
-            }
-        }
-
-        function ocuparMesa(mesa) {
-            const cliente = prompt('Nome do cliente:');
-            if (cliente) {
-                mesa.status = 'ocupada';
-                mesa.cliente = cliente;
-                mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                mesa.pessoas = 1;
-                mesa.total = 0;
-                mesa.pedidos = [];
-                mesa.pagamentos = [];
-                renderizarMesas();
-            }
-        }
-
-        function reservarMesa(mesa) {
-            const cliente = prompt('Nome do cliente:');
-            if (!cliente) return;
-            
-            const horario = prompt('Horário da reserva (ex: 19:30):');
-            if (horario) {
-                mesa.status = 'reservada';
-                mesa.cliente = cliente;
-                mesa.horario = horario;
-                mesa.pessoas = 1;
-                renderizarMesas();
-            }
-        }
-
-
 
         // Funções de fluxo dos pedidos
         function aceitarPedido(id) {
@@ -1510,13 +1317,11 @@
             }
         }
 
-
-
         // Inicializar sistema
         document.addEventListener('DOMContentLoaded', function() {
             atualizarContadores();
             atualizarAba('pedidos'); // Carregar aba inicial
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9811302567ff6473',t:'MTc1ODIwMjEyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9811a82313356d3c',t:'MTc1ODIwNzAzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
