@@ -1265,65 +1265,48 @@
         }
 
         function mostrarDropdownEntregadores(pedidoId) {
-            // Encontrar o botão que foi clicado
-            const botao = event.target;
-            const rect = botao.getBoundingClientRect();
+            // Criar overlay de fundo
+            const overlay = document.createElement('div');
+            overlay.id = 'dropdown-overlay';
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-40';
             
-            // Criar dropdown
+            // Criar dropdown na parte inferior
             const dropdown = document.createElement('div');
             dropdown.id = 'dropdown-entregadores';
-            dropdown.className = 'fixed bg-white border border-gray-300 rounded-lg shadow-lg z-50 min-w-64';
+            dropdown.className = 'fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl transform transition-all duration-300 translate-y-full z-50 max-h-[80vh] overflow-hidden';
             
-            // Calcular posicionamento inteligente
-            const dropdownWidth = 256; // min-w-64 = 16rem = 256px
-            const dropdownHeight = 300; // altura estimada
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const scrollX = window.scrollX;
-            const scrollY = window.scrollY;
-            
-            let top = rect.bottom + scrollY + 8;
-            let left = rect.left + scrollX;
-            
-            // Ajustar horizontalmente se sair da tela
-            if (left + dropdownWidth > viewportWidth + scrollX) {
-                left = rect.right + scrollX - dropdownWidth; // Alinhar à direita do botão
-            }
-            
-            // Se ainda sair da tela pela esquerda
-            if (left < scrollX + 10) {
-                left = scrollX + 10; // Margem mínima da esquerda
-            }
-            
-            // Ajustar verticalmente se sair da tela
-            if (top + dropdownHeight > viewportHeight + scrollY) {
-                top = rect.top + scrollY - dropdownHeight - 8; // Mostrar acima do botão
-            }
-            
-            // Se ainda sair da tela por cima
-            if (top < scrollY + 10) {
-                top = scrollY + 10; // Margem mínima do topo
-            }
-            
-            dropdown.style.top = top + 'px';
-            dropdown.style.left = left + 'px';
+            // Animar entrada
+            setTimeout(() => {
+                dropdown.classList.remove('translate-y-full');
+            }, 10);
             
             // Filtrar entregadores disponíveis
             const entregadoresDisponiveis = entregadoresData.disponiveis.filter(e => e.status === 'disponivel');
             
             let dropdownHTML = `
-                <div class="p-3 border-b border-gray-200 bg-gray-50">
-                    <h4 class="text-sm font-semibold text-gray-800">Selecionar Entregador</h4>
-                    <p class="text-xs text-gray-600">Pedido #${pedidoId}</p>
+                <!-- Barra de arraste -->
+                <div class="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-4"></div>
+                
+                <div class="px-4 sm:px-6 pb-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800">Selecionar Entregador</h4>
+                            <p class="text-sm text-gray-600 mt-1">Pedido #${pedidoId}</p>
+                        </div>
+                        <button onclick="fecharDropdown()" class="text-gray-400 hover:text-gray-600 transition-colors p-2">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="max-h-64 overflow-y-auto">
+                <div class="flex-1 overflow-y-auto">
             `;
             
             if (entregadoresDisponiveis.length === 0) {
                 dropdownHTML += `
-                    <div class="p-4 text-center text-gray-500">
-                        <i class="fas fa-exclamation-triangle text-amber-500 mb-2"></i>
-                        <p class="text-sm">Nenhum entregador disponível</p>
+                    <div class="p-8 text-center text-gray-500">
+                        <i class="fas fa-exclamation-triangle text-amber-500 text-2xl mb-3"></i>
+                        <p class="text-base font-medium">Nenhum entregador disponível</p>
+                        <p class="text-sm text-gray-400 mt-1">Todos os entregadores estão ocupados no momento</p>
                     </div>
                 `;
             } else {
@@ -1336,20 +1319,26 @@
                     
                     dropdownHTML += `
                         <div onclick="selecionarEntregador('${pedidoId}', ${entregador.id})" 
-                             class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors">
+                             class="p-4 sm:p-5 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all duration-200 active:bg-blue-100">
                             <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-${iconVeiculo[entregador.veiculo]} text-blue-600 text-sm"></i>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-${iconVeiculo[entregador.veiculo]} text-blue-600 text-lg"></i>
                                     </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">${entregador.nome}</p>
-                                        <p class="text-xs text-gray-600">${entregador.veiculo}</p>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-base font-medium text-gray-900 truncate">${entregador.nome}</p>
+                                        <p class="text-sm text-gray-600">${entregador.veiculo}</p>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <p class="text-xs text-gray-500">${entregador.entregas} entregas hoje</p>
-                                    <span class="inline-block w-2 h-2 bg-green-400 rounded-full"></span>
+                                <div class="text-right flex items-center space-x-3">
+                                    <div>
+                                        <p class="text-sm text-gray-500">${entregador.entregas} entregas hoje</p>
+                                        <div class="flex items-center justify-end mt-1">
+                                            <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+                                            <span class="text-xs text-green-600 font-medium">Disponível</span>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
                                 </div>
                             </div>
                         </div>
@@ -1359,21 +1348,49 @@
             
             dropdownHTML += `
                 </div>
-                <div class="p-3 border-t border-gray-200 bg-gray-50">
-                    <button onclick="fecharDropdown()" class="w-full text-sm text-gray-600 hover:text-gray-800 py-1">
-                        Cancelar
+                <div class="p-4 sm:p-6 border-t border-gray-200 bg-white safe-area-bottom">
+                    <button onclick="fecharDropdown()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-times mr-2"></i>Cancelar
                     </button>
                 </div>
             `;
             
             dropdown.innerHTML = dropdownHTML;
+            document.body.appendChild(overlay);
             document.body.appendChild(dropdown);
-            dropdownAberto = dropdown;
+            dropdownAberto = { overlay, dropdown };
             
-            // Fechar dropdown ao clicar fora
-            setTimeout(() => {
-                document.addEventListener('click', fecharDropdownFora);
-            }, 100);
+            // Fechar dropdown ao clicar no overlay
+            overlay.addEventListener('click', () => {
+                fecharDropdown();
+            });
+            
+            // Adicionar suporte a gestos de arrastar para baixo (opcional)
+            let startY = 0;
+            let currentY = 0;
+            
+            dropdown.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            });
+            
+            dropdown.addEventListener('touchmove', (e) => {
+                currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                
+                if (diff > 0) {
+                    dropdown.style.transform = `translateY(${diff}px)`;
+                }
+            });
+            
+            dropdown.addEventListener('touchend', () => {
+                const diff = currentY - startY;
+                
+                if (diff > 100) {
+                    fecharDropdown();
+                } else {
+                    dropdown.style.transform = 'translateY(0)';
+                }
+            });
         }
 
         function selecionarEntregador(pedidoId, entregadorId) {
@@ -1410,15 +1427,21 @@
 
         function fecharDropdown() {
             if (dropdownAberto) {
-                dropdownAberto.remove();
-                dropdownAberto = null;
-                document.removeEventListener('click', fecharDropdownFora);
-            }
-        }
-
-        function fecharDropdownFora(event) {
-            if (dropdownAberto && !dropdownAberto.contains(event.target)) {
-                fecharDropdown();
+                const { overlay, dropdown } = dropdownAberto;
+                
+                // Animar saída
+                dropdown.classList.add('translate-y-full');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    if (dropdown && dropdown.parentNode) {
+                        dropdown.remove();
+                    }
+                    dropdownAberto = null;
+                }, 300);
             }
         }
 
@@ -1499,5 +1522,5 @@
             atualizarAba('pedidos'); // Carregar aba inicial
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9810f13471dce2b9',t:'MTc1ODE5OTU0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9811110b11ba7a6f',t:'MTc1ODIwMDg0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
