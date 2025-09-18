@@ -155,12 +155,7 @@
         <!-- Aba Salão -->
         <div id="content-salao" class="tab-content hidden">
             <!-- Cabeçalho com botão de alternância -->
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold text-gray-800">
-                    <i class="fas fa-utensils text-orange-500 mr-2"></i>
-                    Gerenciamento do Salão
-                </h2>
-                
+            <div class="flex justify-end items-center mb-6">
                 <!-- Botão de alternância -->
                 <div class="bg-white border border-gray-200 rounded-lg p-1 shadow-sm">
                     <button onclick="alternarVisualizacao('mesas')" id="btn-mesas" class="px-4 py-2 text-sm font-medium rounded-md bg-orange-100 text-orange-700 transition-colors">
@@ -899,24 +894,9 @@
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-lg font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                        ${tipo === 'prontos' ? `
-                                            <div class="flex items-center space-x-2">
-                                                <button onclick="toggleMenuDespacho('${pedido.id}')" class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
-                                                    Despachar
-                                                </button>
-                                                <div id="menu-${pedido.id}" class="hidden absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-48">
-                                                    ${entregadoresData.disponiveis.filter(e => e.status === 'disponivel').map(entregador => `
-                                                        <button onclick="despacharPedido('${pedido.id}', '${entregador.id}')" class="block w-full text-left px-3 py-2 text-sm text-black hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg">
-                                                            ${entregador.nome} (${entregador.veiculo})
-                                                        </button>
-                                                    `).join('')}
-                                                </div>
-                                            </div>
-                                        ` : `
-                                            <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
-                                                ${config.text}
-                                            </button>
-                                        `}
+                                        <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
+                                            ${config.text}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1062,24 +1042,9 @@
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                        ${tipo === 'prontos' ? `
-                                            <div class="flex items-center space-x-1">
-                                                <button onclick="toggleMenuDespacho('${pedido.id}')" class="bg-green-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-green-600 transition-colors">
-                                                    Despachar
-                                                </button>
-                                                <div id="menu-${pedido.id}" class="hidden absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-40">
-                                                    ${entregadoresData.disponiveis.filter(e => e.status === 'disponivel').map(entregador => `
-                                                        <button onclick="despacharPedido('${pedido.id}', '${entregador.id}')" class="block w-full text-left px-2 py-1 text-xs text-black hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg">
-                                                            ${entregador.nome} (${entregador.veiculo})
-                                                        </button>
-                                                    `).join('')}
-                                                </div>
-                                            </div>
-                                        ` : `
-                                            <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-${config.color}-600 transition-colors">
-                                                ${config.text}
-                                            </button>
-                                        `}
+                                        <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-${config.color}-600 transition-colors">
+                                            ${config.text}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1288,52 +1253,181 @@
             }
         }
 
-        function toggleMenuDespacho(pedidoId) {
-            // Fechar todos os outros menus
-            document.querySelectorAll('[id^="menu-"]').forEach(menu => {
-                if (menu.id !== `menu-${pedidoId}`) {
-                    menu.classList.add('hidden');
-                }
-            });
+        // Sistema de despacho com dropdown de entregadores
+        let dropdownAberto = null;
+
+        function despacharPedido(pedidoId) {
+            // Fechar qualquer dropdown aberto
+            fecharDropdown();
             
-            // Alternar o menu atual
-            const menu = document.getElementById(`menu-${pedidoId}`);
-            if (menu) {
-                menu.classList.toggle('hidden');
-            }
+            // Criar e mostrar dropdown de entregadores
+            mostrarDropdownEntregadores(pedidoId);
         }
 
-        function despacharPedido(pedidoId, entregadorId) {
-            if (!entregadorId) return; // Se não selecionou entregador, não faz nada
+        function mostrarDropdownEntregadores(pedidoId) {
+            // Encontrar o botão que foi clicado
+            const botao = event.target;
+            const rect = botao.getBoundingClientRect();
             
+            // Criar dropdown
+            const dropdown = document.createElement('div');
+            dropdown.id = 'dropdown-entregadores';
+            dropdown.className = 'fixed bg-white border border-gray-300 rounded-lg shadow-lg z-50 min-w-64';
+            dropdown.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+            dropdown.style.left = (rect.left + window.scrollX) + 'px';
+            
+            // Filtrar entregadores disponíveis
+            const entregadoresDisponiveis = entregadoresData.disponiveis.filter(e => e.status === 'disponivel');
+            
+            let dropdownHTML = `
+                <div class="p-3 border-b border-gray-200 bg-gray-50">
+                    <h4 class="text-sm font-semibold text-gray-800">Selecionar Entregador</h4>
+                    <p class="text-xs text-gray-600">Pedido #${pedidoId}</p>
+                </div>
+                <div class="max-h-64 overflow-y-auto">
+            `;
+            
+            if (entregadoresDisponiveis.length === 0) {
+                dropdownHTML += `
+                    <div class="p-4 text-center text-gray-500">
+                        <i class="fas fa-exclamation-triangle text-amber-500 mb-2"></i>
+                        <p class="text-sm">Nenhum entregador disponível</p>
+                    </div>
+                `;
+            } else {
+                entregadoresDisponiveis.forEach(entregador => {
+                    const iconVeiculo = {
+                        'Moto': 'motorcycle',
+                        'Bicicleta': 'bicycle',
+                        'Carro': 'car'
+                    };
+                    
+                    dropdownHTML += `
+                        <div onclick="selecionarEntregador('${pedidoId}', ${entregador.id})" 
+                             class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-${iconVeiculo[entregador.veiculo]} text-blue-600 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">${entregador.nome}</p>
+                                        <p class="text-xs text-gray-600">${entregador.veiculo}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500">${entregador.entregas} entregas hoje</p>
+                                    <span class="inline-block w-2 h-2 bg-green-400 rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            dropdownHTML += `
+                </div>
+                <div class="p-3 border-t border-gray-200 bg-gray-50">
+                    <button onclick="fecharDropdown()" class="w-full text-sm text-gray-600 hover:text-gray-800 py-1">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            dropdown.innerHTML = dropdownHTML;
+            document.body.appendChild(dropdown);
+            dropdownAberto = dropdown;
+            
+            // Fechar dropdown ao clicar fora
+            setTimeout(() => {
+                document.addEventListener('click', fecharDropdownFora);
+            }, 100);
+        }
+
+        function selecionarEntregador(pedidoId, entregadorId) {
+            const entregador = entregadoresData.disponiveis.find(e => e.id === entregadorId);
+            if (!entregador) return;
+            
+            // Encontrar o pedido na lista de prontos
             const pedidoIndex = pedidosData.prontos.findIndex(p => p.id === pedidoId);
-            const entregador = entregadoresData.disponiveis.find(e => e.id == entregadorId);
-            
-            if (pedidoIndex !== -1 && entregador && entregador.status === 'disponivel') {
+            if (pedidoIndex !== -1) {
                 const pedido = pedidosData.prontos.splice(pedidoIndex, 1)[0];
                 
-                // Atualizar dados do pedido
+                // Atribuir entregador ao pedido
                 pedido.entregador = entregador.nome;
                 pedido.tempoDesignacao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 pedido.status = 'pendente';
                 
-                // Atualizar status do entregador
+                // Marcar entregador como ocupado
                 entregador.status = 'ocupado';
                 entregador.entregas += 1;
                 
                 // Mover pedido para pendentes
                 pedidosData.pendentes.push(pedido);
                 
-                // Fechar menu
-                const menu = document.getElementById(`menu-${pedidoId}`);
-                if (menu) {
-                    menu.classList.add('hidden');
-                }
-                
                 // Atualizar interface
                 atualizarAba('pedidos');
                 atualizarContadores();
+                
+                // Mostrar confirmação
+                mostrarNotificacao(`Pedido #${pedidoId} atribuído para ${entregador.nome}`, 'success');
             }
+            
+            fecharDropdown();
+        }
+
+        function fecharDropdown() {
+            if (dropdownAberto) {
+                dropdownAberto.remove();
+                dropdownAberto = null;
+                document.removeEventListener('click', fecharDropdownFora);
+            }
+        }
+
+        function fecharDropdownFora(event) {
+            if (dropdownAberto && !dropdownAberto.contains(event.target)) {
+                fecharDropdown();
+            }
+        }
+
+        function mostrarNotificacao(mensagem, tipo = 'info') {
+            const notificacao = document.createElement('div');
+            notificacao.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full`;
+            
+            const cores = {
+                'success': 'bg-green-100 border border-green-200 text-green-800',
+                'error': 'bg-red-100 border border-red-200 text-red-800',
+                'info': 'bg-blue-100 border border-blue-200 text-blue-800'
+            };
+            
+            const icones = {
+                'success': 'check-circle',
+                'error': 'exclamation-circle',
+                'info': 'info-circle'
+            };
+            
+            notificacao.className += ` ${cores[tipo]}`;
+            notificacao.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-${icones[tipo]} text-lg"></i>
+                    <p class="text-sm font-medium">${mensagem}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(notificacao);
+            
+            // Animar entrada
+            setTimeout(() => {
+                notificacao.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notificacao.classList.add('translate-x-full');
+                setTimeout(() => {
+                    notificacao.remove();
+                }, 300);
+            }, 3000);
         }
 
         function coletarPedido(id) {
@@ -1371,16 +1465,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             atualizarContadores();
             atualizarAba('pedidos'); // Carregar aba inicial
-            
-            // Fechar menus ao clicar fora
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('[id^="menu-"]') && !event.target.closest('button[onclick*="toggleMenuDespacho"]')) {
-                    document.querySelectorAll('[id^="menu-"]').forEach(menu => {
-                        menu.classList.add('hidden');
-                    });
-                }
-            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980d6d52775bcb13',t:'MTc1ODE2MjY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9810e910f59ce2b9',t:'MTc1ODE5OTIxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
