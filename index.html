@@ -154,11 +154,43 @@
 
         <!-- Aba Salão -->
         <div id="content-salao" class="tab-content hidden">
-            <div class="bg-white rounded-lg border border-gray-200 p-4 md:p-8">
-                <div class="text-center text-gray-500">
-                    <i class="fas fa-utensils text-3xl md:text-4xl mb-3 md:mb-4"></i>
-                    <h3 class="text-base md:text-lg font-medium text-gray-900 mb-2">Gestão do Salão</h3>
-                    <p class="text-sm">Esta seção estará disponível em breve.</p>
+            <!-- Cabeçalho com botão de alternância -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">
+                    <i class="fas fa-utensils text-orange-500 mr-2"></i>
+                    Gerenciamento do Salão
+                </h2>
+                
+                <!-- Botão de alternância -->
+                <div class="bg-white border border-gray-200 rounded-lg p-1 shadow-sm">
+                    <button onclick="alternarVisualizacao('mesas')" id="btn-mesas" class="px-4 py-2 text-sm font-medium rounded-md bg-orange-100 text-orange-700 transition-colors">
+                        <i class="fas fa-th-large mr-2"></i>Mesas
+                    </button>
+                    <button onclick="alternarVisualizacao('comandas')" id="btn-comandas" class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-gray-800 transition-colors">
+                        <i class="fas fa-receipt mr-2"></i>Comandas
+                    </button>
+                </div>
+            </div>
+
+            <!-- Visualização de Mesas -->
+            <div id="view-mesas" class="salao-view">
+                <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+                    
+                    <!-- Grade de Mesas -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="grade-mesas">
+                        <!-- Mesas serão renderizadas aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualização de Comandas -->
+            <div id="view-comandas" class="salao-view hidden">
+                <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                    
+                    <!-- Lista de Comandas -->
+                    <div id="lista-comandas" class="divide-y divide-gray-200">
+                        <!-- Comandas serão renderizadas aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -322,7 +354,185 @@
         </div>
     </div>
 
+
+
     <script>
+
+
+        // Sistema de dados do salão
+        
+        let salaoData = {
+            mesas: [
+                { 
+                    id: 1, 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 2, 
+                    capacidade: 4, 
+                    status: 'ocupada', 
+                    cliente: 'Família Silva', 
+                    horario: '14:30', 
+                    total: 85.50, 
+                    pessoas: 4,
+                    taxaServico: true,
+                    pedidos: [
+                        { id: 'P001', itens: ['Pizza Margherita', 'Refrigerante 2L'], valor: 65.50, status: 'entregue', horario: '14:35' },
+                        { id: 'P002', itens: ['Sobremesa'], valor: 20.00, status: 'entregue', horario: '15:10' }
+                    ],
+                    pagamentos: []
+                },
+                { 
+                    id: 3, 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 4, 
+                    capacidade: 6, 
+                    status: 'reservada', 
+                    cliente: 'João Santos', 
+                    horario: '15:00', 
+                    total: 0, 
+                    pessoas: 6,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 5, 
+                    capacidade: 4, 
+                    status: 'ocupada', 
+                    cliente: 'Casal Oliveira', 
+                    horario: '14:15', 
+                    total: 42.90, 
+                    pessoas: 2,
+                    taxaServico: true,
+                    pedidos: [
+                        { id: 'P003', itens: ['Hambúrguer Duplo', 'Batata Frita', 'Refrigerante'], valor: 42.90, status: 'entregue', horario: '14:25' }
+                    ],
+                    pagamentos: []
+                },
+                { 
+                    id: 6, 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 7, 
+                    capacidade: 8, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 8, 
+                    capacidade: 4, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 9, 
+                    capacidade: 2, 
+                    status: 'ocupada', 
+                    cliente: 'Maria Costa', 
+                    horario: '14:45', 
+                    total: 28.50, 
+                    pessoas: 1,
+                    taxaServico: false,
+                    pedidos: [
+                        { id: 'P004', itens: ['Salada Caesar', 'Suco Natural'], valor: 28.50, status: 'entregue', horario: '14:50' }
+                    ],
+                    pagamentos: []
+                },
+                { 
+                    id: 10, 
+                    capacidade: 4, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 11, 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                },
+                { 
+                    id: 12, 
+                    capacidade: 6, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pessoas: 0,
+                    taxaServico: false,
+                    pedidos: [],
+                    pagamentos: []
+                }
+            ],
+            comandas: [
+                { id: 'C001', status: 'ativa' },
+                { id: 'C002', status: 'ativa' },
+                { id: 'C003', status: 'finalizada' }
+            ]
+        };
+
+        // Sistema de entregadores
+        let entregadoresData = {
+            disponiveis: [
+                { id: 1, nome: 'Carlos Moto', veiculo: 'Moto', status: 'disponivel', entregas: 0 },
+                { id: 2, nome: 'João Bike', veiculo: 'Bicicleta', status: 'disponivel', entregas: 1 },
+                { id: 3, nome: 'Ana Delivery', veiculo: 'Carro', status: 'ocupado', entregas: 2 },
+                { id: 4, nome: 'Pedro Express', veiculo: 'Moto', status: 'disponivel', entregas: 0 },
+                { id: 5, nome: 'Maria Fast', veiculo: 'Bicicleta', status: 'disponivel', entregas: 1 }
+            ]
+        };
+
         // Sistema de dados dos pedidos
         let pedidosData = {
             aguardando: [
@@ -530,6 +740,8 @@
             
             // Atualizar dados da aba
             atualizarAba(tabName);
+            
+
         }
 
         function atualizarContadores() {
@@ -687,9 +899,24 @@
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-lg font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                        <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
-                                            ${config.text}
-                                        </button>
+                                        ${tipo === 'prontos' ? `
+                                            <div class="flex items-center space-x-2">
+                                                <button onclick="toggleMenuDespacho('${pedido.id}')" class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+                                                    Despachar
+                                                </button>
+                                                <div id="menu-${pedido.id}" class="hidden absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-48">
+                                                    ${entregadoresData.disponiveis.filter(e => e.status === 'disponivel').map(entregador => `
+                                                        <button onclick="despacharPedido('${pedido.id}', '${entregador.id}')" class="block w-full text-left px-3 py-2 text-sm text-black hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg">
+                                                            ${entregador.nome} (${entregador.veiculo})
+                                                        </button>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : `
+                                            <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
+                                                ${config.text}
+                                            </button>
+                                        `}
                                     </div>
                                 </div>
                             </div>
@@ -835,9 +1062,24 @@
                                     
                                     <div class="flex justify-between items-center">
                                         <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
-                                        <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-${config.color}-600 transition-colors">
-                                            ${config.text}
-                                        </button>
+                                        ${tipo === 'prontos' ? `
+                                            <div class="flex items-center space-x-1">
+                                                <button onclick="toggleMenuDespacho('${pedido.id}')" class="bg-green-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-green-600 transition-colors">
+                                                    Despachar
+                                                </button>
+                                                <div id="menu-${pedido.id}" class="hidden absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-40">
+                                                    ${entregadoresData.disponiveis.filter(e => e.status === 'disponivel').map(entregador => `
+                                                        <button onclick="despacharPedido('${pedido.id}', '${entregador.id}')" class="block w-full text-left px-2 py-1 text-xs text-black hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg">
+                                                            ${entregador.nome} (${entregador.veiculo})
+                                                        </button>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : `
+                                            <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-${config.color}-600 transition-colors">
+                                                ${config.text}
+                                            </button>
+                                        `}
                                     </div>
                                 </div>
                             </div>
@@ -856,6 +1098,10 @@
                 renderizarPedidosMobile(pedidosData.aguardando, 'coluna-aguardando-mobile', 'aguardando');
                 renderizarPedidosMobile(pedidosData.prontos, 'coluna-prontos-mobile', 'prontos');
                 
+            } else if (tabName === 'salao') {
+                renderizarMesas();
+                renderizarComandas();
+                
             } else if (tabName === 'kds') {
                 renderizarPedidos(pedidosData.novos, 'coluna-novos', 'novos');
                 renderizarPedidos(pedidosData.preparo, 'coluna-preparo', 'preparo');
@@ -870,6 +1116,144 @@
             }
             atualizarContadores();
         }
+
+        // Funções do Salão
+        function alternarVisualizacao(tipo) {
+            // Atualizar botões
+            document.getElementById('btn-mesas').classList.remove('bg-orange-100', 'text-orange-700');
+            document.getElementById('btn-comandas').classList.remove('bg-orange-100', 'text-orange-700');
+            document.getElementById('btn-mesas').classList.add('text-gray-600');
+            document.getElementById('btn-comandas').classList.add('text-gray-600');
+            
+            // Esconder todas as visualizações
+            document.querySelectorAll('.salao-view').forEach(view => {
+                view.classList.add('hidden');
+            });
+            
+            // Mostrar visualização selecionada e ativar botão
+            if (tipo === 'mesas') {
+                document.getElementById('view-mesas').classList.remove('hidden');
+                document.getElementById('btn-mesas').classList.add('bg-orange-100', 'text-orange-700');
+                document.getElementById('btn-mesas').classList.remove('text-gray-600');
+            } else {
+                document.getElementById('view-comandas').classList.remove('hidden');
+                document.getElementById('btn-comandas').classList.add('bg-orange-100', 'text-orange-700');
+                document.getElementById('btn-comandas').classList.remove('text-gray-600');
+            }
+        }
+
+        function renderizarMesas() {
+            const container = document.getElementById('grade-mesas');
+            if (!container) return;
+
+            const mesasHTML = salaoData.mesas.map(mesa => {
+                const statusConfig = {
+                    'livre': { color: 'green', icon: 'check-circle', text: 'Livre' },
+                    'ocupada': { color: 'orange', icon: 'users', text: 'Ocupada' },
+                    'reservada': { color: 'red', icon: 'clock', text: 'Reservada' }
+                };
+
+                const config = statusConfig[mesa.status];
+                
+                return `
+                    <div onclick="gerenciarMesa(${mesa.id})" class="bg-white border-2 border-${config.color}-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-all hover:border-${config.color}-300">
+                        <div class="text-center space-y-2">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-${config.icon} text-${config.color}-500 text-2xl"></i>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Mesa ${mesa.id}</h4>
+                                <p class="text-xs text-gray-600">${mesa.capacidade} lugares</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = mesasHTML;
+        }
+
+        function renderizarComandas() {
+            const container = document.getElementById('lista-comandas');
+            if (!container) return;
+
+            const comandasAtivas = salaoData.comandas.filter(comanda => comanda.status === 'ativa');
+
+            if (comandasAtivas.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-gray-400">
+                        <i class="fas fa-receipt text-2xl mb-2"></i>
+                        <p class="text-sm">Nenhuma comanda ativa</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const comandasHTML = comandasAtivas.map(comanda => `
+                <div class="p-6 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-semibold text-gray-800">Comanda ${comanda.id}</h4>
+                                <span class="inline-block px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                                    Ativa
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = comandasHTML;
+        }
+
+        function gerenciarMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            if (mesa.status === 'livre') {
+                const acao = confirm('Mesa livre. Deseja ocupar (OK) ou reservar (Cancelar)?');
+                if (acao) {
+                    ocuparMesa(mesa);
+                } else {
+                    reservarMesa(mesa);
+                }
+            } else {
+                const info = `Mesa ${mesa.id}\nCliente: ${mesa.cliente}\nStatus: ${mesa.status}\nTotal: R$ ${mesa.total.toFixed(2)}`;
+                alert(info);
+            }
+        }
+
+        function ocuparMesa(mesa) {
+            const cliente = prompt('Nome do cliente:');
+            if (cliente) {
+                mesa.status = 'ocupada';
+                mesa.cliente = cliente;
+                mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                mesa.pessoas = 1;
+                mesa.total = 0;
+                mesa.pedidos = [];
+                mesa.pagamentos = [];
+                renderizarMesas();
+            }
+        }
+
+        function reservarMesa(mesa) {
+            const cliente = prompt('Nome do cliente:');
+            if (!cliente) return;
+            
+            const horario = prompt('Horário da reserva (ex: 19:30):');
+            if (horario) {
+                mesa.status = 'reservada';
+                mesa.cliente = cliente;
+                mesa.horario = horario;
+                mesa.pessoas = 1;
+                renderizarMesas();
+            }
+        }
+
+
 
         // Funções de fluxo dos pedidos
         function aceitarPedido(id) {
@@ -904,14 +1288,49 @@
             }
         }
 
-        function despacharPedido(id) {
-            const pedidoIndex = pedidosData.prontos.findIndex(p => p.id === id);
-            if (pedidoIndex !== -1) {
+        function toggleMenuDespacho(pedidoId) {
+            // Fechar todos os outros menus
+            document.querySelectorAll('[id^="menu-"]').forEach(menu => {
+                if (menu.id !== `menu-${pedidoId}`) {
+                    menu.classList.add('hidden');
+                }
+            });
+            
+            // Alternar o menu atual
+            const menu = document.getElementById(`menu-${pedidoId}`);
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        function despacharPedido(pedidoId, entregadorId) {
+            if (!entregadorId) return; // Se não selecionou entregador, não faz nada
+            
+            const pedidoIndex = pedidosData.prontos.findIndex(p => p.id === pedidoId);
+            const entregador = entregadoresData.disponiveis.find(e => e.id == entregadorId);
+            
+            if (pedidoIndex !== -1 && entregador && entregador.status === 'disponivel') {
                 const pedido = pedidosData.prontos.splice(pedidoIndex, 1)[0];
-                pedido.entregador = 'Aguardando designação';
+                
+                // Atualizar dados do pedido
+                pedido.entregador = entregador.nome;
                 pedido.tempoDesignacao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 pedido.status = 'pendente';
+                
+                // Atualizar status do entregador
+                entregador.status = 'ocupado';
+                entregador.entregas += 1;
+                
+                // Mover pedido para pendentes
                 pedidosData.pendentes.push(pedido);
+                
+                // Fechar menu
+                const menu = document.getElementById(`menu-${pedidoId}`);
+                if (menu) {
+                    menu.classList.add('hidden');
+                }
+                
+                // Atualizar interface
                 atualizarAba('pedidos');
                 atualizarContadores();
             }
@@ -934,16 +1353,34 @@
             const pedidoIndex = pedidosData.rota.findIndex(p => p.id === id);
             if (pedidoIndex !== -1) {
                 const pedido = pedidosData.rota.splice(pedidoIndex, 1)[0];
+                
+                // Liberar entregador
+                const entregador = entregadoresData.disponiveis.find(e => e.nome === pedido.entregador);
+                if (entregador) {
+                    entregador.status = 'disponivel';
+                }
+                
                 atualizarAba('entregas');
                 atualizarContadores();
             }
         }
 
+
+
         // Inicializar sistema
         document.addEventListener('DOMContentLoaded', function() {
             atualizarContadores();
             atualizarAba('pedidos'); // Carregar aba inicial
+            
+            // Fechar menus ao clicar fora
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('[id^="menu-"]') && !event.target.closest('button[onclick*="toggleMenuDespacho"]')) {
+                    document.querySelectorAll('[id^="menu-"]').forEach(menu => {
+                        menu.classList.add('hidden');
+                    });
+                }
+            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980bce7ac1fc6d7b',t:'MTc1ODE0NTY5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980d6d52775bcb13',t:'MTc1ODE2MjY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
