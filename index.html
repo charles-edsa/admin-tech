@@ -1034,8 +1034,245 @@
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (!mesa) return;
 
-            console.log('Abrindo detalhes da mesa:', mesa);
-            // Aqui você pode implementar um modal ou ação específica para a mesa
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            const statusConfig = {
+                'livre': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Livre' },
+                'ocupada': { color: 'text-red-600', bg: 'bg-red-100', icon: 'user-friends', label: 'Ocupada' },
+                'reservada': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Reservada' }
+            };
+            
+            const config = statusConfig[mesa.status];
+            
+            const modalHTML = `
+                <!-- Cabeçalho do Modal -->
+                <div class="bg-white px-6 py-4 border-b border-gray-200 flex-shrink-0">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Mesa ${mesa.numero}</h3>
+                        </div>
+                        <button onclick="fecharModalMesa()" class="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Conteúdo do Modal -->
+                <div class="flex-1 overflow-y-auto">
+                    ${mesa.status === 'livre' ? `
+                        <!-- Mesa Livre -->
+                        <div class="p-6">
+                            <div class="text-center py-12">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                                </div>
+                                <h4 class="text-lg font-medium text-gray-900 mb-2">Mesa Disponível</h4>
+                                <p class="text-gray-600 mb-6">Esta mesa está livre e pronta para receber clientes</p>
+                                
+                                <div class="space-y-3">
+                                    <button onclick="ocuparMesa(${mesa.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                        <i class="fas fa-user-plus mr-2"></i>Ocupar Mesa
+                                    </button>
+                                    <button onclick="reservarMesa(${mesa.id})" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                        <i class="fas fa-calendar-plus mr-2"></i>Fazer Reserva
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ` : mesa.status === 'reservada' ? `
+                        <!-- Mesa Reservada -->
+                        <div class="p-6">
+                            <div class="text-center py-12">
+                                <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-clock text-amber-600 text-2xl"></i>
+                                </div>
+                                <h4 class="text-lg font-medium text-gray-900 mb-2">Mesa Reservada</h4>
+                                <p class="text-gray-600 mb-6">Reservada para <strong>${mesa.cliente}</strong> às ${mesa.horario}</p>
+                                
+                                <div class="space-y-3">
+                                    <button onclick="confirmarChegada(${mesa.id})" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                        <i class="fas fa-check mr-2"></i>Confirmar Chegada
+                                    </button>
+                                    <button onclick="cancelarReserva(${mesa.id})" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                        <i class="fas fa-times mr-2"></i>Cancelar Reserva
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ` : `
+                        <!-- Mesa Ocupada -->
+                        <div class="p-6 space-y-6">
+                            <!-- Informações da Mesa -->
+                            <div class="space-y-3 pb-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Atendente</div>
+                                    <div class="text-sm font-medium text-gray-900">Carlos Silva</div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Duração</div>
+                                    <div class="text-sm font-medium text-gray-900">${mesa.horario} • <span id="duracao-mesa">45 min</span></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cliente 1 -->
+                            <div class="pb-4 border-b border-gray-200">
+                                <div class="mb-4">
+                                    <h4 class="text-sm font-semibold text-gray-900">${mesa.cliente}</h4>
+                                </div>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-gray-900">1x Hambúrguer Artesanal</div>
+                                            <div class="text-xs text-gray-600 mt-1">Pão brioche, carne 180g, sem cebola</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-semibold text-gray-900">R$ 18,90</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-gray-900">1x Batata Frita Grande</div>
+                                            <div class="text-xs text-gray-600 mt-1">Com bacon e queijo</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-semibold text-gray-900">R$ 9,50</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-gray-900">1x Refrigerante</div>
+                                            <div class="text-xs text-gray-600 mt-1">Coca-Cola 350ml</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-semibold text-gray-900">R$ 4,50</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Taxa de Serviço Cliente 1 -->
+                                <div class="mt-4 pt-3 border-t border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
+                                        <button onclick="toggleTaxaServico('cliente1')" id="toggle-cliente1" class="relative inline-flex h-5 w-9 items-center rounded-full bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                            <span id="toggle-dot-cliente1" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform translate-x-5"></span>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-700">
+                                            Subtotal: <span class="font-medium">R$ 32,90</span><span class="text-xs text-gray-400 ml-2" id="taxa-cliente1">+ R$ 3,29</span>
+                                        </div>
+                                        <div class="text-sm font-semibold text-orange-500" id="total-cliente1">R$ 36,19</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cliente 2 -->
+                            <div class="pb-4 border-b border-gray-200">
+                                <div class="mb-4">
+                                    <h4 class="text-sm font-semibold text-gray-900">Ana Silva</h4>
+                                </div>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-gray-900">1x Pizza Individual Margherita</div>
+                                            <div class="text-xs text-gray-600 mt-1">Massa fina, manjericão fresco</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-semibold text-gray-900">R$ 19,90</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-gray-900">1x Suco de Laranja</div>
+                                            <div class="text-xs text-gray-600 mt-1">Natural 300ml</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-sm font-semibold text-gray-900">R$ 4,60</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Taxa de Serviço Cliente 2 -->
+                                <div class="mt-4 pt-3 border-t border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
+                                        <button onclick="toggleTaxaServico('cliente2')" id="toggle-cliente2" class="relative inline-flex h-5 w-9 items-center rounded-full bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+                                            <span id="toggle-dot-cliente2" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform translate-x-1"></span>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-700">
+                                            Subtotal: <span class="font-medium">R$ 24,50</span><span class="text-xs text-gray-400 ml-2" id="taxa-cliente2" style="visibility: hidden;">+ R$ 2,45</span>
+                                        </div>
+                                        <div class="text-sm font-semibold text-orange-500" id="total-cliente2">R$ 24,50</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botão Adicionar Cliente -->
+                            <button onclick="adicionarCliente(${mesa.id})" class="w-full border border-dashed border-gray-300 rounded-lg p-3 text-sm text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>Adicionar Cliente
+                            </button>
+
+                            <!-- Total da Mesa -->
+                            <div class="pt-4 border-t border-gray-200">
+                                <!-- Sublegenda Taxa de Serviço -->
+                                <div id="sublegenda-taxa" class="flex justify-between items-center text-sm text-gray-600 mb-2">
+                                    <span>Taxa de serviço:</span>
+                                    <span id="valor-taxa-total">R$ 3,29</span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold text-gray-700">Total da Mesa:</span>
+                                    <span id="total-mesa" class="text-2xl font-bold text-orange-600">R$ 60,69</span>
+                                </div>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalMesaAberto = { overlay, modal };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalMesa();
+                }
+            });
+        }
+
+        function fecharModalMesa() {
+            if (window.modalMesaAberto) {
+                const { overlay, modal } = window.modalMesaAberto;
+                
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalMesaAberto = null;
+                }, 300);
+            }
         }
 
         function abrirDetalheComanda(comandaId) {
@@ -1044,6 +1281,72 @@
 
             console.log('Abrindo detalhes da comanda:', comanda);
             // Aqui você pode implementar um modal ou ação específica para a comanda
+        }
+
+        // Funções para gerenciamento de mesas
+        function ocuparMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (mesa) {
+                mesa.status = 'ocupada';
+                mesa.cliente = 'Cliente Novo';
+                mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                renderizarMesas();
+                fecharModalMesa();
+            }
+        }
+
+        function reservarMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (mesa) {
+                mesa.status = 'reservada';
+                mesa.cliente = 'Cliente Reserva';
+                mesa.horario = '15:30';
+                renderizarMesas();
+                fecharModalMesa();
+            }
+        }
+
+        function confirmarChegada(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (mesa) {
+                mesa.status = 'ocupada';
+                mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                renderizarMesas();
+                fecharModalMesa();
+            }
+        }
+
+        function cancelarReserva(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (mesa) {
+                mesa.status = 'livre';
+                mesa.cliente = null;
+                mesa.horario = null;
+                renderizarMesas();
+                fecharModalMesa();
+            }
+        }
+
+        function adicionarCliente(mesaId) {
+            console.log('Adicionando cliente à mesa:', mesaId);
+            // Implementar modal para adicionar cliente
+        }
+
+        function adicionarItem(mesaId) {
+            console.log('Adicionando item à mesa:', mesaId);
+            // Implementar modal para adicionar item
+        }
+
+        function fecharConta(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (mesa) {
+                mesa.status = 'livre';
+                mesa.cliente = null;
+                mesa.horario = null;
+                mesa.total = 0;
+                renderizarMesas();
+                fecharModalMesa();
+            }
         }
 
         // Funções de ação dos pedidos
@@ -1247,6 +1550,84 @@
 
 
 
+        // Sistema de Taxa de Serviço
+        const taxasServico = {
+            cliente1: { ativo: true, subtotal: 32.90 },
+            cliente2: { ativo: false, subtotal: 24.50 }
+        };
+
+        function toggleTaxaServico(clienteId) {
+            const taxa = taxasServico[clienteId];
+            if (!taxa) return;
+
+            taxa.ativo = !taxa.ativo;
+            
+            const toggleButton = document.getElementById(`toggle-${clienteId}`);
+            const toggleDot = document.getElementById(`toggle-dot-${clienteId}`);
+            const taxaSpan = document.getElementById(`taxa-${clienteId}`);
+            const totalSpan = document.getElementById(`total-${clienteId}`);
+            
+            if (taxa.ativo) {
+                // Ativar taxa
+                toggleButton.className = 'relative inline-flex h-5 w-9 items-center rounded-full bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2';
+                toggleDot.className = 'inline-block h-3 w-3 transform rounded-full bg-white transition-transform translate-x-5';
+                
+                const taxaValor = taxa.subtotal * 0.1;
+                const totalComTaxa = taxa.subtotal + taxaValor;
+                
+                taxaSpan.style.visibility = 'visible';
+                taxaSpan.className = 'text-xs text-gray-400 ml-2';
+                taxaSpan.textContent = `+ R$ ${taxaValor.toFixed(2)}`;
+                
+                totalSpan.className = 'text-sm font-semibold text-orange-500';
+                totalSpan.textContent = `R$ ${totalComTaxa.toFixed(2)}`;
+            } else {
+                // Desativar taxa
+                toggleButton.className = 'relative inline-flex h-5 w-9 items-center rounded-full bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2';
+                toggleDot.className = 'inline-block h-3 w-3 transform rounded-full bg-white transition-transform translate-x-1';
+                
+                taxaSpan.style.visibility = 'hidden';
+                
+                totalSpan.className = 'text-sm font-semibold text-orange-500';
+                totalSpan.textContent = `R$ ${taxa.subtotal.toFixed(2)}`;
+            }
+            
+            atualizarTotalMesa();
+        }
+
+        function atualizarTotalMesa() {
+            let totalMesa = 0;
+            let totalTaxa = 0;
+            
+            Object.values(taxasServico).forEach(taxa => {
+                if (taxa.ativo) {
+                    const taxaValor = taxa.subtotal * 0.1;
+                    totalMesa += taxa.subtotal + taxaValor;
+                    totalTaxa += taxaValor;
+                } else {
+                    totalMesa += taxa.subtotal;
+                }
+            });
+            
+            const totalElement = document.getElementById('total-mesa');
+            const sublegendaElement = document.getElementById('sublegenda-taxa');
+            const valorTaxaElement = document.getElementById('valor-taxa-total');
+            
+            if (totalElement) {
+                totalElement.textContent = `R$ ${totalMesa.toFixed(2)}`;
+            }
+            
+            // Mostrar/ocultar sublegenda da taxa
+            if (sublegendaElement && valorTaxaElement) {
+                if (totalTaxa > 0) {
+                    sublegendaElement.style.display = 'flex';
+                    valorTaxaElement.textContent = `R$ ${totalTaxa.toFixed(2)}`;
+                } else {
+                    sublegendaElement.style.display = 'none';
+                }
+            }
+        }
+
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Sistema iniciando...');
@@ -1254,5 +1635,5 @@
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9813d50316ede113',t:'MTc1ODIyOTg0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9823c6e03378e2a4',t:'MTc1ODM5NzA0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
