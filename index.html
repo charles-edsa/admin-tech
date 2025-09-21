@@ -679,12 +679,7 @@
                         
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-600">Cliente:</span>
                                 <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-600">Telefone:</span>
                                 <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
                                     <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
                                 </a>
@@ -701,10 +696,15 @@
                                 <div class="space-y-2">
                                     ${pedido.itens.map(item => `
                                         <div class="text-sm text-gray-900">
-                                            <div class="font-medium">${item.quantidade}x ${item.nome}</div>
-                                            ${item.observacoes && item.observacoes.length > 0 ? `
-                                                <div class="text-xs text-gray-600 ml-2 mt-1">(${item.observacoes.join(', ')})</div>
-                                            ` : ''}
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex-1">
+                                                    <div class="font-medium">${item.quantidade}x ${item.nome}</div>
+                                                    ${item.observacoes && item.observacoes.length > 0 ? `
+                                                        <div class="text-xs text-gray-600 ml-2 mt-1">(${item.observacoes.join(', ')})</div>
+                                                    ` : ''}
+                                                </div>
+                                                <div class="text-sm font-medium text-black ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                                            </div>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -712,27 +712,17 @@
                         </div>
                         
                         <div class="border-t border-gray-200 pt-3 space-y-2">
-                            ${pedido.endereco ? `
-                                <div class="flex items-start justify-between">
-                                    <span class="text-sm text-gray-600">Endereço:</span>
-                                    <div class="text-right">
-                                        <a href="https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
-                                            <i class="fas fa-map-marker-alt mr-1"></i>${pedido.endereco} • ${pedido.distancia}
-                                        </a>
-                                    </div>
-                                </div>
-                            ` : ''}
-                            
                             <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-600">Horário:</span>
-                                <div class="text-right">
-                                    <div class="text-sm text-gray-700">${pedido.hora}${pedido.tempo ? ` • ${pedido.tempo}` : ''}</div>
-                                </div>
+                                <div class="text-sm text-gray-700">${pedido.hora}${pedido.tempo ? ` • ${pedido.tempo}` : ''}</div>
+                                ${pedido.endereco ? `
+                                    <a href="https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                                        <i class="fas fa-map-marker-alt mr-1"></i>${pedido.endereco} • ${pedido.distancia}
+                                    </a>
+                                ` : ''}
                             </div>
                             
                             ${pedido.entregador ? `
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-600">Entregador:</span>
                                     <span class="text-sm font-medium text-gray-900">${pedido.entregador}</span>
                                 </div>
                             ` : ''}
@@ -741,18 +731,13 @@
                         <div class="border-t border-gray-200 pt-3 space-y-3">
                             <div class="space-y-2">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-600">Forma de Pagamento:</span>
                                     <span class="text-sm font-medium text-gray-900">${pedido.formaPagamento}</span>
-                                </div>
-                                
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-600">Status do Pagamento:</span>
                                     <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
                                 </div>
                             </div>
                             
                             <div class="flex justify-between items-center">
-                                <span class="text-lg font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
+                                <span class="text-lg font-bold text-orange-600">R$ ${pedido.total.toFixed(2)}</span>
                                 <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
                                     ${config.text}
                                 </button>
@@ -820,8 +805,10 @@
                         
                         <div class="space-y-1">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs text-gray-600">Cliente:</span>
                                 <span class="text-xs font-medium text-gray-900">${pedido.cliente}</span>
+                                <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                                    <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
+                                </a>
                             </div>
                         </div>
                         
@@ -834,7 +821,12 @@
                             <div class="space-y-1">
                                 ${pedido.itens.slice(0, 2).map(item => `
                                     <div class="text-xs text-gray-900">
-                                        <div class="font-medium">${item.quantidade}x ${item.nome}</div>
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <div class="font-medium">${item.quantidade}x ${item.nome}</div>
+                                            </div>
+                                            <div class="text-xs font-medium text-black ml-2">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                                        </div>
                                     </div>
                                 `).join('')}
                                 ${pedido.itens.length > 2 ? `<div class="text-xs text-gray-500">+${pedido.itens.length - 2} mais itens</div>` : ''}
@@ -844,18 +836,13 @@
                         <div class="border-t border-gray-200 pt-2 space-y-2">
                             <div class="space-y-1">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs text-gray-600">Forma de Pagamento:</span>
                                     <span class="text-xs font-medium text-gray-900">${pedido.formaPagamento}</span>
-                                </div>
-                                
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs text-gray-600">Status do Pagamento:</span>
                                     <span class="text-xs font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
                                 </div>
                             </div>
                             
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-bold text-gray-900">R$ ${pedido.total.toFixed(2)}</span>
+                                <span class="text-sm font-bold text-orange-600">R$ ${pedido.total.toFixed(2)}</span>
                                 <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-${config.color}-600 transition-colors">
                                     ${config.text}
                                 </button>
@@ -2315,5 +2302,5 @@
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982af51ff4776503',t:'MTc1ODQ3MjMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982d2d1ec5d564b1',t:'MTc1ODQ5NTYwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
