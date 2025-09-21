@@ -1121,11 +1121,11 @@
                             <!-- Botões Adicionar Cliente e Lançar Pedido -->
                             <div class="pt-4 border-t border-gray-200">
                                 <div class="flex space-x-3 mb-4">
-                                    <button onclick="adicionarCliente(${mesa.id})" class="flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 rounded-lg p-4 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all duration-200 flex items-center justify-center">
-                                        <i class="fas fa-user-plus mr-2 text-gray-500"></i>Adicionar Cliente
+                                    <button onclick="adicionarCliente(${mesa.id})" class="flex-1 bg-green-50 hover:bg-green-100 border border-green-200 hover:border-green-300 rounded-lg py-3 px-4 text-sm font-medium text-green-700 hover:text-green-800 transition-all duration-200 flex items-center justify-center">
+                                        <i class="fas fa-user-plus mr-2 text-green-500"></i><span class="hidden sm:inline">Adicionar Cliente</span><span class="sm:hidden">Cliente</span>
                                     </button>
-                                    <button onclick="lancarPedido(${mesa.id})" class="flex-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg p-4 text-sm font-medium text-blue-700 hover:text-blue-800 transition-all duration-200 flex items-center justify-center">
-                                        <i class="fas fa-plus mr-2 text-blue-500"></i>Lançar Pedido
+                                    <button onclick="lancarPedido(${mesa.id})" class="flex-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg py-3 px-4 text-sm font-medium text-blue-700 hover:text-blue-800 transition-all duration-200 flex items-center justify-center">
+                                        <i class="fas fa-plus mr-2 text-blue-500"></i><span class="hidden sm:inline">Lançar Pedido</span><span class="sm:hidden">Pedido</span>
                                     </button>
                                 </div>
 
@@ -1151,7 +1151,7 @@
                                     <button onclick="editarMesa(${mesa.id})" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 hover:text-blue-800 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-blue-200 hover:border-blue-300 flex items-center justify-center">
                                         <i class="fas fa-edit mr-2"></i>Editar
                                     </button>
-                                    <button onclick="imprimirConta(${mesa.id})" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-800 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-gray-200 hover:border-gray-300 flex items-center justify-center">
+                                    <button onclick="imprimirConta(${mesa.id})" class="flex-1 bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-green-200 hover:border-green-300 flex items-center justify-center">
                                         <i class="fas fa-print mr-2"></i>Imprimir
                                     </button>
                                     <button onclick="encerrarMesa(${mesa.id})" id="btn-encerrar-mesa" class="flex-1 ${verificarPagamentosCompletos() ? 'bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800' : 'bg-gray-100 text-gray-400 cursor-not-allowed'} font-medium py-3 px-4 rounded-lg transition-all duration-200 border ${verificarPagamentosCompletos() ? 'border-red-200 hover:border-red-300' : 'border-gray-200'} flex items-center justify-center" ${!verificarPagamentosCompletos() ? 'disabled' : ''}>
@@ -1878,6 +1878,38 @@
             atualizarTotalMesa();
         }
 
+        function cancelarItem(pedidoId, itemId) {
+            const pedido = pedidosPendentes.find(p => p.id === pedidoId);
+            if (!pedido) return;
+            
+            const itemIndex = pedido.itens.findIndex(i => i.id === itemId);
+            if (itemIndex === -1) return;
+            
+            const item = pedido.itens[itemIndex];
+            
+            // Remover o item do pedido pendente
+            pedido.itens.splice(itemIndex, 1);
+            
+            console.log(`Item ${item.nome} cancelado do pedido ${pedidoId}`);
+            
+            // Se não há mais itens no pedido, remover o pedido da lista
+            if (pedido.itens.length === 0) {
+                const pedidoIndex = pedidosPendentes.findIndex(p => p.id === pedidoId);
+                if (pedidoIndex !== -1) {
+                    pedidosPendentes.splice(pedidoIndex, 1);
+                    console.log(`Pedido ${pedidoId} totalmente cancelado e removido da lista de pendentes`);
+                }
+            }
+            
+            // Atualizar a interface
+            const listaClientes = document.getElementById('lista-clientes');
+            if (listaClientes) {
+                listaClientes.innerHTML = renderizarClientesMesa();
+            }
+            
+            atualizarTotalMesa();
+        }
+
         function renderizarClientesMesa() {
             let html = '';
             let itemIndex = 0;
@@ -1896,63 +1928,103 @@
                             <!-- Botão de Pagamento ao lado do nome -->
                             ${!cliente.pagamento ? `
                                 <div class="relative">
-                                    <button onclick="toggleDropdownPagamento('${clienteId}')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 hover:text-amber-800 font-medium py-1 px-2 rounded text-xs flex items-center border border-amber-200 hover:border-amber-300 transition-all duration-200">
-                                        <i class="fas fa-clock mr-1"></i>Pagamento pendente
-                                        <i class="fas fa-chevron-down ml-1 text-xs"></i>
-                                    </button>
-                                    <div id="dropdown-${clienteId}" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
-                                        <div class="py-2">
-                                            <button onclick="confirmarPagamento('${clienteId}', 'Pix')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                <i class="fas fa-qrcode mr-3 text-blue-500"></i>Pix
-                                            </button>
-                                            <button onclick="confirmarPagamento('${clienteId}', 'Online')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                <i class="fas fa-globe mr-3 text-green-500"></i>Online
-                                            </button>
-                                            <button onclick="confirmarPagamento('${clienteId}', 'Maquininha')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                <i class="fas fa-credit-card mr-3 text-purple-500"></i>Maquininha
-                                            </button>
-                                            <button onclick="confirmarPagamento('${clienteId}', 'Dinheiro')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                <i class="fas fa-money-bill-wave mr-3 text-orange-500"></i>Dinheiro
-                                            </button>
+                                    ${temPedidosPendentesParaCliente(cliente.nome) ? `
+                                        <button class="bg-gray-100 text-gray-400 cursor-not-allowed font-medium py-1 px-2 rounded text-xs flex items-center border border-gray-200" disabled title="Confirme ou cancele os pedidos pendentes primeiro">
+                                            <i class="fas fa-lock mr-1"></i>Aguardando pedidos
+                                        </button>
+                                    ` : `
+                                        <button onclick="toggleDropdownPagamento('${clienteId}')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 hover:text-amber-800 font-medium py-1 px-2 rounded text-xs flex items-center border border-amber-200 hover:border-amber-300 transition-all duration-200">
+                                            <i class="fas fa-clock mr-1"></i>Pagamento pendente
+                                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                        </button>
+                                        <div id="dropdown-${clienteId}" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                                            <div class="py-2">
+                                                <button onclick="confirmarPagamento('${clienteId}', 'Pix')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                    <i class="fas fa-qrcode mr-3 text-blue-500"></i>Pix
+                                                </button>
+                                                <button onclick="confirmarPagamento('${clienteId}', 'Online')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                    <i class="fas fa-globe mr-3 text-green-500"></i>Online
+                                                </button>
+                                                <button onclick="confirmarPagamento('${clienteId}', 'Maquininha')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                    <i class="fas fa-credit-card mr-3 text-purple-500"></i>Maquininha
+                                                </button>
+                                                <button onclick="confirmarPagamento('${clienteId}', 'Dinheiro')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                    <i class="fas fa-money-bill-wave mr-3 text-orange-500"></i>Dinheiro
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    `}
                                 </div>
                             ` : `
                                 <button onclick="removerPagamento('${clienteId}')" class="bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-1 px-2 rounded text-xs flex items-center border border-green-200 hover:border-green-300 transition-all duration-200">
-                                    <i class="fas fa-check mr-1"></i>Pagamento confirmado
+                                    <i class="fas fa-check mr-1"></i>Pagamento realizado: ${cliente.pagamento.forma}
                                 </button>
                             `}
                         </div>
                         
-                        <div class="space-y-3">
-                            ${cliente.itens.map(item => `
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="text-sm font-medium text-gray-900">${item.quantidade}x ${item.nome}</div>
-                                        ${item.observacoes && item.observacoes.length > 0 ? `
-                                            <div class="text-xs text-gray-600 mt-1">${item.observacoes.join(', ')}</div>
-                                        ` : ''}
+                        ${!cliente.pagamento ? `
+                            <div class="space-y-3">
+                                ${cliente.itens.map(item => `
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-gray-900">${item.quantidade}x ${item.nome}</div>
+                                            ${item.observacoes && item.observacoes.length > 0 ? `
+                                                <div class="text-xs text-gray-600 mt-1">${item.observacoes.join(', ')}</div>
+                                            ` : ''}
+                                        </div>
+                                        <div class="text-sm font-semibold text-gray-900">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
                                     </div>
-                                    <div class="text-sm font-semibold text-gray-900">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                        
-                        <!-- Taxa de Serviço -->
-                        <div class="mt-4 pt-3">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
-                                <button onclick="toggleTaxaServico('${clienteId}')" id="toggle-${clienteId}" class="relative inline-flex h-5 w-9 items-center rounded-full ${cliente.ativo ? 'bg-blue-500' : 'bg-gray-300'} transition-colors focus:outline-none focus:ring-2 focus:ring-${cliente.ativo ? 'blue' : 'gray'}-500 focus:ring-offset-2">
-                                    <span id="toggle-dot-${clienteId}" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${cliente.ativo ? 'translate-x-5' : 'translate-x-1'}"></span>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div class="relative">
+                                <button onclick="toggleDetalhesConsumo('${clienteId}')" class="text-sm text-gray-600 hover:text-gray-800 transition-colors flex items-center">
+                                    ${cliente.itens.length} ${cliente.itens.length === 1 ? 'item consumido' : 'itens consumidos'} • R$ ${cliente.pagamento.valor.toFixed(2)}
+                                    <i id="chevron-${clienteId}" class="fas fa-chevron-down ml-2 text-xs transition-transform"></i>
                                 </button>
-                            </div>
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="text-sm text-gray-700">
-                                    Subtotal: <span class="font-medium">R$ ${cliente.subtotal.toFixed(2)}</span><span class="text-xs text-gray-400 ml-2" id="taxa-${clienteId}" ${!cliente.ativo ? 'style="visibility: hidden;"' : ''}>+ R$ ${taxaValor.toFixed(2)}</span>
+                                
+                                <div id="detalhes-${clienteId}" class="hidden mt-3">
+                                    <div class="space-y-3">
+                                        ${cliente.itens.map(item => `
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex-1">
+                                                    <div class="text-sm font-medium text-gray-900">${item.quantidade}x ${item.nome}</div>
+                                                    ${item.observacoes && item.observacoes.length > 0 ? `
+                                                        <div class="text-xs text-gray-600 mt-1">${item.observacoes.join(', ')}</div>
+                                                    ` : ''}
+                                                </div>
+                                                <div class="text-sm font-semibold text-gray-900">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-3 border-t border-gray-200">
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-gray-700">Total: R$ ${cliente.subtotal.toFixed(2)} ${cliente.ativo ? `+ R$ ${(cliente.subtotal * 0.1).toFixed(2)}` : '+ R$ 0,00'}</span>
+                                            <span class="font-semibold text-orange-500">R$ ${cliente.pagamento.valor.toFixed(2)}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-sm font-semibold text-orange-500" id="total-${clienteId}">R$ ${totalComTaxa.toFixed(2)}</div>
                             </div>
-                        </div>
+                        `}
+                        
+                        ${!cliente.pagamento ? `
+                            <!-- Taxa de Serviço -->
+                            <div class="mt-4 pt-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
+                                    <button onclick="toggleTaxaServico('${clienteId}')" id="toggle-${clienteId}" class="relative inline-flex h-5 w-9 items-center rounded-full ${cliente.ativo ? 'bg-blue-500' : 'bg-gray-300'} transition-colors focus:outline-none focus:ring-2 focus:ring-${cliente.ativo ? 'blue' : 'gray'}-500 focus:ring-offset-2">
+                                        <span id="toggle-dot-${clienteId}" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${cliente.ativo ? 'translate-x-5' : 'translate-x-1'}"></span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="text-sm text-gray-700">
+                                        Subtotal: <span class="font-medium">R$ ${cliente.subtotal.toFixed(2)}</span><span class="text-xs text-gray-400 ml-2" id="taxa-${clienteId}" ${!cliente.ativo ? 'style="visibility: hidden;"' : ''}>+ R$ ${taxaValor.toFixed(2)}</span>
+                                    </div>
+                                    <div class="text-sm font-semibold text-orange-500" id="total-${clienteId}">R$ ${totalComTaxa.toFixed(2)}</div>
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
                 itemIndex++;
@@ -1986,14 +2058,19 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Linha 2: Horário de lançamento e botão confirmar -->
+                                    <!-- Linha 2: Horário de lançamento e botões -->
                                     <div class="flex items-center justify-between">
                                         <div class="text-xs text-gray-600">
                                             Lançado às ${pedido.horarioLancamento}
                                         </div>
-                                        <button onclick="confirmarItem('${pedido.id}', '${item.id}')" class="bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-1.5 px-3 rounded text-xs flex items-center border border-green-200 hover:border-green-300 transition-all duration-200 min-w-[80px] justify-center">
-                                            <i class="fas fa-check mr-1"></i>Confirmar
-                                        </button>
+                                        <div class="flex space-x-2">
+                                            <button onclick="cancelarItem('${pedido.id}', '${item.id}')" class="bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800 font-medium py-1.5 px-3 rounded text-xs flex items-center border border-red-200 hover:border-red-300 transition-all duration-200 min-w-[80px] justify-center">
+                                                <i class="fas fa-times mr-1"></i>Cancelar
+                                            </button>
+                                            <button onclick="confirmarItem('${pedido.id}', '${item.id}')" class="bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-1.5 px-3 rounded text-xs flex items-center border border-green-200 hover:border-green-300 transition-all duration-200 min-w-[80px] justify-center">
+                                                <i class="fas fa-check mr-1"></i>Confirmar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             `).join('')}
@@ -2083,6 +2160,11 @@
             }
         }
 
+        // Função para verificar se um cliente tem pedidos pendentes
+        function temPedidosPendentesParaCliente(nomeCliente) {
+            return pedidosPendentes.some(pedido => pedido.cliente === nomeCliente);
+        }
+
         // Funções de Pagamento Individual
         function toggleDropdownPagamento(clienteId) {
             // Fechar outros dropdowns abertos
@@ -2159,6 +2241,49 @@
             }
         }
 
+        // Função para alternar detalhes do consumo
+        function toggleDetalhesConsumo(clienteId) {
+            // Fechar outros dropdowns abertos
+            document.querySelectorAll('[id^="detalhes-"]').forEach(dropdown => {
+                if (dropdown.id !== `detalhes-${clienteId}`) {
+                    dropdown.classList.add('hidden');
+                    // Resetar chevron do dropdown fechado
+                    const chevronId = dropdown.id.replace('detalhes-', 'chevron-');
+                    const chevron = document.getElementById(chevronId);
+                    if (chevron) {
+                        chevron.classList.remove('rotate-180');
+                    }
+                }
+            });
+            
+            const dropdown = document.getElementById(`detalhes-${clienteId}`);
+            const chevron = document.getElementById(`chevron-${clienteId}`);
+            
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+                
+                // Animar chevron
+                if (chevron) {
+                    chevron.classList.toggle('rotate-180');
+                }
+            }
+            
+            // Fechar dropdown ao clicar fora
+            if (!dropdown.classList.contains('hidden')) {
+                setTimeout(() => {
+                    document.addEventListener('click', function fecharDropdown(e) {
+                        if (!e.target.closest(`#detalhes-${clienteId}`) && !e.target.closest(`button[onclick*="toggleDetalhesConsumo('${clienteId}')"]`)) {
+                            dropdown.classList.add('hidden');
+                            if (chevron) {
+                                chevron.classList.remove('rotate-180');
+                            }
+                            document.removeEventListener('click', fecharDropdown);
+                        }
+                    });
+                }, 100);
+            }
+        }
+
         // Função para calcular tempo de preparo
         function calcularTempoPreparo(horarioLancamento) {
             const agora = new Date();
@@ -2190,5 +2315,5 @@
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982a86c9c2f86508',t:'MTc1ODQ2NzgxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982af51ff4776503',t:'MTc1ODQ3MjMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
