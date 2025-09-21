@@ -1055,13 +1055,13 @@
             
             const modalHTML = `
                 <!-- Cabeçalho do Modal -->
-                <div class="bg-white px-6 py-4 border-b border-gray-200 flex-shrink-0">
+                <div class="bg-white px-6 py-3 border-b border-gray-200 flex-shrink-0">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900">Mesa ${mesa.numero}</h3>
                         </div>
-                        <button onclick="fecharModalMesa()" class="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-lg hover:bg-gray-100">
-                            <i class="fas fa-times text-xl"></i>
+                        <button onclick="fecharModalMesa()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-times text-lg"></i>
                         </button>
                     </div>
                 </div>
@@ -1078,11 +1078,11 @@
                                 <h4 class="text-lg font-medium text-gray-900 mb-2">Mesa Disponível</h4>
                                 <p class="text-gray-600 mb-6">Esta mesa está livre e pronta para receber clientes</p>
                                 
-                                <div class="space-y-3">
-                                    <button onclick="ocuparMesa(${mesa.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                <div class="flex space-x-3">
+                                    <button onclick="ocuparMesa(${mesa.id})" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 hover:text-blue-800 font-medium py-3 px-4 rounded-xl transition-all duration-200 border border-blue-200 hover:border-blue-300">
                                         <i class="fas fa-user-plus mr-2"></i>Ocupar Mesa
                                     </button>
-                                    <button onclick="reservarMesa(${mesa.id})" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                    <button onclick="reservarMesa(${mesa.id})" class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-700 hover:text-amber-800 font-medium py-3 px-4 rounded-xl transition-all duration-200 border border-amber-200 hover:border-amber-300">
                                         <i class="fas fa-calendar-plus mr-2"></i>Fazer Reserva
                                     </button>
                                 </div>
@@ -1098,11 +1098,11 @@
                                 <h4 class="text-lg font-medium text-gray-900 mb-2">Mesa Reservada</h4>
                                 <p class="text-gray-600 mb-6">Reservada para <strong>${mesa.cliente}</strong> às ${mesa.horario}</p>
                                 
-                                <div class="space-y-3">
-                                    <button onclick="confirmarChegada(${mesa.id})" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                <div class="flex space-x-3">
+                                    <button onclick="confirmarChegada(${mesa.id})" class="flex-1 bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-3 px-4 rounded-xl transition-all duration-200 border border-green-200 hover:border-green-300">
                                         <i class="fas fa-check mr-2"></i>Confirmar Chegada
                                     </button>
-                                    <button onclick="cancelarReserva(${mesa.id})" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                                    <button onclick="cancelarReserva(${mesa.id})" class="flex-1 bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800 font-medium py-3 px-4 rounded-xl transition-all duration-200 border border-red-200 hover:border-red-300">
                                         <i class="fas fa-times mr-2"></i>Cancelar Reserva
                                     </button>
                                 </div>
@@ -1112,120 +1112,19 @@
                         <!-- Mesa Ocupada -->
                         <div class="p-6 space-y-6">
                             <!-- Informações da Mesa -->
-                            <div class="space-y-3 pb-4 border-b border-gray-200">
-                                <div class="flex items-center justify-between">
-                                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Atendente</div>
-                                    <div class="text-sm font-medium text-gray-900">Carlos Silva</div>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-xs text-gray-500 uppercase tracking-wide font-medium">Duração</div>
-                                    <div class="text-sm font-medium text-gray-900">${mesa.horario} • <span id="duracao-mesa">45 min</span></div>
-                                </div>
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+                                <div class="text-sm font-medium text-gray-900">Carlos Silva</div>
+                                <div class="text-sm text-gray-600">${mesa.horario} • <span id="duracao-mesa">45 min</span></div>
                             </div>
                             
-                            <!-- Cliente 1 -->
-                            <div class="pb-4 border-b border-gray-200">
-                                <div class="mb-4">
-                                    <h4 class="text-sm font-semibold text-gray-900">${mesa.cliente}</h4>
-                                </div>
-                                
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1">
-                                            <div class="text-sm font-medium text-gray-900">1x Hambúrguer Artesanal</div>
-                                            <div class="text-xs text-gray-600 mt-1">Pão brioche, carne 180g, sem cebola</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="text-sm font-semibold text-gray-900">R$ 18,90</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1">
-                                            <div class="text-sm font-medium text-gray-900">1x Batata Frita Grande</div>
-                                            <div class="text-xs text-gray-600 mt-1">Com bacon e queijo</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="text-sm font-semibold text-gray-900">R$ 9,50</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1">
-                                            <div class="text-sm font-medium text-gray-900">1x Refrigerante</div>
-                                            <div class="text-xs text-gray-600 mt-1">Coca-Cola 350ml</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="text-sm font-semibold text-gray-900">R$ 4,50</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Taxa de Serviço Cliente 1 -->
-                                <div class="mt-4 pt-3 border-t border-gray-100">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
-                                        <button onclick="toggleTaxaServico('cliente1')" id="toggle-cliente1" class="relative inline-flex h-5 w-9 items-center rounded-full bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                            <span id="toggle-dot-cliente1" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform translate-x-5"></span>
-                                        </button>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <div class="text-sm text-gray-700">
-                                            Subtotal: <span class="font-medium">R$ 32,90</span><span class="text-xs text-gray-400 ml-2" id="taxa-cliente1">+ R$ 3,29</span>
-                                        </div>
-                                        <div class="text-sm font-semibold text-orange-500" id="total-cliente1">R$ 36,19</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Cliente 2 -->
-                            <div class="pb-4 border-b border-gray-200">
-                                <div class="mb-4">
-                                    <h4 class="text-sm font-semibold text-gray-900">Ana Silva</h4>
-                                </div>
-                                
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1">
-                                            <div class="text-sm font-medium text-gray-900">1x Pizza Individual Margherita</div>
-                                            <div class="text-xs text-gray-600 mt-1">Massa fina, manjericão fresco</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="text-sm font-semibold text-gray-900">R$ 19,90</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1">
-                                            <div class="text-sm font-medium text-gray-900">1x Suco de Laranja</div>
-                                            <div class="text-xs text-gray-600 mt-1">Natural 300ml</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="text-sm font-semibold text-gray-900">R$ 4,60</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Taxa de Serviço Cliente 2 -->
-                                <div class="mt-4 pt-3 border-t border-gray-100">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
-                                        <button onclick="toggleTaxaServico('cliente2')" id="toggle-cliente2" class="relative inline-flex h-5 w-9 items-center rounded-full bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                                            <span id="toggle-dot-cliente2" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform translate-x-1"></span>
-                                        </button>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <div class="text-sm text-gray-700">
-                                            Subtotal: <span class="font-medium">R$ 24,50</span><span class="text-xs text-gray-400 ml-2" id="taxa-cliente2" style="visibility: hidden;">+ R$ 2,45</span>
-                                        </div>
-                                        <div class="text-sm font-semibold text-orange-500" id="total-cliente2">R$ 24,50</div>
-                                    </div>
-                                </div>
+                            <!-- Clientes Dinâmicos -->
+                            <div id="lista-clientes">
+                                ${renderizarClientesMesa()}
                             </div>
 
                             <!-- Botão Adicionar Cliente -->
-                            <button onclick="adicionarCliente(${mesa.id})" class="w-full border border-dashed border-gray-300 rounded-lg p-3 text-sm text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors">
-                                <i class="fas fa-plus mr-2"></i>Adicionar Cliente
+                            <button onclick="adicionarCliente(${mesa.id})" class="w-full bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 rounded-lg p-4 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all duration-200 flex items-center justify-center">
+                                <i class="fas fa-user-plus mr-2 text-gray-500"></i>Adicionar Cliente
                             </button>
 
                             <!-- Total da Mesa -->
@@ -1236,9 +1135,22 @@
                                     <span id="valor-taxa-total">R$ 3,29</span>
                                 </div>
                                 
-                                <div class="flex justify-between items-center">
-                                    <span class="text-lg font-semibold text-gray-700">Total da Mesa:</span>
-                                    <span id="total-mesa" class="text-2xl font-bold text-orange-600">R$ 60,69</span>
+                                <div class="flex justify-between items-center mb-6">
+                                    <span class="text-sm font-medium text-gray-700">Total da Mesa:</span>
+                                    <span id="total-mesa" class="text-sm font-semibold text-orange-600">R$ 60,69</span>
+                                </div>
+                                
+                                <!-- Botões de Ação -->
+                                <div class="flex space-x-3">
+                                    <button onclick="editarMesa(${mesa.id})" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 hover:text-blue-800 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-blue-200 hover:border-blue-300 flex items-center justify-center">
+                                        <i class="fas fa-edit mr-2"></i>Editar
+                                    </button>
+                                    <button onclick="imprimirConta(${mesa.id})" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-800 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-gray-200 hover:border-gray-300 flex items-center justify-center">
+                                        <i class="fas fa-print mr-2"></i>Imprimir
+                                    </button>
+                                    <button onclick="encerrarMesa(${mesa.id})" id="btn-encerrar-mesa" class="flex-1 ${verificarPagamentosCompletos() ? 'bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800' : 'bg-gray-100 text-gray-400 cursor-not-allowed'} font-medium py-3 px-4 rounded-lg transition-all duration-200 border ${verificarPagamentosCompletos() ? 'border-red-200 hover:border-red-300' : 'border-gray-200'} flex items-center justify-center" ${!verificarPagamentosCompletos() ? 'disabled' : ''}>
+                                        <i class="fas fa-times mr-2"></i>Encerrar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1328,8 +1240,110 @@
         }
 
         function adicionarCliente(mesaId) {
-            console.log('Adicionando cliente à mesa:', mesaId);
-            // Implementar modal para adicionar cliente
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            modal.innerHTML = `
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Adicionar Cliente</h3>
+                        <button onclick="fecharModalAdicionarCliente()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-times text-lg"></i>
+                        </button>
+                    </div>
+                    
+                    <form onsubmit="confirmarAdicionarCliente(event, ${mesaId})" class="space-y-4">
+                        <div>
+                            <label for="nome-cliente" class="block text-sm font-medium text-gray-700 mb-2">Nome do Cliente</label>
+                            <input type="text" id="nome-cliente" name="nome-cliente" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                   placeholder="Digite o nome do cliente">
+                        </div>
+                        
+                        <div class="flex space-x-3 pt-4">
+                            <button type="button" onclick="fecharModalAdicionarCliente()" 
+                                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors">
+                                Cancelar
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                                Adicionar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalAdicionarClienteAberto = { overlay, modal };
+            
+            // Focar no input
+            setTimeout(() => {
+                const input = document.getElementById('nome-cliente');
+                if (input) input.focus();
+            }, 100);
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalAdicionarCliente();
+                }
+            });
+        }
+
+        function fecharModalAdicionarCliente() {
+            if (window.modalAdicionarClienteAberto) {
+                const { overlay, modal } = window.modalAdicionarClienteAberto;
+                
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalAdicionarClienteAberto = null;
+                }, 300);
+            }
+        }
+
+        function confirmarAdicionarCliente(event, mesaId) {
+            event.preventDefault();
+            
+            const nomeInput = document.getElementById('nome-cliente');
+            const nomeCliente = nomeInput.value.trim();
+            
+            if (nomeCliente) {
+                // Adicionar o novo cliente aos dados da mesa
+                const novoClienteId = `cliente${Date.now()}`;
+                
+                // Adicionar aos dados de taxas de serviço
+                taxasServico[novoClienteId] = { 
+                    ativo: false, 
+                    subtotal: 0,
+                    nome: nomeCliente,
+                    itens: []
+                };
+                
+                console.log(`Cliente "${nomeCliente}" adicionado à mesa ${mesaId}`);
+                fecharModalAdicionarCliente();
+                
+                // Atualizar apenas a lista de clientes no modal existente
+                const listaClientes = document.getElementById('lista-clientes');
+                if (listaClientes) {
+                    listaClientes.innerHTML = renderizarClientesMesa();
+                    atualizarTotalMesa();
+                }
+            }
         }
 
         function adicionarItem(mesaId) {
@@ -1338,6 +1352,52 @@
         }
 
         function fecharConta(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (mesa) {
+                mesa.status = 'livre';
+                mesa.cliente = null;
+                mesa.horario = null;
+                mesa.total = 0;
+                renderizarMesas();
+                fecharModalMesa();
+            }
+        }
+
+        function editarMesa(mesaId) {
+            console.log('Editando mesa:', mesaId);
+            // Implementar funcionalidade de edição
+        }
+
+        function imprimirConta(mesaId) {
+            console.log('Imprimindo conta da mesa:', mesaId);
+            // Implementar funcionalidade de impressão
+        }
+
+        function verificarPagamentosCompletos() {
+            return Object.values(taxasServico).every(cliente => cliente.pagamento && cliente.pagamento.status === 'pago');
+        }
+
+        function atualizarBotaoEncerrar() {
+            const btnEncerrar = document.getElementById('btn-encerrar-mesa');
+            if (btnEncerrar) {
+                const pagamentosCompletos = verificarPagamentosCompletos();
+                
+                if (pagamentosCompletos) {
+                    btnEncerrar.className = 'flex-1 bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-red-200 hover:border-red-300 flex items-center justify-center';
+                    btnEncerrar.disabled = false;
+                } else {
+                    btnEncerrar.className = 'flex-1 bg-gray-100 text-gray-400 cursor-not-allowed font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-gray-200 flex items-center justify-center';
+                    btnEncerrar.disabled = true;
+                }
+            }
+        }
+
+        function encerrarMesa(mesaId) {
+            if (!verificarPagamentosCompletos()) {
+                alert('Todos os pagamentos devem ser confirmados antes de encerrar a mesa.');
+                return;
+            }
+            
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (mesa) {
                 mesa.status = 'livre';
@@ -1552,9 +1612,108 @@
 
         // Sistema de Taxa de Serviço
         const taxasServico = {
-            cliente1: { ativo: true, subtotal: 32.90 },
-            cliente2: { ativo: false, subtotal: 24.50 }
+            cliente1: { 
+                ativo: true, 
+                subtotal: 32.90,
+                nome: 'Carlos Silva',
+                pagamento: null, // { forma: 'Pix', status: 'pago', valor: 36.19 }
+                itens: [
+                    { nome: 'Hambúrguer Artesanal', quantidade: 1, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
+                    { nome: 'Batata Frita Grande', quantidade: 1, preco: 9.50, observacoes: ['Com bacon e queijo'] },
+                    { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
+                ]
+            },
+            cliente2: { 
+                ativo: false, 
+                subtotal: 24.50,
+                nome: 'Ana Silva',
+                pagamento: null,
+                itens: [
+                    { nome: 'Pizza Individual Margherita', quantidade: 1, preco: 19.90, observacoes: ['Massa fina', 'Manjericão fresco'] },
+                    { nome: 'Suco de Laranja', quantidade: 1, preco: 4.60, observacoes: ['Natural 300ml'] }
+                ]
+            }
         };
+
+        function renderizarClientesMesa() {
+            return Object.keys(taxasServico).map((clienteId, index) => {
+                const cliente = taxasServico[clienteId];
+                const taxaValor = cliente.subtotal * 0.1;
+                const totalComTaxa = cliente.ativo ? cliente.subtotal + taxaValor : cliente.subtotal;
+                
+                return `
+                    <div class="${index > 0 ? 'pt-4 ' : ''}pb-4 border-b border-gray-200 last:border-b-0">
+                        <div class="mb-4 flex items-center justify-between">
+                            <h4 class="text-sm font-semibold text-gray-900">${cliente.nome}</h4>
+                            
+                            <!-- Botão de Pagamento ao lado do nome -->
+                            ${!cliente.pagamento ? `
+                                <div class="relative">
+                                    <button onclick="toggleDropdownPagamento('${clienteId}')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 hover:text-amber-800 font-medium py-1 px-2 rounded text-xs flex items-center border border-amber-200 hover:border-amber-300 transition-all duration-200">
+                                        <i class="fas fa-clock mr-1"></i>Pagamento pendente
+                                        <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                    </button>
+                                    <div id="dropdown-${clienteId}" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                                        <div class="py-2">
+                                            <button onclick="confirmarPagamento('${clienteId}', 'Pix')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                <i class="fas fa-qrcode mr-3 text-blue-500"></i>Pix
+                                            </button>
+                                            <button onclick="confirmarPagamento('${clienteId}', 'Online')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                <i class="fas fa-globe mr-3 text-green-500"></i>Online
+                                            </button>
+                                            <button onclick="confirmarPagamento('${clienteId}', 'Maquininha')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                <i class="fas fa-credit-card mr-3 text-purple-500"></i>Maquininha
+                                            </button>
+                                            <button onclick="confirmarPagamento('${clienteId}', 'Dinheiro')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                <i class="fas fa-money-bill-wave mr-3 text-orange-500"></i>Dinheiro
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : `
+                                <button onclick="removerPagamento('${clienteId}')" class="bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-1 px-2 rounded text-xs flex items-center border border-green-200 hover:border-green-300 transition-all duration-200">
+                                    <i class="fas fa-check mr-1"></i>Pagamento confirmado
+                                </button>
+                            `}
+                        </div>
+                        
+                        <div class="space-y-3">
+                            ${cliente.itens.map(item => `
+                                <div class="flex items-center justify-between">
+                                    <div class="flex-1">
+                                        <div class="text-sm font-medium text-gray-900">${item.quantidade}x ${item.nome}</div>
+                                        ${item.observacoes && item.observacoes.length > 0 ? `
+                                            <div class="text-xs text-gray-600 mt-1">${item.observacoes.join(', ')}</div>
+                                        ` : ''}
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-semibold text-gray-900">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <!-- Taxa de Serviço -->
+                        <div class="mt-4 pt-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Taxa de serviço (10%)</span>
+                                <button onclick="toggleTaxaServico('${clienteId}')" id="toggle-${clienteId}" class="relative inline-flex h-5 w-9 items-center rounded-full ${cliente.ativo ? 'bg-blue-500' : 'bg-gray-300'} transition-colors focus:outline-none focus:ring-2 focus:ring-${cliente.ativo ? 'blue' : 'gray'}-500 focus:ring-offset-2">
+                                    <span id="toggle-dot-${clienteId}" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${cliente.ativo ? 'translate-x-5' : 'translate-x-1'}"></span>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="text-sm text-gray-700">
+                                    Subtotal: <span class="font-medium">R$ ${cliente.subtotal.toFixed(2)}</span><span class="text-xs text-gray-400 ml-2" id="taxa-${clienteId}" ${!cliente.ativo ? 'style="visibility: hidden;"' : ''}>+ R$ ${taxaValor.toFixed(2)}</span>
+                                </div>
+                                <div class="text-sm font-semibold text-orange-500" id="total-${clienteId}">R$ ${totalComTaxa.toFixed(2)}</div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         function toggleTaxaServico(clienteId) {
             const taxa = taxasServico[clienteId];
@@ -1628,6 +1787,82 @@
             }
         }
 
+        // Funções de Pagamento Individual
+        function toggleDropdownPagamento(clienteId) {
+            // Fechar outros dropdowns abertos
+            document.querySelectorAll('[id^="dropdown-"]').forEach(dropdown => {
+                if (dropdown.id !== `dropdown-${clienteId}`) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+            
+            const dropdown = document.getElementById(`dropdown-${clienteId}`);
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+            }
+            
+            // Fechar dropdown ao clicar fora
+            if (!dropdown.classList.contains('hidden')) {
+                setTimeout(() => {
+                    document.addEventListener('click', function fecharDropdown(e) {
+                        if (!e.target.closest(`#dropdown-${clienteId}`) && !e.target.closest(`button[onclick*="${clienteId}"]`)) {
+                            dropdown.classList.add('hidden');
+                            document.removeEventListener('click', fecharDropdown);
+                        }
+                    });
+                }, 100);
+            }
+        }
+
+        function confirmarPagamento(clienteId, formaPagamento) {
+            const cliente = taxasServico[clienteId];
+            if (!cliente) return;
+            
+            const taxaValor = cliente.subtotal * 0.1;
+            const totalComTaxa = cliente.ativo ? cliente.subtotal + taxaValor : cliente.subtotal;
+            
+            // Registrar o pagamento como pago
+            cliente.pagamento = {
+                forma: formaPagamento,
+                status: 'pago',
+                valor: totalComTaxa,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log(`Pagamento confirmado para ${cliente.nome}: ${formaPagamento} - R$ ${totalComTaxa.toFixed(2)}`);
+            
+            // Fechar dropdown
+            const dropdown = document.getElementById(`dropdown-${clienteId}`);
+            if (dropdown) {
+                dropdown.classList.add('hidden');
+            }
+            
+            // Atualizar a interface
+            const listaClientes = document.getElementById('lista-clientes');
+            if (listaClientes) {
+                listaClientes.innerHTML = renderizarClientesMesa();
+                atualizarTotalMesa();
+                atualizarBotaoEncerrar();
+            }
+        }
+
+        function removerPagamento(clienteId) {
+            const cliente = taxasServico[clienteId];
+            if (cliente && cliente.pagamento) {
+                cliente.pagamento = null;
+                
+                console.log(`Pagamento removido para ${cliente.nome}`);
+                
+                // Atualizar a interface
+                const listaClientes = document.getElementById('lista-clientes');
+                if (listaClientes) {
+                    listaClientes.innerHTML = renderizarClientesMesa();
+                    atualizarTotalMesa();
+                    atualizarBotaoEncerrar();
+                }
+            }
+        }
+
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Sistema iniciando...');
@@ -1635,5 +1870,5 @@
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9823c6e03378e2a4',t:'MTc1ODM5NzA0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9829fd307233e2b4',t:'MTc1ODQ2MjE4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
