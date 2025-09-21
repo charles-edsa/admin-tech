@@ -1116,16 +1116,26 @@
                                 <div class="text-sm font-medium text-gray-900">Carlos Silva</div>
                                 <div class="text-sm text-gray-600">${mesa.horario} • <span id="duracao-mesa">45 min</span></div>
                             </div>
-                            
-                            <!-- Clientes Dinâmicos -->
+
+                            <!-- Clientes e Pedidos Pendentes -->
                             <div id="lista-clientes">
                                 ${renderizarClientesMesa()}
                             </div>
 
-                            <!-- Botão Adicionar Cliente -->
-                            <button onclick="adicionarCliente(${mesa.id})" class="w-full bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 rounded-lg p-4 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all duration-200 flex items-center justify-center">
-                                <i class="fas fa-user-plus mr-2 text-gray-500"></i>Adicionar Cliente
-                            </button>
+                            <!-- Botões Adicionar Cliente e Lançar Pedido -->
+                            <div class="pt-4 border-t border-gray-200">
+                                <div class="flex space-x-3 mb-4">
+                                    <button onclick="adicionarCliente(${mesa.id})" class="flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 rounded-lg p-4 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all duration-200 flex items-center justify-center">
+                                        <i class="fas fa-user-plus mr-2 text-gray-500"></i>Adicionar Cliente
+                                    </button>
+                                    <button onclick="lancarPedido(${mesa.id})" class="flex-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 rounded-lg p-4 text-sm font-medium text-blue-700 hover:text-blue-800 transition-all duration-200 flex items-center justify-center">
+                                        <i class="fas fa-plus mr-2 text-blue-500"></i>Lançar Pedido
+                                    </button>
+                                </div>
+
+                                <!-- Container para formulário de adicionar cliente -->
+                                <div id="container-form-cliente"></div>
+                            </div>
 
                             <!-- Total da Mesa -->
                             <div class="pt-4 border-t border-gray-200">
@@ -1240,87 +1250,57 @@
         }
 
         function adicionarCliente(mesaId) {
-            const overlay = document.createElement('div');
-            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            // Verificar se já existe um formulário ativo
+            const formularioExistente = document.getElementById('form-adicionar-cliente');
+            if (formularioExistente) {
+                return; // Não criar outro formulário se já existe um
+            }
             
-            const modal = document.createElement('div');
-            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 opacity-0';
-            
-            setTimeout(() => {
-                modal.classList.remove('scale-95', 'opacity-0');
-                modal.classList.add('scale-100', 'opacity-100');
-            }, 10);
-            
-            modal.innerHTML = `
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900">Adicionar Cliente</h3>
-                        <button onclick="fecharModalAdicionarCliente()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
-                            <i class="fas fa-times text-lg"></i>
-                        </button>
+            // Criar o formulário inline
+            const formularioHTML = `
+                <div id="form-adicionar-cliente" class="pb-4">
+                    <div class="mb-4">
+                        <input type="text" id="nome-cliente-inline" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+                               placeholder="Digite o nome do cliente" required>
                     </div>
                     
-                    <form onsubmit="confirmarAdicionarCliente(event, ${mesaId})" class="space-y-4">
-                        <div>
-                            <label for="nome-cliente" class="block text-sm font-medium text-gray-700 mb-2">Nome do Cliente</label>
-                            <input type="text" id="nome-cliente" name="nome-cliente" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                   placeholder="Digite o nome do cliente">
-                        </div>
-                        
-                        <div class="flex space-x-3 pt-4">
-                            <button type="button" onclick="fecharModalAdicionarCliente()" 
-                                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors">
-                                Cancelar
-                            </button>
-                            <button type="submit" 
-                                    class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                                Adicionar
-                            </button>
-                        </div>
-                    </form>
+                    <div class="flex space-x-3">
+                        <button onclick="cancelarAdicionarCliente()" 
+                                class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Cancelar
+                        </button>
+                        <button onclick="confirmarAdicionarCliente(${mesaId})" 
+                                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Confirmar
+                        </button>
+                    </div>
                 </div>
             `;
             
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-            
-            window.modalAdicionarClienteAberto = { overlay, modal };
-            
-            // Focar no input
-            setTimeout(() => {
-                const input = document.getElementById('nome-cliente');
-                if (input) input.focus();
-            }, 100);
-            
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    fecharModalAdicionarCliente();
-                }
-            });
-        }
-
-        function fecharModalAdicionarCliente() {
-            if (window.modalAdicionarClienteAberto) {
-                const { overlay, modal } = window.modalAdicionarClienteAberto;
+            // Inserir o formulário no container específico
+            const containerForm = document.getElementById('container-form-cliente');
+            if (containerForm) {
+                containerForm.innerHTML = formularioHTML;
                 
-                modal.classList.remove('scale-100', 'opacity-100');
-                modal.classList.add('scale-95', 'opacity-0');
-                
+                // Focar no input
                 setTimeout(() => {
-                    if (overlay && overlay.parentNode) {
-                        overlay.remove();
-                    }
-                    window.modalAdicionarClienteAberto = null;
-                }, 300);
+                    const input = document.getElementById('nome-cliente-inline');
+                    if (input) input.focus();
+                }, 100);
             }
         }
 
-        function confirmarAdicionarCliente(event, mesaId) {
-            event.preventDefault();
-            
-            const nomeInput = document.getElementById('nome-cliente');
-            const nomeCliente = nomeInput.value.trim();
+        function cancelarAdicionarCliente() {
+            const containerForm = document.getElementById('container-form-cliente');
+            if (containerForm) {
+                containerForm.innerHTML = '';
+            }
+        }
+
+        function confirmarAdicionarCliente(mesaId) {
+            const nomeInput = document.getElementById('nome-cliente-inline');
+            const nomeCliente = nomeInput ? nomeInput.value.trim() : '';
             
             if (nomeCliente) {
                 // Adicionar o novo cliente aos dados da mesa
@@ -1335,14 +1315,180 @@
                 };
                 
                 console.log(`Cliente "${nomeCliente}" adicionado à mesa ${mesaId}`);
-                fecharModalAdicionarCliente();
                 
-                // Atualizar apenas a lista de clientes no modal existente
+                // Remover o formulário
+                cancelarAdicionarCliente();
+                
+                // Atualizar a lista de clientes no modal existente
                 const listaClientes = document.getElementById('lista-clientes');
                 if (listaClientes) {
                     listaClientes.innerHTML = renderizarClientesMesa();
                     atualizarTotalMesa();
                 }
+            } else {
+                alert('Por favor, digite o nome do cliente.');
+            }
+        }
+
+        function lancarPedido(mesaId) {
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            // Lista de clientes disponíveis para a mesa
+            const clientesDisponiveis = Object.keys(taxasServico).map(id => ({
+                id,
+                nome: taxasServico[id].nome
+            }));
+            
+            modal.innerHTML = `
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Lançar Pedido</h3>
+                        <button onclick="fecharModalLancarPedido()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-times text-lg"></i>
+                        </button>
+                    </div>
+                    
+                    <form onsubmit="confirmarLancamentoPedido(event, ${mesaId})" class="space-y-4">
+                        <div>
+                            <label for="cliente-pedido" class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
+                            <select id="cliente-pedido" name="cliente-pedido" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                                <option value="">Selecione um cliente</option>
+                                ${clientesDisponiveis.map(cliente => `
+                                    <option value="${cliente.id}">${cliente.nome}</option>
+                                `).join('')}
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="item-nome" class="block text-sm font-medium text-gray-700 mb-2">Nome do Item</label>
+                            <input type="text" id="item-nome" name="item-nome" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                   placeholder="Ex: Hambúrguer Artesanal">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label for="item-quantidade" class="block text-sm font-medium text-gray-700 mb-2">Quantidade</label>
+                                <input type="number" id="item-quantidade" name="item-quantidade" min="1" value="1" required 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            </div>
+                            <div>
+                                <label for="item-preco" class="block text-sm font-medium text-gray-700 mb-2">Preço (R$)</label>
+                                <input type="number" id="item-preco" name="item-preco" min="0" step="0.01" required 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                       placeholder="0,00">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="item-observacoes" class="block text-sm font-medium text-gray-700 mb-2">Observações (opcional)</label>
+                            <textarea id="item-observacoes" name="item-observacoes" rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                      placeholder="Ex: Sem cebola, ponto da carne, molho à parte..."></textarea>
+                        </div>
+                        
+                        <div class="flex space-x-3 pt-4">
+                            <button type="button" onclick="fecharModalLancarPedido()" 
+                                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors">
+                                Cancelar
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                                Lançar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalLancarPedidoAberto = { overlay, modal };
+            
+            // Focar no select de cliente
+            setTimeout(() => {
+                const select = document.getElementById('cliente-pedido');
+                if (select) select.focus();
+            }, 100);
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalLancarPedido();
+                }
+            });
+        }
+
+        function fecharModalLancarPedido() {
+            if (window.modalLancarPedidoAberto) {
+                const { overlay, modal } = window.modalLancarPedidoAberto;
+                
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalLancarPedidoAberto = null;
+                }, 300);
+            }
+        }
+
+        function confirmarLancamentoPedido(event, mesaId) {
+            event.preventDefault();
+            
+            const clienteId = document.getElementById('cliente-pedido').value;
+            const nomeItem = document.getElementById('item-nome').value.trim();
+            const quantidade = parseInt(document.getElementById('item-quantidade').value);
+            const preco = parseFloat(document.getElementById('item-preco').value);
+            const observacoesText = document.getElementById('item-observacoes').value.trim();
+            
+            if (!clienteId || !nomeItem || !quantidade || !preco) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            const cliente = taxasServico[clienteId];
+            if (!cliente) {
+                alert('Cliente não encontrado.');
+                return;
+            }
+            
+            // Processar observações
+            const observacoes = observacoesText ? observacoesText.split(',').map(obs => obs.trim()).filter(obs => obs) : [];
+            
+            // Criar novo item
+            const novoItem = {
+                nome: nomeItem,
+                quantidade: quantidade,
+                preco: preco,
+                observacoes: observacoes
+            };
+            
+            // Adicionar item ao cliente
+            cliente.itens.push(novoItem);
+            cliente.subtotal += preco * quantidade;
+            
+            console.log(`Pedido lançado para ${cliente.nome}: ${quantidade}x ${nomeItem} - R$ ${(preco * quantidade).toFixed(2)}`);
+            
+            fecharModalLancarPedido();
+            
+            // Atualizar a lista de clientes no modal da mesa
+            const listaClientes = document.getElementById('lista-clientes');
+            if (listaClientes) {
+                listaClientes.innerHTML = renderizarClientesMesa();
+                atualizarTotalMesa();
             }
         }
 
@@ -1635,14 +1781,119 @@
             }
         };
 
+        // Pedidos Pendentes de Confirmação
+        const pedidosPendentes = [
+            {
+                id: 'PP001',
+                cliente: 'Carlos Silva',
+                horarioLancamento: '14:45',
+                status: 'em_preparo',
+                total: 27.40,
+                itens: [
+                    { 
+                        id: 'item_001',
+                        nome: 'Lasanha Individual Tradicional', 
+                        quantidade: 1, 
+                        preco: 22.90,
+                        observacoes: ['Extra queijo', 'Molho à parte'],
+                        confirmado: false
+                    },
+                    { 
+                        id: 'item_002',
+                        nome: 'Coca-Cola 350ml', 
+                        quantidade: 1, 
+                        preco: 4.50,
+                        observacoes: ['Gelado'],
+                        confirmado: false
+                    }
+                ]
+            },
+            {
+                id: 'PP002',
+                cliente: 'Ana Silva',
+                horarioLancamento: '14:50',
+                status: 'em_preparo',
+                total: 15.90,
+                itens: [
+                    { 
+                        id: 'item_003',
+                        nome: 'Salada Caesar Grande', 
+                        quantidade: 1, 
+                        preco: 15.90,
+                        observacoes: ['Frango grelhado', 'Croutons', 'Parmesão extra', 'Molho à parte', 'Sem anchova'],
+                        confirmado: false
+                    }
+                ]
+            }
+        ];
+
+        function renderizarPedidosPendentes() {
+            return pedidosPendentes;
+        }
+
+        function confirmarItem(pedidoId, itemId) {
+            const pedido = pedidosPendentes.find(p => p.id === pedidoId);
+            if (!pedido) return;
+            
+            const item = pedido.itens.find(i => i.id === itemId);
+            if (!item) return;
+            
+            // Marcar item como confirmado
+            item.confirmado = true;
+            
+            // Adicionar o item ao cliente correspondente
+            const clienteId = Object.keys(taxasServico).find(id => 
+                taxasServico[id].nome === pedido.cliente
+            );
+            
+            if (clienteId) {
+                const cliente = taxasServico[clienteId];
+                // Adicionar item confirmado aos itens do cliente
+                const itemParaAdicionar = {
+                    nome: item.nome,
+                    quantidade: item.quantidade,
+                    preco: item.preco,
+                    observacoes: item.observacoes
+                };
+                cliente.itens.push(itemParaAdicionar);
+                // Atualizar subtotal
+                cliente.subtotal += item.preco * item.quantidade;
+            }
+            
+            console.log(`Item ${item.nome} confirmado para ${pedido.cliente}`);
+            
+            // Verificar se todos os itens do pedido foram confirmados
+            const todosConfirmados = pedido.itens.every(i => i.confirmado);
+            if (todosConfirmados) {
+                // Remover pedido da lista de pendentes
+                const pedidoIndex = pedidosPendentes.findIndex(p => p.id === pedidoId);
+                if (pedidoIndex !== -1) {
+                    pedidosPendentes.splice(pedidoIndex, 1);
+                    console.log(`Pedido ${pedidoId} totalmente confirmado e removido da lista de pendentes`);
+                }
+            }
+            
+            // Atualizar a interface
+            const listaClientes = document.getElementById('lista-clientes');
+            if (listaClientes) {
+                listaClientes.innerHTML = renderizarClientesMesa();
+            }
+            
+            atualizarTotalMesa();
+        }
+
         function renderizarClientesMesa() {
-            return Object.keys(taxasServico).map((clienteId, index) => {
+            let html = '';
+            let itemIndex = 0;
+            
+            // Renderizar clientes confirmados
+            Object.keys(taxasServico).forEach((clienteId) => {
                 const cliente = taxasServico[clienteId];
                 const taxaValor = cliente.subtotal * 0.1;
                 const totalComTaxa = cliente.ativo ? cliente.subtotal + taxaValor : cliente.subtotal;
                 
-                return `
-                    <div class="${index > 0 ? 'pt-4 ' : ''}pb-4 border-b border-gray-200 last:border-b-0">
+                html += `
+                    <div class="${itemIndex > 0 ? 'pt-4 ' : ''}pb-4 border-b border-gray-200">
                         <div class="mb-4 flex items-center justify-between">
                             <h4 class="text-sm font-semibold text-gray-900">${cliente.nome}</h4>
                             
@@ -1707,12 +1958,65 @@
                                 </div>
                                 <div class="text-sm font-semibold text-orange-500" id="total-${clienteId}">R$ ${totalComTaxa.toFixed(2)}</div>
                             </div>
-                            
-
                         </div>
                     </div>
                 `;
-            }).join('');
+                itemIndex++;
+            });
+            
+            // Renderizar pedidos pendentes
+            pedidosPendentes.forEach((pedido) => {
+                html += `
+                    <div class="${itemIndex > 0 ? 'pt-4 ' : ''}pb-4 border-b border-gray-200">
+                        <div class="mb-4">
+                            <h4 class="text-sm font-semibold text-gray-900">${pedido.cliente}</h4>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            ${pedido.itens.map(item => `
+                                <div class="flex items-center justify-between ${item.confirmado ? 'opacity-50' : ''}">
+                                    <div class="flex-1">
+                                        <div class="text-sm font-medium text-gray-900 ${item.confirmado ? 'line-through' : ''}">${item.quantidade}x ${item.nome}</div>
+                                        
+                                        <!-- Detalhes do produto -->
+                                        ${item.observacoes && item.observacoes.length > 0 ? `
+                                            <div class="text-xs text-gray-600 mt-1">${item.observacoes.join(', ')}</div>
+                                        ` : ''}
+                                        
+                                        <div class="text-xs text-gray-600 mt-2 flex items-center justify-between">
+                                            <div>
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${item.confirmado ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'} mr-2">
+                                                    <i class="fas fa-${item.confirmado ? 'check' : 'utensils'} mr-1" style="font-size: 10px;"></i>
+                                                    ${item.confirmado ? 'Confirmado' : 'Em preparo'}
+                                                </span>
+                                                Lançado às ${pedido.horarioLancamento}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right flex items-center space-x-3">
+                                        <div class="text-sm font-semibold text-gray-900">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                                        ${!item.confirmado ? `
+                                            <button onclick="confirmarItem('${pedido.id}', '${item.id}')" class="bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 font-medium py-1 px-2 rounded text-xs flex items-center border border-green-200 hover:border-green-300 transition-all duration-200">
+                                                <i class="fas fa-check mr-1"></i>Confirmar
+                                            </button>
+                                        ` : `
+                                            <span class="text-xs text-green-600 font-medium">✓ Confirmado</span>
+                                        `}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                itemIndex++;
+            });
+            
+            // Remover a última borda se houver itens
+            if (itemIndex > 0) {
+                html = html.replace(/border-b border-gray-200(?!.*border-b border-gray-200)/s, '');
+            }
+            
+            return html;
         }
 
         function toggleTaxaServico(clienteId) {
@@ -1863,6 +2167,30 @@
             }
         }
 
+        // Função para calcular tempo de preparo
+        function calcularTempoPreparo(horarioLancamento) {
+            const agora = new Date();
+            const [hora, minuto] = horarioLancamento.split(':').map(Number);
+            
+            const lancamento = new Date();
+            lancamento.setHours(hora, minuto, 0, 0);
+            
+            // Se o horário de lançamento é maior que o atual, assumir que foi no dia anterior
+            if (lancamento > agora) {
+                lancamento.setDate(lancamento.getDate() - 1);
+            }
+            
+            const diferenca = Math.floor((agora - lancamento) / (1000 * 60)); // diferença em minutos
+            
+            if (diferenca < 60) {
+                return `${diferenca} min`;
+            } else {
+                const horas = Math.floor(diferenca / 60);
+                const minutosRestantes = diferenca % 60;
+                return `${horas}h ${minutosRestantes}min`;
+            }
+        }
+
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Sistema iniciando...');
@@ -1870,5 +2198,5 @@
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9829fd307233e2b4',t:'MTc1ODQ2MjE4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982a4c9b82230d95',t:'MTc1ODQ2NTQzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
