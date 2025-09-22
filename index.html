@@ -154,23 +154,21 @@
 
         <!-- Aba Salão -->
         <div id="content-salao" class="tab-content hidden">
-            <!-- Header com alternância Mesas/Comandas -->
+            <!-- Header com alternância Mesas/Comandas/Pedidos Prontos -->
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm mb-4">
                 <div class="px-4 py-3 border-b border-gray-200">
                     <div class="flex justify-center">
-                        <!-- Toggle Mesas/Comandas -->
+                        <!-- Toggle Mesas/Comandas/Pedidos Prontos -->
                         <div class="flex bg-gray-100 rounded-lg p-1">
-                            <button onclick="alternarVisaoSalao('mesas')" id="btn-mesas" class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm">
-                                <i class="fas fa-th-large mr-2"></i>Mesas
+                            <button onclick="alternarVisaoSalao('mesas')" id="btn-mesas" class="px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm">
+                                <i class="fas fa-th-large mr-1 md:mr-2"></i><span class="hidden sm:inline">Mesas</span><span class="sm:hidden">Mesas</span>
                             </button>
-                            <button onclick="alternarVisaoSalao('comandas')" id="btn-comandas" class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-receipt mr-2"></i>Comandas
+                            <button onclick="alternarVisaoSalao('comandas')" id="btn-comandas" class="px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900">
+                                <i class="fas fa-receipt mr-1 md:mr-2"></i><span class="hidden sm:inline">Comandas</span><span class="sm:hidden">Comandas</span>
                             </button>
                         </div>
                     </div>
                 </div>
-                
-
                 
                 <!-- Conteúdo das Mesas -->
                 <div id="conteudo-mesas" class="p-4">
@@ -185,6 +183,8 @@
                         <!-- Comandas serão renderizadas aqui -->
                     </div>
                 </div>
+                
+
             </div>
         </div>
 
@@ -360,9 +360,9 @@
                     formaPagamento: 'Pix',
                     statusPagamento: 'Pago',
                     itens: [
-                        { nome: 'Hambúrguer Artesanal', quantidade: 2, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
-                        { nome: 'Batata Frita', quantidade: 1, observacoes: ['Tamanho grande', 'Com bacon'] },
-                        { nome: 'Refrigerante', quantidade: 2, observacoes: ['Coca-Cola 350ml'] }
+                        { nome: 'Hambúrguer Artesanal', quantidade: 2, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
+                        { nome: 'Batata Frita', quantidade: 1, preco: 8.90, observacoes: ['Tamanho grande', 'Com bacon'] },
+                        { nome: 'Refrigerante', quantidade: 2, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
                     ],
                     tempo: '2min',
                     hora: '14:30',
@@ -379,8 +379,8 @@
                     formaPagamento: 'Online',
                     statusPagamento: 'Pendente',
                     itens: [
-                        { nome: 'Pizza Margherita', quantidade: 1, observacoes: ['Tamanho médio', 'Borda recheada'] },
-                        { nome: 'Refrigerante', quantidade: 1, observacoes: ['Guaraná 350ml'] }
+                        { nome: 'Pizza Margherita', quantidade: 1, preco: 24.90, observacoes: ['Tamanho médio', 'Borda recheada'] },
+                        { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Guaraná 350ml'] }
                     ],
                     tempo: '5min',
                     hora: '14:25',
@@ -399,8 +399,8 @@
                     formaPagamento: 'Dinheiro',
                     statusPagamento: 'Pendente',
                     itens: [
-                        { nome: 'Sanduíche Natural', quantidade: 1, observacoes: ['Pão integral', 'Frango desfiado', 'Sem maionese'] },
-                        { nome: 'Suco de Laranja', quantidade: 1, observacoes: ['300ml', 'Sem açúcar'] }
+                        { nome: 'Sanduíche Natural', quantidade: 1, preco: 15.90, observacoes: ['Pão integral', 'Frango desfiado', 'Sem maionese'] },
+                        { nome: 'Suco de Laranja', quantidade: 1, preco: 7.60, observacoes: ['300ml', 'Sem açúcar'] }
                     ],
                     tempo: '3min',
                     hora: '14:10',
@@ -419,14 +419,44 @@
                     formaPagamento: 'Maquininha',
                     statusPagamento: 'Pago',
                     itens: [
-                        { nome: 'Pizza Calabresa', quantidade: 1, observacoes: ['Tamanho médio', 'Extra queijo', 'Cebola roxa'] },
-                        { nome: 'Refrigerante', quantidade: 1, observacoes: ['Pepsi 350ml'] }
+                        { nome: 'Pizza Calabresa', quantidade: 1, preco: 24.90, observacoes: ['Tamanho médio', 'Extra queijo', 'Cebola roxa'] },
+                        { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Pepsi 350ml'] }
                     ],
                     tempo: '1min',
                     hora: '14:32',
                     tipo: 'delivery',
                     endereco: 'Rua Oscar Freire, 321 - Jardins',
                     distancia: '3.5 km'
+                },
+                // Pedidos do Salão - Status: Aguardando
+                {
+                    id: 'S001',
+                    cliente: 'Carlos Silva',
+                    mesa: '02',
+                    total: 32.90,
+                    itens: [
+                        { nome: 'Hambúrguer Artesanal', quantidade: 1, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
+                        { nome: 'Batata Frita Grande', quantidade: 1, preco: 9.50, observacoes: ['Com bacon e queijo'] },
+                        { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
+                    ],
+                    tempo: '3min',
+                    hora: '14:45',
+                    tipo: 'salao',
+                    status: 'aguardando'
+                },
+                {
+                    id: 'S002',
+                    cliente: 'Ana Silva',
+                    mesa: '02',
+                    total: 24.50,
+                    itens: [
+                        { nome: 'Pizza Individual Margherita', quantidade: 1, preco: 19.90, observacoes: ['Massa fina', 'Manjericão fresco'] },
+                        { nome: 'Suco de Laranja', quantidade: 1, preco: 4.60, observacoes: ['Natural 300ml'] }
+                    ],
+                    tempo: '5min',
+                    hora: '14:50',
+                    tipo: 'salao',
+                    status: 'aguardando'
                 }
             ],
             preparo: [
@@ -439,17 +469,62 @@
                     formaPagamento: 'Pix',
                     statusPagamento: 'Pago',
                     itens: [
-                        { nome: 'Hambúrguer Gourmet', quantidade: 2, observacoes: ['Carne angus 200g', 'Queijo brie', 'Rúcula'] },
-                        { nome: 'Onion Rings', quantidade: 1, observacoes: ['Porção grande', 'Molho barbecue'] },
-                        { nome: 'Refrigerante', quantidade: 2, observacoes: ['Coca-Cola 350ml'] }
+                        { nome: 'Hambúrguer Gourmet', quantidade: 2, preco: 22.90, observacoes: ['Carne angus 200g', 'Queijo brie', 'Rúcula'] },
+                        { nome: 'Onion Rings', quantidade: 1, preco: 8.90, observacoes: ['Porção grande', 'Molho barbecue'] },
+                        { nome: 'Refrigerante', quantidade: 2, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
                     ],
                     tempo: '15min',
                     hora: '14:15',
                     tipo: 'delivery',
                     endereco: 'Rua da Consolação, 500 - Centro',
                     distancia: '1.8 km'
+                },
+                // Pedido do Salão - Status: Preparando
+                {
+                    id: 'S003',
+                    cliente: 'Pedro Oliveira',
+                    mesa: '09',
+                    total: 28.90,
+                    itens: [
+                        { nome: 'Sanduíche Natural', quantidade: 1, preco: 15.90, observacoes: ['Pão integral', 'Frango desfiado', 'Sem maionese'] },
+                        { nome: 'Água', quantidade: 1, preco: 3.00, observacoes: ['500ml'] },
+                        { nome: 'Sobremesa', quantidade: 1, preco: 10.00, observacoes: ['Pudim de leite'] }
+                    ],
+                    tempo: '12min',
+                    hora: '13:45',
+                    tipo: 'salao',
+                    status: 'preparando'
+                },
+                // Pedidos pendentes do salão que estão em preparação
+                {
+                    id: 'PP001',
+                    cliente: 'Carlos Silva',
+                    mesa: '02',
+                    total: 27.40,
+                    itens: [
+                        { nome: 'Lasanha Individual Tradicional', quantidade: 1, preco: 22.90, observacoes: ['Extra queijo', 'Molho à parte'] },
+                        { nome: 'Coca-Cola 350ml', quantidade: 1, preco: 4.50, observacoes: ['Gelado'] }
+                    ],
+                    tempo: '8min',
+                    hora: '14:45',
+                    tipo: 'salao',
+                    status: 'preparando'
+                },
+                {
+                    id: 'PP002',
+                    cliente: 'Ana Silva',
+                    mesa: '02',
+                    total: 15.90,
+                    itens: [
+                        { nome: 'Salada Caesar Grande', quantidade: 1, preco: 15.90, observacoes: ['Frango grelhado', 'Croutons', 'Parmesão extra', 'Molho à parte', 'Sem anchova'] }
+                    ],
+                    tempo: '5min',
+                    hora: '14:50',
+                    tipo: 'salao',
+                    status: 'preparando'
                 }
             ],
+
             pendentes: [
                 {
                     id: 'D006',
@@ -460,8 +535,8 @@
                     formaPagamento: 'Online',
                     statusPagamento: 'Pago',
                     itens: [
-                        { nome: 'Pizza Margherita', quantidade: 1, observacoes: ['Tamanho médio', 'Massa fina'] },
-                        { nome: 'Refrigerante', quantidade: 1, observacoes: ['Sprite 350ml'] }
+                        { nome: 'Pizza Margherita', quantidade: 1, preco: 24.90, observacoes: ['Tamanho médio', 'Massa fina'] },
+                        { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Sprite 350ml'] }
                     ],
                     endereco: 'Rua das Palmeiras, 456 - Vila Madalena',
                     distancia: '1.5 km',
@@ -481,8 +556,8 @@
                     formaPagamento: 'Dinheiro',
                     statusPagamento: 'Pendente',
                     itens: [
-                        { nome: 'Pizza Calabresa', quantidade: 1, observacoes: ['Tamanho grande', 'Borda catupiry', 'Azeitona'] },
-                        { nome: 'Refrigerante', quantidade: 1, observacoes: ['Fanta 350ml'] }
+                        { nome: 'Pizza Calabresa', quantidade: 1, preco: 24.90, observacoes: ['Tamanho grande', 'Borda catupiry', 'Azeitona'] },
+                        { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Fanta 350ml'] }
                     ],
                     endereco: 'Av. Paulista, 1000 - Bela Vista',
                     distancia: '2.1 km',
@@ -672,17 +747,21 @@
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
-                            <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
-                                <i class="fas fa-motorcycle mr-1"></i>Delivery
+                            <span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'salao' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">
+                                <i class="fas fa-${pedido.tipo === 'salao' ? 'utensils' : 'motorcycle'} mr-1"></i>${pedido.tipo === 'salao' ? 'Salão' : 'Delivery'}
                             </span>
                         </div>
                         
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
-                                <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
-                                    <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
-                                </a>
+                                ${pedido.tipo === 'salao' ? `
+                                    <span class="text-sm text-gray-600">Mesa ${pedido.mesa}</span>
+                                ` : `
+                                    <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                                        <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
+                                    </a>
+                                `}
                             </div>
                         </div>
                         
@@ -729,18 +808,26 @@
                         </div>
                         
                         <div class="border-t border-gray-200 pt-3 space-y-3">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-gray-900">${pedido.formaPagamento}</span>
-                                    <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
+                            ${pedido.tipo === 'delivery' ? `
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-gray-900">${pedido.formaPagamento}</span>
+                                        <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
+                                    </div>
                                 </div>
-                            </div>
+                            ` : ''}
                             
                             <div class="flex justify-between items-center">
                                 <span class="text-lg font-bold text-orange-600">R$ ${pedido.total.toFixed(2)}</span>
-                                <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
-                                    ${config.text}
-                                </button>
+                                ${pedido.tipo === 'salao' && (tipo === 'preparo' || tipo === 'novos') ? `
+                                    <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
+                                        ${config.text}
+                                    </button>
+                                ` : pedido.tipo === 'delivery' ? `
+                                    <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
+                                        ${config.text}
+                                    </button>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -798,17 +885,21 @@
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <span class="text-sm font-semibold text-gray-900">#${pedido.id}</span>
-                            <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
-                                <i class="fas fa-motorcycle mr-1"></i>Delivery
+                            <span class="text-xs px-2 py-1 rounded-full ${pedido.tipo === 'salao' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">
+                                <i class="fas fa-${pedido.tipo === 'salao' ? 'utensils' : 'motorcycle'} mr-1"></i>${pedido.tipo === 'salao' ? 'Salão' : 'Delivery'}
                             </span>
                         </div>
                         
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
-                                <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
-                                    <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
-                                </a>
+                                ${pedido.tipo === 'salao' ? `
+                                    <span class="text-sm text-gray-600">Mesa ${pedido.mesa}</span>
+                                ` : `
+                                    <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                                        <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
+                                    </a>
+                                `}
                             </div>
                         </div>
                         
@@ -861,18 +952,26 @@
                         </div>
                         
                         <div class="border-t border-gray-200 pt-3 space-y-3">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-gray-900">${pedido.formaPagamento}</span>
-                                    <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
+                            ${pedido.tipo === 'delivery' ? `
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-gray-900">${pedido.formaPagamento}</span>
+                                        <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
+                                    </div>
                                 </div>
-                            </div>
+                            ` : ''}
                             
                             <div class="flex justify-between items-center">
                                 <span class="text-lg font-bold text-orange-600">R$ ${pedido.total.toFixed(2)}</span>
-                                <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
-                                    ${config.text}
-                                </button>
+                                ${pedido.tipo === 'salao' && (tipo === 'preparo' || tipo === 'novos') ? `
+                                    <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
+                                        ${config.text}
+                                    </button>
+                                ` : pedido.tipo === 'delivery' ? `
+                                    <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
+                                        ${config.text}
+                                    </button>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -881,6 +980,8 @@
 
             container.innerHTML = pedidosHTML;
         }
+
+
 
         function atualizarAba(tabName) {
             if (tabName === 'pedidos') {
@@ -916,22 +1017,22 @@
             const conteudoMesas = document.getElementById('conteudo-mesas');
             const conteudoComandas = document.getElementById('conteudo-comandas');
 
+            // Resetar todos os botões
+            btnMesas.className = 'px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900';
+            btnComandas.className = 'px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900';
+
+            // Esconder todos os conteúdos
+            conteudoMesas.classList.add('hidden');
+            conteudoComandas.classList.add('hidden');
+
             if (visao === 'mesas') {
                 // Ativar botão mesas
-                btnMesas.className = 'px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm';
-                btnComandas.className = 'px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900';
-                
-                // Mostrar mesas
+                btnMesas.className = 'px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm';
                 conteudoMesas.classList.remove('hidden');
-                conteudoComandas.classList.add('hidden');
                 
             } else if (visao === 'comandas') {
                 // Ativar botão comandas
-                btnComandas.className = 'px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm';
-                btnMesas.className = 'px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900';
-                
-                // Mostrar comandas
-                conteudoMesas.classList.add('hidden');
+                btnComandas.className = 'px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm';
                 conteudoComandas.classList.remove('hidden');
             }
         }
@@ -1490,7 +1591,45 @@
             cliente.itens.push(novoItem);
             cliente.subtotal += preco * quantidade;
             
-            console.log(`Pedido lançado para ${cliente.nome}: ${quantidade}x ${nomeItem} - R$ ${(preco * quantidade).toFixed(2)}`);
+            // Criar pedido para a cozinha (KDS)
+            const novoPedidoId = `S${String(Date.now()).slice(-3)}`;
+            const novoPedidoSalao = {
+                id: novoPedidoId,
+                cliente: cliente.nome,
+                mesa: mesaId.toString().padStart(2, '0'),
+                total: preco * quantidade,
+                itens: [novoItem],
+                tempo: '0min',
+                hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                tipo: 'salao',
+                status: 'aguardando'
+            };
+            
+            // Adicionar à lista de novos pedidos (vai direto para o KDS)
+            pedidosData.novos.push(novoPedidoSalao);
+            
+            // Também adicionar aos pedidos pendentes para aparecer no modal da mesa
+            const novoPedidoPendente = {
+                id: novoPedidoId,
+                cliente: cliente.nome,
+                mesa: mesaId.toString().padStart(2, '0'),
+                horarioLancamento: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                status: 'aguardando', // Começa como aguardando pois está em "Novos Pedidos"
+                total: preco * quantidade,
+                tipo: 'salao',
+                itens: [{
+                    id: `item_${Date.now()}`,
+                    nome: nomeItem,
+                    quantidade: quantidade,
+                    preco: preco,
+                    observacoes: observacoes,
+                    confirmado: false
+                }]
+            };
+            
+            pedidosPendentes.push(novoPedidoPendente);
+            
+            console.log(`Pedido ${novoPedidoId} criado para ${cliente.nome} na mesa ${mesaId}: ${quantidade}x ${nomeItem} - R$ ${(preco * quantidade).toFixed(2)}`);
             
             fecharModalLancarPedido();
             
@@ -1500,6 +1639,9 @@
                 listaClientes.innerHTML = renderizarClientesMesa();
                 atualizarTotalMesa();
             }
+            
+            // Atualizar contadores do KDS
+            atualizarContadores();
         }
 
         function adicionarItem(mesaId) {
@@ -1580,6 +1722,14 @@
             if (pedidoIndex !== -1) {
                 const pedido = pedidosData.novos.splice(pedidoIndex, 1)[0];
                 pedido.tempo = '15min';
+                
+                // Atualizar status se for pedido do salão
+                if (pedido.tipo === 'salao') {
+                    pedido.status = 'preparando';
+                    // Atualizar status nos pedidos pendentes também
+                    atualizarStatusPedidoPendente(id, 'preparando');
+                }
+                
                 pedidosData.preparo.push(pedido);
                 atualizarAba('kds');
             }
@@ -1590,8 +1740,50 @@
             if (pedidoIndex !== -1) {
                 const pedido = pedidosData.preparo.splice(pedidoIndex, 1)[0];
                 pedido.tempo = '2min';
-                pedidosData.prontos.push(pedido);
+                
+                // Se for pedido do salão, adicionar aos pedidos prontos da mesa
+                if (pedido.tipo === 'salao') {
+                    pedido.status = 'pronto';
+                    
+                    // Atualizar status nos pedidos pendentes também
+                    atualizarStatusPedidoPendente(id, 'pronto');
+                    
+                    // Encontrar o cliente correspondente na mesa e adicionar o pedido pronto
+                    const clienteId = Object.keys(taxasServico).find(clienteId => 
+                        taxasServico[clienteId].nome === pedido.cliente
+                    );
+                    
+                    if (clienteId) {
+                        const cliente = taxasServico[clienteId];
+                        if (!cliente.pedidosProntos) {
+                            cliente.pedidosProntos = [];
+                        }
+                        cliente.pedidosProntos.push(pedido);
+                        console.log(`Pedido ${id} pronto adicionado ao cliente ${cliente.nome}`);
+                    }
+                } else {
+                    // Se for delivery, mover para prontos
+                    pedidosData.prontos.push(pedido);
+                }
+                
                 atualizarAba('kds');
+            }
+        }
+
+        function entregarPedidoSalao(clienteId, pedidoId) {
+            const cliente = taxasServico[clienteId];
+            if (!cliente || !cliente.pedidosProntos) return;
+            
+            const pedidoIndex = cliente.pedidosProntos.findIndex(p => p.id === pedidoId);
+            if (pedidoIndex !== -1) {
+                const pedido = cliente.pedidosProntos.splice(pedidoIndex, 1)[0];
+                console.log(`Pedido ${pedidoId} entregue para ${cliente.nome}`);
+                
+                // Atualizar a interface do modal da mesa
+                const listaClientes = document.getElementById('lista-clientes');
+                if (listaClientes) {
+                    listaClientes.innerHTML = renderizarClientesMesa();
+                }
             }
         }
 
@@ -1777,6 +1969,22 @@
                     { nome: 'Hambúrguer Artesanal', quantidade: 1, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
                     { nome: 'Batata Frita Grande', quantidade: 1, preco: 9.50, observacoes: ['Com bacon e queijo'] },
                     { nome: 'Refrigerante', quantidade: 1, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
+                ],
+                pedidosProntos: [
+                    {
+                        id: 'S004',
+                        cliente: 'Carlos Silva',
+                        mesa: '02',
+                        total: 32.50,
+                        itens: [
+                            { nome: 'Pizza Margherita', quantidade: 1, preco: 24.90, observacoes: ['Tamanho médio', 'Massa fina'] },
+                            { nome: 'Suco de Laranja', quantidade: 1, preco: 7.60, observacoes: ['300ml', 'Natural'] }
+                        ],
+                        tempo: '2min',
+                        hora: '14:15',
+                        tipo: 'salao',
+                        status: 'pronto'
+                    }
                 ]
             },
             cliente2: { 
@@ -1791,14 +1999,16 @@
             }
         };
 
-        // Pedidos Pendentes de Confirmação
+        // Pedidos Pendentes de Confirmação (agora com status correto)
         const pedidosPendentes = [
             {
                 id: 'PP001',
                 cliente: 'Carlos Silva',
+                mesa: '02',
                 horarioLancamento: '14:45',
-                status: 'em_preparo',
+                status: 'preparando', // Mudou de 'em_preparo' para 'preparando'
                 total: 27.40,
+                tipo: 'salao',
                 itens: [
                     { 
                         id: 'item_001',
@@ -1821,9 +2031,11 @@
             {
                 id: 'PP002',
                 cliente: 'Ana Silva',
+                mesa: '02',
                 horarioLancamento: '14:50',
-                status: 'em_preparo',
+                status: 'preparando', // Mudou de 'em_preparo' para 'preparando'
                 total: 15.90,
+                tipo: 'salao',
                 itens: [
                     { 
                         id: 'item_003',
@@ -1839,6 +2051,83 @@
 
         function renderizarPedidosPendentes() {
             return pedidosPendentes;
+        }
+
+        // Função para obter o status atual de um pedido baseado na sua localização no KDS
+        function obterStatusPedido(pedidoId) {
+            // Verificar se está em "Novos Pedidos" (KDS)
+            if (pedidosData.novos.some(p => p.id === pedidoId)) {
+                return 'aguardando';
+            }
+            
+            // Verificar se está em "Em Preparação" (KDS)
+            if (pedidosData.preparo.some(p => p.id === pedidoId)) {
+                return 'preparando';
+            }
+            
+            // Verificar se está nos pedidos prontos de algum cliente
+            for (const clienteId of Object.keys(taxasServico)) {
+                const cliente = taxasServico[clienteId];
+                if (cliente.pedidosProntos && cliente.pedidosProntos.some(p => p.id === pedidoId)) {
+                    return 'pronto';
+                }
+            }
+            
+            // Se não encontrou em lugar nenhum, verificar nos pedidos pendentes
+            const pedidoPendente = pedidosPendentes.find(p => p.id === pedidoId);
+            if (pedidoPendente) {
+                return pedidoPendente.status;
+            }
+            
+            return 'desconhecido';
+        }
+
+        // Função para atualizar o status de um pedido pendente
+        function atualizarStatusPedidoPendente(pedidoId, novoStatus) {
+            const pedido = pedidosPendentes.find(p => p.id === pedidoId);
+            if (pedido) {
+                pedido.status = novoStatus;
+                console.log(`Status do pedido ${pedidoId} atualizado para: ${novoStatus}`);
+                
+                // Atualizar interface se o modal estiver aberto
+                const listaClientes = document.getElementById('lista-clientes');
+                if (listaClientes) {
+                    listaClientes.innerHTML = renderizarClientesMesa();
+                }
+            }
+        }
+
+        // Função para obter o badge de status correto
+        function obterBadgeStatus(status) {
+            const statusConfig = {
+                'aguardando': {
+                    bg: 'bg-amber-100',
+                    text: 'text-amber-700',
+                    icon: 'clock',
+                    label: 'Aguardando'
+                },
+                'preparando': {
+                    bg: 'bg-blue-100',
+                    text: 'text-blue-700',
+                    icon: 'utensils',
+                    label: 'Preparando'
+                },
+                'pronto': {
+                    bg: 'bg-green-100',
+                    text: 'text-green-700',
+                    icon: 'check-circle',
+                    label: 'Pronto'
+                }
+            };
+            
+            const config = statusConfig[status] || statusConfig['aguardando'];
+            
+            return `
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${config.bg} ${config.text} mt-1">
+                    <i class="fas fa-${config.icon} mr-1" style="font-size: 10px;"></i>
+                    ${config.label}
+                </span>
+            `;
         }
 
         function confirmarItem(pedidoId, itemId) {
@@ -1933,6 +2222,8 @@
                 const cliente = taxasServico[clienteId];
                 const taxaValor = cliente.subtotal * 0.1;
                 const totalComTaxa = cliente.ativo ? cliente.subtotal + taxaValor : cliente.subtotal;
+                
+
                 
                 html += `
                     <div class="${itemIndex > 0 ? 'pt-4 ' : ''}pb-4 border-b border-gray-200">
@@ -2065,10 +2356,7 @@
                                         </div>
                                         <div class="flex flex-col items-end">
                                             <div class="text-sm font-semibold text-gray-900">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 mt-1">
-                                                <i class="fas fa-utensils mr-1" style="font-size: 10px;"></i>
-                                                Em preparo
-                                            </span>
+                                            ${obterBadgeStatus(pedido.status)}
                                         </div>
                                     </div>
                                     
@@ -2322,12 +2610,27 @@
             }
         }
 
+        // Função para sincronizar status dos pedidos pendentes com o KDS
+        function sincronizarStatusPedidos() {
+            pedidosPendentes.forEach(pedido => {
+                const statusAtual = obterStatusPedido(pedido.id);
+                if (statusAtual !== pedido.status && statusAtual !== 'desconhecido') {
+                    console.log(`Sincronizando status do pedido ${pedido.id}: ${pedido.status} → ${statusAtual}`);
+                    pedido.status = statusAtual;
+                }
+            });
+        }
+
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Sistema iniciando...');
+            
+            // Sincronizar status dos pedidos pendentes existentes
+            sincronizarStatusPedidos();
+            
             atualizarAba('pedidos');
             console.log('Sistema inicializado com sucesso!');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'983160c941616467',t:'MTc1ODUzOTY1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98325b6c136664ea',t:'MTc1ODU0OTkyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
