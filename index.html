@@ -2124,6 +2124,9 @@
                                     ${mesa.clientes.map((cliente, index) => {
                                         // Filtrar pedidos deste cliente
                                         const pedidosCliente = mesa.pedidos ? mesa.pedidos.filter(p => p.cliente === cliente.nome) : [];
+                                        const pedidosEntregues = pedidosCliente.filter(p => p.status === 'entregue');
+                                        const pedidosAtivos = pedidosCliente.filter(p => p.status !== 'entregue');
+                                        const totalEntregues = pedidosEntregues.reduce((total, p) => total + p.subtotal, 0);
                                         
                                         return `
                                             <div class="${index > 0 ? 'border-t border-gray-200 pt-6' : ''}">
@@ -2136,60 +2139,89 @@
                                                     ` : ''}
                                                 </div>
                                                 
-                                                ${pedidosCliente.length > 0 ? `
-                                                    <div class="space-y-3 ml-4">
-                                                        ${pedidosCliente.map(pedido => {
-                                                            const statusConfig = {
-                                                                'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                                'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                                'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' },
-                                                                'entregue': { color: 'text-gray-600', bg: 'bg-gray-100', icon: 'check-double', label: 'Entregue' }
-                                                            };
-                                                            const config = statusConfig[pedido.status];
+                                                <div class="space-y-3">
+                                                    ${pedidosEntregues.length > 0 ? `
+                                                        <div>
+                                                            <div class="mb-2">
+                                                                <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
+                                                            </div>
                                                             
-                                                            return `
-                                                                <div class="py-3 border-l-2 border-gray-200 pl-4">
-                                                                    <div class="flex items-center justify-between mb-2">
-                                                                        <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                                        <div class="flex items-center space-x-2">
-                                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                                <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                            </span>
-                                                                            <span class="text-xs text-gray-500">${pedido.horario}</span>
+                                                            <div class="space-y-1 mb-3">
+                                                                ${pedidosEntregues.flatMap(p => p.itens).map(item => `
+                                                                    <div class="flex items-start justify-between text-sm">
+                                                                        <div class="flex-1">
+                                                                            <span class="text-black">${item.quantidade}x ${item.nome}</span>
+                                                                            ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                                <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                            ` : ''}
+                                                                        </div>
+                                                                        <span class="text-black font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                                    </div>
+                                                                `).join('')}
+                                                            </div>
+                                                            
+                                                            <div class="flex justify-end pt-2 border-t border-gray-200">
+                                                                <span class="text-sm font-bold text-black">Total Entregue: R$ ${totalEntregues.toFixed(2)}</span>
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
+                                                    
+                                                    ${pedidosAtivos.length > 0 ? `
+                                                        <div class="space-y-3">
+                                                            ${pedidosAtivos.map(pedido => {
+                                                                const statusConfig = {
+                                                                    'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
+                                                                    'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
+                                                                    'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
+                                                                };
+                                                                const config = statusConfig[pedido.status];
+                                                                
+                                                                return `
+                                                                    <div class="py-3">
+                                                                        <div class="flex items-center justify-between mb-2">
+                                                                            <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
+                                                                            <div class="flex items-center space-x-2">
+                                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
+                                                                                    <i class="fas fa-${config.icon} mr-1"></i>${config.label}
+                                                                                </span>
+                                                                                <span class="text-xs text-gray-500">${pedido.horario}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div class="space-y-1 mb-2">
+                                                                            ${pedido.itens.map(item => `
+                                                                                <div class="flex items-start justify-between text-sm">
+                                                                                    <div class="flex-1">
+                                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
+                                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                                        ` : ''}
+                                                                                    </div>
+                                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                                                </div>
+                                                                            `).join('')}
+                                                                        </div>
+                                                                        
+                                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                                                                            <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
+                                                                            ${pedido.status === 'pronto' ? `
+                                                                                <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
+                                                                                    Confirmar Entrega
+                                                                                </button>
+                                                                            ` : ''}
                                                                         </div>
                                                                     </div>
-                                                                    
-                                                                    <div class="space-y-1 mb-2">
-                                                                        ${pedido.itens.map(item => `
-                                                                            <div class="flex items-start justify-between text-sm">
-                                                                                <div class="flex-1">
-                                                                                    <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                                    ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                        <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                                    ` : ''}
-                                                                                </div>
-                                                                                <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                            </div>
-                                                                        `).join('')}
-                                                                    </div>
-                                                                    
-                                                                    <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                                                        <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                                        ${pedido.status === 'pronto' ? `
-                                                                            <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                                Confirmar Entrega
-                                                                            </button>
-                                                                        ` : ''}
-                                                                    </div>
-                                                                </div>
-                                                            `;
-                                                        }).join('')}
-                                                    </div>
-                                                ` : `
-                                                    <div class="ml-4 py-2 text-sm text-gray-500 italic">
-                                                        Nenhum pedido ainda
-                                                    </div>
-                                                `}
+                                                                `;
+                                                            }).join('')}
+                                                        </div>
+                                                    ` : ''}
+                                                    
+                                                    ${pedidosCliente.length === 0 ? `
+                                                        <div class="py-2 text-sm text-gray-500 italic">
+                                                            Nenhum pedido ainda
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
                                             </div>
                                         `;
                                     }).join('')}
@@ -2207,60 +2239,88 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-3">
                                         <h5 class="text-base font-semibold text-gray-900">${mesa.cliente}</h5>
-
                                     </div>
                                     
                                     ${mesa.pedidos && mesa.pedidos.length > 0 ? `
-                                        <div class="space-y-3 ml-4">
-                                            ${mesa.pedidos.map(pedido => {
-                                                const statusConfig = {
-                                                    'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                    'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                    'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' },
-                                                    'entregue': { color: 'text-gray-600', bg: 'bg-gray-100', icon: 'check-double', label: 'Entregue' }
-                                                };
-                                                const config = statusConfig[pedido.status];
-                                                
-                                                return `
-                                                    <div class="py-3 border-l-2 border-gray-200 pl-4">
-                                                        <div class="flex items-center justify-between mb-2">
-                                                            <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                            <div class="flex items-center space-x-2">
-                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                    <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                </span>
-                                                                <span class="text-xs text-gray-500">${pedido.horario}</span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="space-y-1 mb-2">
-                                                            ${pedido.itens.map(item => `
-                                                                <div class="flex items-start justify-between text-sm">
-                                                                    <div class="flex-1">
-                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                        ` : ''}
-                                                                    </div>
-                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                </div>
-                                                            `).join('')}
-                                                        </div>
-                                                        
-                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                                            <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                            ${pedido.status === 'pronto' ? `
-                                                                <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                    Confirmar Entrega
-                                                                </button>
-                                                            ` : ''}
-                                                        </div>
+                                        <div class="space-y-3">
+                                            ${mesa.pedidos.filter(p => p.status === 'entregue').length > 0 ? `
+                                                <div>
+                                                    <div class="mb-2">
+                                                        <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
                                                     </div>
-                                                `;
-                                            }).join('')}
+                                                    
+                                                    <div class="space-y-1 mb-3">
+                                                        ${mesa.pedidos.filter(p => p.status === 'entregue').flatMap(p => p.itens).map(item => `
+                                                            <div class="flex items-start justify-between text-sm">
+                                                                <div class="flex-1">
+                                                                    <span class="text-black">${item.quantidade}x ${item.nome}</span>
+                                                                    ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                        <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                    ` : ''}
+                                                                </div>
+                                                                <span class="text-black font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                            </div>
+                                                        `).join('')}
+                                                    </div>
+                                                    
+                                                    <div class="flex justify-end pt-2 border-t border-gray-200">
+                                                        <span class="text-sm font-bold text-black">Total Entregue: R$ ${mesa.pedidos.filter(p => p.status === 'entregue').reduce((total, p) => total + p.subtotal, 0).toFixed(2)}</span>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                            
+                                            ${mesa.pedidos.filter(p => p.status !== 'entregue').length > 0 ? `
+                                                <div class="space-y-3">
+                                                    ${mesa.pedidos.filter(p => p.status !== 'entregue').map(pedido => {
+                                                        const statusConfig = {
+                                                            'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
+                                                            'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
+                                                            'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
+                                                        };
+                                                        const config = statusConfig[pedido.status];
+                                                        
+                                                        return `
+                                                            <div class="py-3">
+                                                                <div class="flex items-center justify-between mb-2">
+                                                                    <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
+                                                                    <div class="flex items-center space-x-2">
+                                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
+                                                                            <i class="fas fa-${config.icon} mr-1"></i>${config.label}
+                                                                        </span>
+                                                                        <span class="text-xs text-gray-500">${pedido.horario}</span>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="space-y-1 mb-2">
+                                                                    ${pedido.itens.map(item => `
+                                                                        <div class="flex items-start justify-between text-sm">
+                                                                            <div class="flex-1">
+                                                                                <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
+                                                                                ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                                    <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                                ` : ''}
+                                                                            </div>
+                                                                            <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                                        </div>
+                                                                    `).join('')}
+                                                                </div>
+                                                                
+                                                                <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                                                                    <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
+                                                                    ${pedido.status === 'pronto' ? `
+                                                                        <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
+                                                                            Confirmar Entrega
+                                                                        </button>
+                                                                    ` : ''}
+                                                                </div>
+                                                            </div>
+                                                        `;
+                                                    }).join('')}
+                                                </div>
+                                            ` : ''}
                                         </div>
                                     ` : `
-                                        <div class="ml-4 py-2 text-sm text-gray-500 italic">
+                                        <div class="py-2 text-sm text-gray-500 italic">
                                             Nenhum pedido ainda
                                         </div>
                                     `}
@@ -2365,7 +2425,6 @@
                                         const pedidosCliente = mesa.pedidos ? mesa.pedidos.filter(p => p.cliente === cliente.nome) : [];
                                         const pedidosAtivos = pedidosCliente.filter(p => p.status !== 'entregue');
                                         const pedidosEntregues = pedidosCliente.filter(p => p.status === 'entregue');
-                                        const itensEntregues = pedidosEntregues.flatMap(p => p.itens);
                                         const totalEntregues = pedidosEntregues.reduce((total, p) => total + p.subtotal, 0);
                                         
                                         return `
@@ -2374,93 +2433,89 @@
                                                     <h5 class="text-base font-semibold text-gray-900">${cliente.nome}</h5>
                                                 </div>
                                                 
-                                                ${pedidosAtivos.length > 0 ? `
-                                                    <div class="space-y-3">
-                                                        ${pedidosAtivos.map(pedido => {
-                                                            const statusConfig = {
-                                                                'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                                'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                                'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
-                                                            };
-                                                            const config = statusConfig[pedido.status];
+                                                <div class="space-y-3">
+                                                    ${pedidosEntregues.length > 0 ? `
+                                                        <div>
+                                                            <div class="mb-2">
+                                                                <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
+                                                            </div>
                                                             
-                                                            return `
-                                                                <div class="bg-gray-50 rounded-lg p-4">
-                                                                    <div class="flex items-center justify-between mb-2">
-                                                                        <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                                        <div class="flex items-center space-x-2">
-                                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                                <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                            </span>
-                                                                            <span class="text-xs text-gray-500">${pedido.horario}</span>
+                                                            <div class="space-y-1 mb-3">
+                                                                ${pedidosEntregues.flatMap(p => p.itens).map(item => `
+                                                                    <div class="flex items-start justify-between text-sm">
+                                                                        <div class="flex-1">
+                                                                            <span class="text-black">${item.quantidade}x ${item.nome}</span>
+                                                                            ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                                <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                            ` : ''}
+                                                                        </div>
+                                                                        <span class="text-black font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                                    </div>
+                                                                `).join('')}
+                                                            </div>
+                                                            
+                                                            <div class="flex justify-end pt-2 border-t border-gray-200">
+                                                                <span class="text-sm font-bold text-black">Total Entregue: R$ ${totalEntregues.toFixed(2)}</span>
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
+                                                    
+                                                    ${pedidosAtivos.length > 0 ? `
+                                                        <div class="space-y-3">
+                                                            ${pedidosAtivos.map(pedido => {
+                                                                const statusConfig = {
+                                                                    'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
+                                                                    'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
+                                                                    'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
+                                                                };
+                                                                const config = statusConfig[pedido.status];
+                                                                
+                                                                return `
+                                                                    <div class="py-3">
+                                                                        <div class="flex items-center justify-between mb-2">
+                                                                            <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
+                                                                            <div class="flex items-center space-x-2">
+                                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
+                                                                                    <i class="fas fa-${config.icon} mr-1"></i>${config.label}
+                                                                                </span>
+                                                                                <span class="text-xs text-gray-500">${pedido.horario}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div class="space-y-1 mb-2">
+                                                                            ${pedido.itens.map(item => `
+                                                                                <div class="flex items-start justify-between text-sm">
+                                                                                    <div class="flex-1">
+                                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
+                                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                                        ` : ''}
+                                                                                    </div>
+                                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                                                </div>
+                                                                            `).join('')}
+                                                                        </div>
+                                                                        
+                                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                                                                            <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
+                                                                            ${pedido.status === 'pronto' ? `
+                                                                                <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
+                                                                                    Confirmar Entrega
+                                                                                </button>
+                                                                            ` : ''}
                                                                         </div>
                                                                     </div>
-                                                                    
-                                                                    <div class="space-y-1 mb-2">
-                                                                        ${pedido.itens.map(item => `
-                                                                            <div class="flex items-start justify-between text-sm">
-                                                                                <div class="flex-1">
-                                                                                    <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                                    ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                        <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                                    ` : ''}
-                                                                                </div>
-                                                                                <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                            </div>
-                                                                        `).join('')}
-                                                                    </div>
-                                                                    
-                                                                    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
-                                                                        <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                                        ${pedido.status === 'pronto' ? `
-                                                                            <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                                Confirmar Entrega
-                                                                            </button>
-                                                                        ` : ''}
-                                                                    </div>
-                                                                </div>
-                                                            `;
-                                                        }).join('')}
-                                                    </div>
-                                                ` : ''}
-                                                
-                                                ${pedidosEntregues.length > 0 ? `
-                                                    <div class="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
-                                                        <div class="flex items-center justify-between mb-3">
-                                                            <div class="flex items-center">
-                                                                <i class="fas fa-check-double text-green-600 mr-2"></i>
-                                                                <span class="text-sm font-medium text-green-800">Pedidos Entregues</span>
-                                                            </div>
+                                                                `;
+                                                            }).join('')}
                                                         </div>
-                                                        
-                                                        <div class="space-y-1 mb-3">
-                                                            ${itensEntregues.map(item => `
-                                                                <div class="flex items-start justify-between text-sm">
-                                                                    <div class="flex-1">
-                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                        ` : ''}
-                                                                    </div>
-                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                </div>
-                                                            `).join('')}
+                                                    ` : ''}
+                                                    
+                                                    ${pedidosCliente.length === 0 ? `
+                                                        <div class="py-2 text-sm text-gray-500 italic">
+                                                            Nenhum pedido ainda
                                                         </div>
-                                                        
-                                                        <div class="pt-2 border-t border-green-300">
-                                                            <div class="flex items-center justify-between">
-                                                                <span class="text-sm font-medium text-green-800">Total Entregue:</span>
-                                                                <span class="text-sm font-bold text-green-700">R$ ${totalEntregues.toFixed(2)}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ` : ''}
-                                                
-                                                ${pedidosCliente.length === 0 ? `
-                                                    <div class="py-2 text-sm text-gray-500 italic">
-                                                        Nenhum pedido ainda
-                                                    </div>
-                                                ` : ''}
+                                                    ` : ''}
+                                                </div>
                                             </div>
                                         `;
                                     }).join('')}
@@ -2482,7 +2537,7 @@
                                     </div>
                                     
                                     ${mesa.pedidos && mesa.pedidos.length > 0 ? `
-                                        <div class="space-y-3">
+                                        <div class="space-y-3 ml-4">
                                             ${mesa.pedidos.filter(p => p.status !== 'entregue').map(pedido => {
                                                 const statusConfig = {
                                                     'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
@@ -2492,7 +2547,7 @@
                                                 const config = statusConfig[pedido.status];
                                                 
                                                 return `
-                                                    <div class="bg-gray-50 rounded-lg p-4">
+                                                    <div class="py-3 pl-4">
                                                         <div class="flex items-center justify-between mb-2">
                                                             <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
                                                             <div class="flex items-center space-x-2">
@@ -2517,7 +2572,7 @@
                                                             `).join('')}
                                                         </div>
                                                         
-                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
                                                             <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
                                                             ${pedido.status === 'pronto' ? `
                                                                 <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
@@ -2530,15 +2585,23 @@
                                             }).join('')}
                                             
                                             ${mesa.pedidos.filter(p => p.status === 'entregue').length > 0 ? `
-                                                <div class="p-3 bg-green-50 rounded-lg border border-green-200">
-                                                    <div class="flex items-center justify-between">
-                                                        <div class="flex items-center">
-                                                            <i class="fas fa-check-double text-green-600 mr-2"></i>
-                                                            <span class="text-sm font-medium text-green-800">
-                                                                ${mesa.pedidos.filter(p => p.status === 'entregue').length} pedido${mesa.pedidos.filter(p => p.status === 'entregue').length > 1 ? 's' : ''} entregue${mesa.pedidos.filter(p => p.status === 'entregue').length > 1 ? 's' : ''}
-                                                            </span>
-                                                        </div>
-                                                        <span class="text-sm font-bold text-green-700">R$ ${mesa.pedidos.filter(p => p.status === 'entregue').reduce((total, p) => total + p.subtotal, 0).toFixed(2)}</span>
+                                                <div class="mt-4">
+                                                    <div class="mb-3">
+                                                        <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
+                                                    </div>
+                                                    
+                                                    <div class="space-y-1 mb-3 ml-4">
+                                                        ${mesa.pedidos.filter(p => p.status === 'entregue').flatMap(p => p.itens).map(item => `
+                                                            <div class="flex items-start justify-between text-sm">
+                                                                <div class="flex-1">
+                                                                    <span class="text-gray-600">${item.quantidade}x ${item.nome}</span>
+                                                                    ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                        <div class="text-xs text-gray-500 ml-2">(${item.observacoes.join(', ')})</div>
+                                                                    ` : ''}
+                                                                </div>
+                                                                <span class="text-gray-600 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                            </div>
+                                                        `).join('')}
                                                     </div>
                                                 </div>
                                             ` : ''}
@@ -2677,5 +2740,5 @@
             atualizarAba('pedidos');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986cb3b484456508',t:'MTc1OTE2MTcxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986ccbee6100e0e1',t:'MTc1OTE2MjcwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
