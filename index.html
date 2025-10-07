@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo - Delivery</title>
+    <title>Sistema de Gestão - Restaurante</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body {
+            box-sizing: border-box;
+        }
         * { font-family: 'Inter', sans-serif; }
     </style>
 </head>
@@ -18,8 +21,8 @@
             <div class="flex justify-between items-center h-14 md:h-16">
                 <h1 class="text-gray-800 text-lg md:text-xl font-semibold">
                     <i class="fas fa-store text-orange-500 mr-1 md:mr-2"></i>
-                    <span class="hidden sm:inline">Painel Admin</span>
-                    <span class="sm:hidden">Admin</span>
+                    <span class="hidden sm:inline">Sistema Restaurante</span>
+                    <span class="sm:hidden">Sistema</span>
                 </h1>
                 
                 <!-- Mobile Menu Button -->
@@ -150,8 +153,12 @@
         <!-- Aba Salão -->
         <div id="content-salao" class="tab-content hidden">
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
-                <div class="px-4 py-3 border-b border-gray-200">
+                <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-gray-900">Gestão do Salão</h3>
+                    <button onclick="iniciarUniaoMesas()" id="btn-unir-mesas" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center text-sm">
+                        <i class="fas fa-link mr-2"></i>
+                        Unir Mesas
+                    </button>
                 </div>
                 <div class="p-4">
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="grade-mesas">
@@ -222,6 +229,73 @@
                         </div>
                         <div id="coluna-preparo" class="bg-white">
                             <!-- Pedidos serão carregados aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Entregas -->
+        <div id="content-entregas" class="tab-content hidden">
+            <!-- Mobile Layout -->
+            <div class="block md:hidden space-y-4">
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-amber-50 border-b border-amber-200 px-3 py-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-amber-700 uppercase tracking-wide">
+                                <i class="fas fa-clock text-amber-500 mr-1"></i>Pendentes
+                            </h3>
+                            <span id="contador-pendentes-mobile" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">0</span>
+                        </div>
+                    </div>
+                    <div id="coluna-pendentes-mobile" class="p-3">
+                        <!-- Entregas serão carregadas aqui -->
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-blue-50 border-b border-blue-200 px-3 py-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+                                <i class="fas fa-truck text-blue-500 mr-1"></i>Em Rota
+                            </h3>
+                            <span id="contador-rota-mobile" class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded">0</span>
+                        </div>
+                    </div>
+                    <div id="coluna-rota-mobile" class="p-3">
+                        <!-- Entregas serão carregadas aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Layout -->
+            <div class="hidden md:block">
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="grid grid-cols-2 bg-gray-50 border-b border-gray-200">
+                        <div class="px-6 py-4 border-r border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-clock text-amber-500 mr-2"></i>Pendentes
+                                </h3>
+                                <span id="contador-pendentes" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">0</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    <i class="fas fa-truck text-blue-500 mr-2"></i>Em Rota
+                                </h3>
+                                <span id="contador-rota" class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 min-h-96">
+                        <div id="coluna-pendentes" class="border-r border-gray-200 bg-white">
+                            <!-- Entregas serão carregadas aqui -->
+                        </div>
+                        <div id="coluna-rota" class="bg-white">
+                            <!-- Entregas serão carregadas aqui -->
                         </div>
                     </div>
                 </div>
@@ -379,9 +453,9 @@
                     <div id="config-content-colaboradores" class="config-content hidden">
                         <div class="mb-8 flex items-center justify-between">
                             <h4 class="text-2xl font-bold text-gray-900">Colaboradores</h4>
-                            <button onclick="abrirModalColaborador()" class="bg-orange-500 text-white px-3 py-2 rounded-lg font-bold hover:bg-orange-600 transition-colors flex items-center text-2xl">
+                            <button onclick="abrirModalColaborador()" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center">
                                 <i class="fas fa-plus mr-2"></i>
-                                Novo
+                                Novo Colaborador
                             </button>
                         </div>
                         
@@ -393,76 +467,16 @@
                 </div>
             </div>
         </div>
-
-        <!-- Aba Entregas -->
-        <div id="content-entregas" class="tab-content hidden">
-            <!-- Mobile Layout -->
-            <div class="block md:hidden space-y-4">
-                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="bg-amber-50 border-b border-amber-200 px-3 py-3">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-semibold text-amber-700 uppercase tracking-wide">
-                                <i class="fas fa-clock text-amber-500 mr-1"></i>Pendentes
-                            </h3>
-                            <span id="contador-pendentes-mobile" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">0</span>
-                        </div>
-                    </div>
-                    <div id="coluna-pendentes-mobile" class="p-3">
-                        <!-- Entregas serão carregadas aqui -->
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="bg-blue-50 border-b border-blue-200 px-3 py-3">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-semibold text-blue-700 uppercase tracking-wide">
-                                <i class="fas fa-truck text-blue-500 mr-1"></i>Em Rota
-                            </h3>
-                            <span id="contador-rota-mobile" class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded">0</span>
-                        </div>
-                    </div>
-                    <div id="coluna-rota-mobile" class="p-3">
-                        <!-- Entregas serão carregadas aqui -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Desktop Layout -->
-            <div class="hidden md:block">
-                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="grid grid-cols-2 bg-gray-50 border-b border-gray-200">
-                        <div class="px-6 py-4 border-r border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                    <i class="fas fa-clock text-amber-500 mr-2"></i>Pendentes
-                                </h3>
-                                <span id="contador-pendentes" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">0</span>
-                            </div>
-                        </div>
-                        <div class="px-6 py-4">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                    <i class="fas fa-truck text-blue-500 mr-2"></i>Em Rota
-                                </h3>
-                                <span id="contador-rota" class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 min-h-96">
-                        <div id="coluna-pendentes" class="border-r border-gray-200 bg-white">
-                            <!-- Entregas serão carregadas aqui -->
-                        </div>
-                        <div id="coluna-rota" class="bg-white">
-                            <!-- Entregas serão carregadas aqui -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
+        // Estado da união de mesas
+        let estadoUniaoMesas = {
+            ativo: false,
+            mesasSelecionadas: [],
+            mesaPrincipal: null
+        };
+
         // Dados do sistema
         const pedidosData = {
             aguardando: [
@@ -545,29 +559,20 @@
                 {
                     id: 'M002-001',
                     cliente: 'João Silva',
-                    mesa: 'Mesa 02',
+                    telefone: null,
+                    telefoneFormatado: null,
                     total: 46.70,
+                    formaPagamento: null,
+                    statusPagamento: null,
                     itens: [
-                        { nome: 'Hambúrguer Artesanal', quantidade: 2, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
-                        { nome: 'Batata Frita', quantidade: 1, preco: 8.90, observacoes: ['Tamanho grande', 'Com bacon'] }
+                        { nome: 'Hambúrguer Artesanal', quantidade: 2, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g'] },
+                        { nome: 'Batata Frita', quantidade: 1, preco: 8.90, observacoes: ['Tamanho grande'] }
                     ],
                     tempo: '2min',
                     hora: '14:35',
                     tipo: 'salao',
+                    mesa: 'Mesa 02',
                     mesaId: 2
-                },
-                {
-                    id: 'M009-002',
-                    cliente: 'Pedro Oliveira',
-                    mesa: 'Mesa 09',
-                    total: 7.00,
-                    itens: [
-                        { nome: 'Café Expresso', quantidade: 2, preco: 3.50, observacoes: ['Açúcar à parte'] }
-                    ],
-                    tempo: '1min',
-                    hora: '14:15',
-                    tipo: 'salao',
-                    mesaId: 9
                 }
             ],
             preparo: [
@@ -588,19 +593,6 @@
                     tipo: 'delivery',
                     endereco: 'Rua da Consolação, 500 - Centro',
                     distancia: '1.8 km'
-                },
-                {
-                    id: 'M002-002',
-                    cliente: 'João Silva',
-                    mesa: 'Mesa 02',
-                    total: 9.00,
-                    itens: [
-                        { nome: 'Refrigerante', quantidade: 2, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
-                    ],
-                    tempo: '8min',
-                    hora: '14:45',
-                    tipo: 'salao',
-                    mesaId: 2
                 }
             ],
             pendentes: [
@@ -621,7 +613,8 @@
                     entregador: 'Carlos Moto',
                     tempoDesignacao: '14:05',
                     status: 'pendente',
-                    hora: '13:50'
+                    hora: '13:50',
+                    tipo: 'delivery'
                 }
             ],
             rota: [
@@ -643,7 +636,8 @@
                     tempoSaida: '13:45',
                     previsaoEntrega: '14:15',
                     status: 'saindo',
-                    hora: '13:30'
+                    hora: '13:30',
+                    tipo: 'delivery'
                 }
             ]
         };
@@ -693,115 +687,51 @@
                     dataAdmissao: '2023-02-05',
                     status: 'ativo',
                     turno: 'noite'
-                },
-                {
-                    id: 5,
-                    nome: 'Fernanda Oliveira',
-                    funcao: 'atendente',
-                    telefone: '5511955443322',
-                    telefoneFormatado: '(11) 95544-3322',
-                    email: 'fernanda.oliveira@restaurante.com',
-                    dataAdmissao: '2023-04-18',
-                    status: 'ativo',
-                    turno: 'manhã'
-                },
-                {
-                    id: 6,
-                    nome: 'Roberto Lima',
-                    funcao: 'atendente',
-                    telefone: '5511944332211',
-                    telefoneFormatado: '(11) 94433-2211',
-                    email: 'roberto.lima@restaurante.com',
-                    dataAdmissao: '2022-12-08',
-                    status: 'ativo',
-                    turno: 'noite'
-                },
-                {
-                    id: 7,
-                    nome: 'Juliana Bike',
-                    funcao: 'entregador',
-                    telefone: '5511933221100',
-                    telefoneFormatado: '(11) 93322-1100',
-                    email: 'juliana.bike@restaurante.com',
-                    dataAdmissao: '2023-05-22',
-                    status: 'ativo',
-                    turno: 'tarde'
-                },
-                {
-                    id: 8,
-                    nome: 'Pedro Delivery',
-                    funcao: 'entregador',
-                    telefone: '5511922110099',
-                    telefoneFormatado: '(11) 92211-0099',
-                    email: 'pedro.delivery@restaurante.com',
-                    dataAdmissao: '2023-01-30',
-                    status: 'ativo',
-                    turno: 'manhã'
-                },
-                {
-                    id: 9,
-                    nome: 'Camila Express',
-                    funcao: 'entregador',
-                    telefone: '5511911009988',
-                    telefoneFormatado: '(11) 91100-9988',
-                    email: 'camila.express@restaurante.com',
-                    dataAdmissao: '2023-06-12',
-                    status: 'ativo',
-                    turno: 'integral'
-                },
-                {
-                    id: 10,
-                    nome: 'Lucas Rápido',
-                    funcao: 'entregador',
-                    telefone: '5511900998877',
-                    telefoneFormatado: '(11) 90099-8877',
-                    email: 'lucas.rapido@restaurante.com',
-                    dataAdmissao: '2022-10-15',
-                    status: 'ativo',
-                    turno: 'noite'
                 }
             ]
         };
 
         const salaoData = {
             mesas: [
-                { id: 1, numero: '01', capacidade: 2, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 },
+                { 
+                    id: 1, 
+                    numero: '01', 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pedidos: [], 
+                    pagamentos: [], 
+                    taxaServico: 0.10,
+                    tipoAtendimento: 'coletivo', // 'coletivo' ou 'individual'
+                    ocupantes: []
+                },
                 { 
                     id: 2, 
                     numero: '02', 
                     capacidade: 4, 
                     status: 'ocupada', 
                     cliente: 'João Silva', 
-                    telefone: '5511999991234',
-                    telefoneFormatado: '(11) 99999-1234',
                     horario: '14:30',
-                    atendente: 'Maria Silva',
-                    clientes: [
-                        { nome: 'João Silva', telefone: '5511999991234' },
-                        { nome: 'Ana Silva', telefone: '5511988887777' }
-                    ],
                     total: 0,
                     taxaServico: 0.10,
+                    tipoAtendimento: 'individual',
+                    ocupantes: [
+                        { id: 1, nome: 'João Silva', pedidos: [], pagamentos: [] },
+                        { id: 2, nome: 'Maria Silva', pedidos: [], pagamentos: [] }
+                    ],
                     pedidos: [
                         {
                             id: 'M002-001',
-                            status: 'aguardando',
+                            status: 'pendente',
+                            ocupanteId: 1,
                             itens: [
-                                { nome: 'Hambúrguer Artesanal', quantidade: 2, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g', 'Sem cebola'] },
-                                { nome: 'Batata Frita', quantidade: 1, preco: 8.90, observacoes: ['Tamanho grande', 'Com bacon'] }
+                                { nome: 'Hambúrguer Artesanal', quantidade: 2, preco: 18.90, observacoes: ['Pão brioche', 'Carne 180g'] },
+                                { nome: 'Batata Frita', quantidade: 1, preco: 8.90, observacoes: ['Tamanho grande'] }
                             ],
                             subtotal: 46.70,
                             horario: '14:35',
-                            cliente: 'João Silva'
-                        },
-                        {
-                            id: 'M002-002',
-                            status: 'preparando',
-                            itens: [
-                                { nome: 'Refrigerante', quantidade: 2, preco: 4.50, observacoes: ['Coca-Cola 350ml'] }
-                            ],
-                            subtotal: 9.00,
-                            horario: '14:45',
                             cliente: 'João Silva'
                         }
                     ],
@@ -813,150 +743,55 @@
                     capacidade: 2, 
                     status: 'reservada', 
                     cliente: 'Maria Santos', 
-                    telefone: '5511988885678',
-                    telefoneFormatado: '(11) 98888-5678',
                     horario: '15:00',
-                    atendente: 'Ana Costa',
                     total: 0, 
                     pedidos: [], 
                     pagamentos: [], 
-                    taxaServico: 0.10 
+                    taxaServico: 0.10,
+                    tipoAtendimento: 'coletivo',
+                    ocupantes: []
                 },
-                { id: 4, numero: '04', capacidade: 6, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 },
+                { 
+                    id: 4, 
+                    numero: '04', 
+                    capacidade: 6, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pedidos: [], 
+                    pagamentos: [], 
+                    taxaServico: 0.10,
+                    tipoAtendimento: 'coletivo',
+                    ocupantes: []
+                },
                 { 
                     id: 5, 
                     numero: '05', 
                     capacidade: 4, 
-                    status: 'ocupada', 
-                    cliente: 'Carlos Lima', 
-                    telefone: '5511955557890',
-                    telefoneFormatado: '(11) 95555-7890',
-                    horario: '14:15', 
-                    total: 0,
-                    taxaServico: 0.12,
-                    pedidos: [
-                        {
-                            id: 'M005-001',
-                            status: 'pronto',
-                            itens: [
-                                { nome: 'Pizza Margherita', quantidade: 1, preco: 24.90, observacoes: ['Tamanho médio', 'Borda recheada'] },
-                                { nome: 'Salada Caesar', quantidade: 1, preco: 12.90, observacoes: ['Sem croutons'] }
-                            ],
-                            subtotal: 37.80,
-                            horario: '14:20',
-                            cliente: 'Carlos Lima'
-                        }
-                    ],
-                    pagamentos: [
-                        {
-                            id: 'PAG-005-001',
-                            valor: 20.00,
-                            metodo: 'Dinheiro',
-                            horario: '14:50',
-                            status: 'confirmado'
-                        }
-                    ]
-                },
-                { id: 6, numero: '06', capacidade: 2, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 },
-                { 
-                    id: 7, 
-                    numero: '07', 
-                    capacidade: 8, 
-                    status: 'reservada', 
-                    cliente: 'Ana Costa', 
-                    telefone: '5511977779012',
-                    telefoneFormatado: '(11) 97777-9012',
-                    horario: '16:00', 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
                     total: 0, 
                     pedidos: [], 
                     pagamentos: [], 
-                    taxaServico: 0.15 
-                },
-                { id: 8, numero: '08', capacidade: 4, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 },
-                { 
-                    id: 9, 
-                    numero: '09', 
-                    capacidade: 2, 
-                    status: 'ocupada', 
-                    cliente: 'Pedro Oliveira', 
-                    telefone: '5511966663456',
-                    telefoneFormatado: '(11) 96666-3456',
-                    horario: '13:45', 
-                    total: 0,
                     taxaServico: 0.10,
-                    pedidos: [
-                        {
-                            id: 'M009-001',
-                            status: 'entregue',
-                            itens: [
-                                { nome: 'Sanduíche Natural', quantidade: 1, preco: 15.90, observacoes: ['Pão integral', 'Frango desfiado'] },
-                                { nome: 'Suco de Laranja', quantidade: 1, preco: 7.60, observacoes: ['300ml', 'Sem açúcar'] }
-                            ],
-                            subtotal: 23.50,
-                            horario: '13:50',
-                            cliente: 'Pedro Oliveira'
-                        },
-                        {
-                            id: 'M009-002',
-                            status: 'aguardando',
-                            itens: [
-                                { nome: 'Café Expresso', quantidade: 2, preco: 3.50, observacoes: ['Açúcar à parte'] }
-                            ],
-                            subtotal: 7.00,
-                            horario: '14:15',
-                            cliente: 'Pedro Oliveira'
-                        }
-                    ],
-                    pagamentos: [
-                        {
-                            id: 'PAG-009-001',
-                            valor: 30.50,
-                            metodo: 'Cartão de Crédito',
-                            horario: '14:20',
-                            status: 'confirmado'
-                        }
-                    ]
+                    tipoAtendimento: 'coletivo',
+                    ocupantes: []
                 },
-                { id: 10, numero: '10', capacidade: 4, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 },
-                { id: 11, numero: '11', capacidade: 2, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 },
-                { id: 12, numero: '12', capacidade: 6, status: 'livre', cliente: null, horario: null, total: 0, pedidos: [], pagamentos: [], taxaServico: 0.10 }
-            ]
-        };
-
-        // Dados do cardápio para novos pedidos
-        const cardapioData = {
-            categorias: [
-                {
-                    nome: 'Hambúrguers',
-                    itens: [
-                        { id: 1, nome: 'Hambúrguer Artesanal', preco: 18.90, descricao: 'Pão brioche, carne 180g, queijo, alface, tomate' },
-                        { id: 2, nome: 'Hambúrguer Gourmet', preco: 22.90, descricao: 'Carne angus 200g, queijo brie, rúcula, cebola caramelizada' },
-                        { id: 3, nome: 'Cheeseburger Clássico', preco: 16.90, descricao: 'Pão tradicional, carne 150g, queijo cheddar, picles' }
-                    ]
-                },
-                {
-                    nome: 'Pizzas',
-                    itens: [
-                        { id: 4, nome: 'Pizza Margherita', preco: 24.90, descricao: 'Molho de tomate, mussarela, manjericão, azeite' },
-                        { id: 5, nome: 'Pizza Calabresa', preco: 26.90, descricao: 'Molho de tomate, mussarela, calabresa, cebola' },
-                        { id: 6, nome: 'Pizza Portuguesa', preco: 28.90, descricao: 'Molho de tomate, mussarela, presunto, ovos, cebola' }
-                    ]
-                },
-                {
-                    nome: 'Acompanhamentos',
-                    itens: [
-                        { id: 7, nome: 'Batata Frita', preco: 8.90, descricao: 'Batatas cortadas e fritas na hora' },
-                        { id: 8, nome: 'Onion Rings', preco: 9.90, descricao: 'Anéis de cebola empanados e fritos' },
-                        { id: 9, nome: 'Salada Caesar', preco: 12.90, descricao: 'Alface romana, croutons, parmesão, molho caesar' }
-                    ]
-                },
-                {
-                    nome: 'Bebidas',
-                    itens: [
-                        { id: 10, nome: 'Refrigerante', preco: 4.50, descricao: 'Coca-Cola, Pepsi, Guaraná, Fanta - 350ml' },
-                        { id: 11, nome: 'Suco Natural', preco: 7.60, descricao: 'Laranja, limão, maracujá - 300ml' },
-                        { id: 12, nome: 'Café Expresso', preco: 3.50, descricao: 'Café expresso tradicional' }
-                    ]
+                { 
+                    id: 6, 
+                    numero: '06', 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null, 
+                    total: 0, 
+                    pedidos: [], 
+                    pagamentos: [], 
+                    taxaServico: 0.10,
+                    tipoAtendimento: 'coletivo',
+                    ocupantes: []
                 }
             ]
         };
@@ -1002,6 +837,37 @@
             
             // Atualizar dados da aba
             atualizarAba(tabName);
+        }
+
+        function switchConfigSection(sectionName) {
+            // Remover classes ativas dos botões
+            document.querySelectorAll('.config-section-button').forEach(btn => {
+                btn.classList.remove('text-orange-600', 'bg-orange-50', 'border-l-3', 'border-orange-500', 'font-medium');
+                btn.classList.add('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
+            });
+            
+            // Esconder conteúdos
+            document.querySelectorAll('.config-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Ativar seção selecionada
+            const activeButton = document.getElementById(`config-${sectionName}`);
+            if (activeButton) {
+                activeButton.classList.add('text-orange-600', 'bg-orange-50', 'border-l-3', 'border-orange-500', 'font-medium');
+                activeButton.classList.remove('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
+            }
+            
+            // Mostrar conteúdo
+            const content = document.getElementById(`config-content-${sectionName}`);
+            if (content) {
+                content.classList.remove('hidden');
+            }
+            
+            // Atualizar dados da seção
+            if (sectionName === 'colaboradores') {
+                renderizarColaboradores();
+            }
         }
 
         function atualizarContadores() {
@@ -1081,9 +947,11 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-medium text-gray-900">${pedido.cliente}</span>
                                 ${pedido.telefoneFormatado ? `
-                                    <a href="https://wa.me/${pedido.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                                    <a href="https://wa.me/${pedido.telefone}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
                                         <i class="fab fa-whatsapp mr-1"></i>${pedido.telefoneFormatado}
                                     </a>
+                                ` : pedido.mesa ? `
+                                    <span class="text-sm text-gray-600">${pedido.mesa}</span>
                                 ` : ''}
                             </div>
                         </div>
@@ -1117,9 +985,13 @@
                             <div class="flex items-center justify-between">
                                 <div class="text-sm text-gray-700">${pedido.hora}${pedido.tempo ? ` • ${pedido.tempo}` : ''}</div>
                                 ${pedido.endereco ? `
-                                    <a href="https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                                    <a href="https://maps.google.com/?q=${encodeURIComponent(pedido.endereco)}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
                                         <i class="fas fa-map-marker-alt mr-1"></i>${pedido.endereco} • ${pedido.distancia}
                                     </a>
+                                ` : pedido.mesa ? `
+                                    <span class="text-sm text-gray-600 flex items-center">
+                                        <i class="fas fa-utensils mr-1"></i>${pedido.mesa}
+                                    </span>
                                 ` : ''}
                             </div>
                             
@@ -1138,13 +1010,29 @@
                                         <span class="text-sm font-medium ${pedido.statusPagamento === 'Pago' ? 'text-green-600' : 'text-amber-600'}">${pedido.statusPagamento}</span>
                                     </div>
                                 </div>
+                            ` : pedido.tipo === 'salao' ? `
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-gray-900">Pagamento no local</span>
+                                        <span class="text-sm font-medium text-gray-600">Pendente</span>
+                                    </div>
+                                </div>
                             ` : ''}
                             
                             <div class="flex justify-between items-center">
                                 <span class="text-lg font-bold text-orange-600">R$ ${pedido.total.toFixed(2)}</span>
-                                <button onclick="${config.action}('${pedido.id}')" class="bg-${config.color}-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-${config.color}-600 transition-colors">
-                                    ${config.text}
-                                </button>
+                                <div class="slide-button bg-${config.color}-500 hover:bg-${config.color}-600 text-white rounded-full overflow-hidden relative w-36 h-12 cursor-pointer transition-colors" 
+                                     data-action="${config.action}" 
+                                     data-pedido-id="${pedido.id}">
+                                    <div class="slide-text absolute inset-0 flex items-center justify-center text-sm font-medium pointer-events-none pl-12">
+                                        ${config.text}
+                                    </div>
+                                    <div class="slide-handle absolute left-1 top-1 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center cursor-grab active:cursor-grabbing transition-transform">
+                                        <svg class="w-4 h-4 text-${config.color}-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1158,21 +1046,46 @@
             const container = document.getElementById('grade-mesas');
             if (!container) return;
 
-            const mesasHTML = salaoData.mesas.map(mesa => {
+            const mesasHTML = salaoData.mesas.filter(mesa => mesa.status !== 'oculta').map(mesa => {
                 const statusConfig = {
                     'livre': { bg: 'bg-white', border: 'border-gray-200', text: 'text-gray-700', statusColor: 'text-green-600', statusBg: 'bg-green-100', icon: 'check-circle' },
                     'ocupada': { bg: 'bg-white', border: 'border-gray-200', text: 'text-gray-700', statusColor: 'text-red-600', statusBg: 'bg-red-100', icon: 'user-friends' },
-                    'reservada': { bg: 'bg-white', border: 'border-gray-200', text: 'text-gray-700', statusColor: 'text-amber-600', statusBg: 'bg-amber-100', icon: 'clock' }
+                    'reservada': { bg: 'bg-white', border: 'border-gray-200', text: 'text-gray-700', statusColor: 'text-amber-600', statusBg: 'bg-amber-100', icon: 'clock' },
+                    'unida': { bg: 'bg-white', border: 'border-purple-300', text: 'text-gray-700', statusColor: 'text-purple-600', statusBg: 'bg-purple-100', icon: 'link' }
                 };
 
                 const config = statusConfig[mesa.status];
+                const isSelecionada = estadoUniaoMesas.mesasSelecionadas.includes(mesa.id);
+                const isPrincipal = estadoUniaoMesas.mesaPrincipal === mesa.id;
+
+                let clickHandler = `abrirDetalheMesa(${mesa.id})`;
+                let extraClasses = '';
+                let extraStyles = '';
+
+                if (estadoUniaoMesas.ativo) {
+                    clickHandler = `selecionarMesaParaUniao(${mesa.id})`;
+                    if (isSelecionada) {
+                        extraClasses = isPrincipal ? 'ring-4 ring-blue-500' : 'ring-4 ring-green-500';
+                    }
+                    if (mesa.status === 'livre') {
+                        extraStyles = 'opacity-50 cursor-not-allowed';
+                        clickHandler = '';
+                    }
+                }
 
                 return `
-                    <div onclick="abrirDetalheMesa(${mesa.id})" class="cursor-pointer transform hover:scale-105 transition-all duration-200">
-                        <div class="aspect-square ${config.bg} ${config.border} border-2 rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md">
+                    <div onclick="${clickHandler}" class="cursor-pointer transform hover:scale-105 transition-all duration-200 ${extraClasses}" style="${extraStyles}">
+                        <div class="aspect-square ${config.bg} ${config.border} border-2 rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md relative">
+                            ${isSelecionada ? `
+                                <div class="absolute -top-2 -right-2 w-6 h-6 ${isPrincipal ? 'bg-blue-500' : 'bg-green-500'} text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                    ${isPrincipal ? '1' : estadoUniaoMesas.mesasSelecionadas.indexOf(mesa.id) + 1}
+                                </div>
+                            ` : ''}
+                            
                             <div class="text-center w-full">
                                 <div class="text-2xl font-bold ${config.text} mb-1">
                                     ${mesa.numero}
+                                    ${mesa.mesasUnidas ? `<span class="text-xs text-purple-600">+${mesa.mesasUnidas.length}</span>` : ''}
                                 </div>
                                 <div class="text-xs ${config.text} opacity-75 mb-3">
                                     <i class="fas fa-users mr-1"></i>${mesa.capacidade} pessoas
@@ -1181,7 +1094,7 @@
                                 <div class="flex items-center justify-center">
                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.statusBg} ${config.statusColor}">
                                         <i class="fas fa-${config.icon} mr-1" style="font-size: 10px;"></i>
-                                        ${mesa.status.charAt(0).toUpperCase() + mesa.status.slice(1)}
+                                        ${mesa.status === 'unida' ? 'Unida' : mesa.status.charAt(0).toUpperCase() + mesa.status.slice(1)}
                                     </span>
                                 </div>
                             </div>
@@ -1208,80 +1121,43 @@
             }
 
             const funcaoConfig = {
-                'balconista': { icon: 'cash-register', color: 'blue', label: 'Balconista', plural: 'Balconistas' },
-                'atendente': { icon: 'clipboard', color: 'green', label: 'Atendente', plural: 'Atendentes' },
-                'chef': { icon: 'utensils', color: 'orange', label: 'Chef', plural: 'Chefs' },
-                'entregador': { icon: 'motorcycle', color: 'purple', label: 'Entregador(a)', plural: 'Entregadores(as)' }
+                'balconista': { icon: 'cash-register', color: 'blue', label: 'Balconista' },
+                'atendente': { icon: 'clipboard', color: 'green', label: 'Atendente' },
+                'chef': { icon: 'utensils', color: 'orange', label: 'Chef' },
+                'entregador': { icon: 'motorcycle', color: 'purple', label: 'Entregador(a)' }
             };
 
-            // Agrupar colaboradores por função
-            const colaboradoresPorFuncao = colaboradoresData.colaboradores.reduce((grupos, colaborador) => {
-                if (!grupos[colaborador.funcao]) {
-                    grupos[colaborador.funcao] = [];
-                }
-                grupos[colaborador.funcao].push(colaborador);
-                return grupos;
-            }, {});
-
-            // Ordenar as funções para exibição consistente
-            const ordemFuncoes = ['balconista', 'atendente', 'chef', 'entregador'];
-            
-            let colaboradoresHTML = '';
-
-            ordemFuncoes.forEach(funcao => {
-                const colaboradores = colaboradoresPorFuncao[funcao];
-                if (!colaboradores || colaboradores.length === 0) return;
-
-                const config = funcaoConfig[funcao];
+            const colaboradoresHTML = colaboradoresData.colaboradores.map(colaborador => {
+                const config = funcaoConfig[colaborador.funcao];
                 
-                colaboradoresHTML += `
-                    <!-- Categoria ${config.plural} -->
-                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                        <div class="bg-${config.color}-50 px-4 py-2 border-b border-${config.color}-100">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <i class="fas fa-${config.icon} text-${config.color}-600 text-sm mr-2"></i>
-                                    <h5 class="text-sm font-medium text-${config.color}-800">${config.plural}</h5>
+                return `
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-${config.color}-100 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-${config.icon} text-${config.color}-600"></i>
                                 </div>
-                                <span class="text-xs text-${config.color}-600">${colaboradores.length}</span>
+                                <div>
+                                    <h5 class="text-sm font-medium text-gray-900">${colaborador.nome}</h5>
+                                    <div class="flex items-center space-x-3 text-xs text-gray-600">
+                                        <span class="px-2 py-1 bg-${config.color}-100 text-${config.color}-700 rounded-full">${config.label}</span>
+                                        <span>${colaborador.turno.charAt(0).toUpperCase() + colaborador.turno.slice(1)}</span>
+                                        <span>${colaborador.telefoneFormatado}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="editarColaborador(${colaborador.id})" class="text-gray-400 hover:text-blue-600 transition-colors p-1" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="removerColaborador(${colaborador.id})" class="text-gray-400 hover:text-red-600 transition-colors p-1" title="Remover">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </div>
+                    </div>
                 `;
-
-                // Adicionar colaboradores desta categoria
-                colaboradores.forEach(colaborador => {
-                    colaboradoresHTML += `
-                        <div class="px-4 py-3 hover:bg-gray-50 transition-colors border-l-2 border-${config.color}-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <h6 class="text-sm font-medium text-gray-900">${colaborador.nome}</h6>
-                                        <div class="flex items-center space-x-1">
-                                            <button onclick="editarColaborador(${colaborador.id})" class="text-gray-400 hover:text-blue-600 transition-colors p-1" title="Editar">
-                                                <i class="fas fa-edit text-xs"></i>
-                                            </button>
-                                            <button onclick="removerColaborador(${colaborador.id})" class="text-gray-400 hover:text-red-600 transition-colors p-1" title="Remover">
-                                                <i class="fas fa-trash text-xs"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-between text-xs text-gray-600">
-                                        <div class="flex items-center space-x-3">
-                                            <span>${colaborador.turno.charAt(0).toUpperCase() + colaborador.turno.slice(1)}</span>
-                                            <span>Desde ${new Date(colaborador.dataAdmissao).toLocaleDateString('pt-BR')}</span>
-                                        </div>
-                                        <div class="flex items-center space-x-2">
-                                            <span>${colaborador.telefoneFormatado}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                colaboradoresHTML += `</div>`;
-            });
+            }).join('');
 
             container.innerHTML = colaboradoresHTML;
         }
@@ -1465,6 +1341,562 @@
             }
         }
 
+        function abrirDetalheMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            // Se a mesa estiver livre, mostrar opções de ocupar/reservar
+            if (mesa.status === 'livre') {
+                mostrarOpcoesOcuparReservar(mesaId);
+                return;
+            }
+
+            // Se a mesa estiver reservada, mostrar opções de ocupar/liberar
+            if (mesa.status === 'reservada') {
+                mostrarOpcoesReservada(mesaId);
+                return;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            // Calcular totais
+            const totalPedidos = mesa.pedidos.reduce((total, pedido) => total + pedido.subtotal, 0);
+            const totalPagamentos = mesa.pagamentos.reduce((total, pagamento) => total + pagamento.valor, 0);
+            const taxaServico = totalPedidos * mesa.taxaServico;
+            const totalComTaxa = totalPedidos + taxaServico;
+            const saldo = totalComTaxa - totalPagamentos;
+
+            const modalHTML = `
+                <!-- Cabeçalho -->
+                <div class="px-6 py-4 border-b border-gray-100 flex-shrink-0">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Mesa ${mesa.numero}</h3>
+                        <button onclick="fecharModalMesa()" class="text-gray-400 hover:text-gray-600 p-1">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Corpo -->
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="text-center py-16">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-utensils text-gray-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-medium text-gray-900 mb-2">Funcionalidades em Desenvolvimento</h4>
+                        <p class="text-gray-500">Novas funcionalidades serão adicionadas em breve.</p>
+                    </div>
+                </div>
+                
+                <!-- Rodapé -->
+                <div class="p-6 border-t border-gray-100 flex-shrink-0">
+                    <!-- Espaço reservado para ações futuras -->
+                </div>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalMesaAberto = { overlay, modal, mesaId };
+            
+            // Inicializar botões deslizantes no modal
+            setTimeout(() => {
+                initSlideButtons();
+            }, 100);
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalMesa();
+                }
+            });
+        }
+
+        function mostrarOpcoesOcuparReservar(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            const modalHTML = `
+                <!-- Cabeçalho -->
+                <div class="px-6 py-4 border-b border-gray-100 flex-shrink-0">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Mesa ${mesa.numero}</h3>
+                        <button onclick="fecharModalOpcoesMesa()" class="text-gray-400 hover:text-gray-600 p-1">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Corpo -->
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="text-center mb-6">
+                        <p class="text-gray-500">Capacidade para ${mesa.capacidade} pessoas</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md md:max-w-lg mx-auto">
+                        <button onclick="abrirModalOcuparMesa(${mesaId})" class="bg-red-100 hover:bg-red-200 text-red-600 rounded-lg py-3 px-4 transition-colors font-medium flex items-center justify-center border border-red-200">
+                            <i class="fas fa-user-friends mr-2"></i>
+                            <span>Ocupar Mesa</span>
+                        </button>
+                        
+                        <button onclick="reservarMesaSimples(${mesaId})" class="bg-amber-100 hover:bg-amber-200 text-amber-600 rounded-lg py-3 px-4 transition-colors font-medium flex items-center justify-center border border-amber-200">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Reservar Mesa</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalOpcoesMesaAberto = { overlay, modal, mesaId };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalOpcoesMesa();
+                }
+            });
+        }
+
+        function fecharModalOpcoesMesa() {
+            if (window.modalOpcoesMesaAberto) {
+                const { overlay, modal } = window.modalOpcoesMesaAberto;
+                
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalOpcoesMesaAberto = null;
+                }, 300);
+            }
+        }
+
+        function abrirModalOcuparMesa(mesaId) {
+            // Fechar modal de opções se estiver aberto
+            if (window.modalOpcoesMesaAberto) {
+                fecharModalOpcoesMesa();
+            }
+
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-lg shadow-xl w-full max-w-md transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            const modalHTML = `
+                <!-- Cabeçalho -->
+                <div class="px-6 py-4 border-b border-gray-100 flex-shrink-0">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Ocupar Mesa ${mesa.numero}</h3>
+                        <button onclick="fecharModalOcuparMesa()" class="text-gray-400 hover:text-gray-600 p-1">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Corpo -->
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-gray-600 text-xl"></i>
+                        </div>
+                        <p class="text-gray-500">Capacidade para ${mesa.capacidade} pessoas</p>
+                    </div>
+                    
+                    <form id="form-ocupar-mesa" class="space-y-6 max-w-md mx-auto">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Clientes</label>
+                            <div id="lista-clientes" class="space-y-3">
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors" placeholder="Nome do cliente" required>
+                            </div>
+                            <button type="button" onclick="adicionarCampoCliente()" class="mt-4 text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center transition-colors">
+                                <i class="fas fa-plus mr-2"></i>
+                                Adicionar cliente
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Rodapé -->
+                <div class="p-6 border-t border-gray-100 flex-shrink-0">
+                    <div class="flex space-x-3">
+                        <button type="button" onclick="fecharModalOcuparMesa()" class="flex-1 px-4 py-3 text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors font-medium">
+                            Cancelar
+                        </button>
+                        <button type="submit" form="form-ocupar-mesa" class="flex-1 px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
+                            Ocupar Mesa
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalOcuparMesaAberto = { overlay, modal, mesaId };
+            
+            // Event listeners
+            document.getElementById('form-ocupar-mesa').addEventListener('submit', function(e) {
+                e.preventDefault();
+                confirmarOcuparMesa();
+            });
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalOcuparMesa();
+                }
+            });
+        }
+
+        function reservarMesaSimples(mesaId) {
+            // Fechar modal de opções se estiver aberto
+            if (window.modalOpcoesMesaAberto) {
+                fecharModalOpcoesMesa();
+            }
+
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            // Configurar mesa como reservada
+            mesa.status = 'reservada';
+            mesa.cliente = null;
+            mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            mesa.pedidos = [];
+            mesa.pagamentos = [];
+            mesa.tipoAtendimento = 'coletivo';
+            mesa.ocupantes = [];
+
+            renderizarMesas();
+            alert(`Mesa ${mesa.numero} reservada com sucesso!`);
+        }
+
+        function mostrarOpcoesReservada(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            const modalHTML = `
+                <!-- Cabeçalho -->
+                <div class="px-6 py-4 border-b border-gray-100 flex-shrink-0">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Mesa ${mesa.numero}</h3>
+                        <button onclick="fecharModalOpcoesMesa()" class="text-gray-400 hover:text-gray-600 p-1">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Corpo -->
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="text-center mb-6">
+                        <p class="text-gray-500">Capacidade para ${mesa.capacidade} pessoas • Reservada às ${mesa.horario}</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md md:max-w-lg mx-auto">
+                        <button onclick="abrirModalOcuparMesa(${mesaId})" class="bg-red-100 hover:bg-red-200 text-red-600 rounded-lg py-3 px-4 transition-colors font-medium flex items-center justify-center border border-red-200">
+                            <i class="fas fa-user-friends mr-2"></i>
+                            <span>Ocupar Mesa</span>
+                        </button>
+                        
+                        <button onclick="liberarMesaReservada(${mesaId}); fecharModalOpcoesMesa();" class="bg-green-100 hover:bg-green-200 text-green-600 rounded-lg py-3 px-4 transition-colors font-medium flex items-center justify-center border border-green-200">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>Liberar Mesa</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalOpcoesMesaAberto = { overlay, modal, mesaId };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalOpcoesMesa();
+                }
+            });
+        }
+
+        function liberarMesa(mesaId) {
+            // Fechar modal de opções se estiver aberto
+            if (window.modalOpcoesMesaAberto) {
+                fecharModalOpcoesMesa();
+            }
+
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            if (confirm(`Tem certeza que deseja liberar a Mesa ${mesa.numero}?`)) {
+                // Configurar mesa como livre
+                mesa.status = 'livre';
+                mesa.cliente = null;
+                mesa.horario = null;
+                mesa.pedidos = [];
+                mesa.pagamentos = [];
+                mesa.tipoAtendimento = 'coletivo';
+                mesa.ocupantes = [];
+
+                renderizarMesas();
+                alert(`Mesa ${mesa.numero} liberada com sucesso!`);
+            }
+        }
+
+        function liberarMesaReservada(mesaId) {
+            // Fechar modal de opções se estiver aberto
+            if (window.modalOpcoesMesaAberto) {
+                fecharModalOpcoesMesa();
+            }
+
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            if (confirm(`Tem certeza que deseja liberar a Mesa ${mesa.numero}?`)) {
+                // Configurar mesa como livre
+                mesa.status = 'livre';
+                mesa.cliente = null;
+                mesa.horario = null;
+                mesa.pedidos = [];
+                mesa.pagamentos = [];
+                mesa.tipoAtendimento = 'coletivo';
+                mesa.ocupantes = [];
+
+                renderizarMesas();
+                alert(`Mesa ${mesa.numero} liberada com sucesso!`);
+            }
+        }
+
+        function fecharModalMesa() {
+            if (window.modalMesaAberto) {
+                const { overlay, modal } = window.modalMesaAberto;
+                
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalMesaAberto = null;
+                }, 300);
+            }
+        }
+
+        function ocuparMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            // Modal para ocupar mesa
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-95 opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            const modalHTML = `
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">Ocupar Mesa ${mesa.numero}</h3>
+                        <button onclick="fecharModalOcuparMesa()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="form-ocupar-mesa" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Cliente Principal</label>
+                        <input type="text" id="nome-cliente-principal" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Atendimento</label>
+                        <div class="space-y-3">
+                            <label class="flex items-center">
+                                <input type="radio" name="tipo-atendimento" value="coletivo" checked class="mr-3 text-orange-500 focus:ring-orange-500">
+                                <div>
+                                    <div class="font-medium text-gray-900">Coletivo</div>
+                                    <div class="text-sm text-gray-500">Todos os pedidos e pagamentos em uma conta única</div>
+                                </div>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="tipo-atendimento" value="individual" class="mr-3 text-orange-500 focus:ring-orange-500">
+                                <div>
+                                    <div class="font-medium text-gray-900">Individual</div>
+                                    <div class="text-sm text-gray-500">Pedidos e contas separadas por ocupante</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="ocupantes-section" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ocupantes Adicionais</label>
+                        <div id="lista-ocupantes-inicial" class="space-y-2">
+                            <!-- Ocupantes adicionais serão adicionados aqui -->
+                        </div>
+                        <button type="button" onclick="adicionarOcupanteInicial()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                            + Adicionar ocupante
+                        </button>
+                    </div>
+                    
+                    <div class="flex space-x-3 pt-4">
+                        <button type="button" onclick="fecharModalOcuparMesa()" class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                            Ocupar Mesa
+                        </button>
+                    </div>
+                </form>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalOcuparMesaAberto = { overlay, modal, mesaId };
+            
+            // Event listeners
+            document.getElementById('form-ocupar-mesa').addEventListener('submit', function(e) {
+                e.preventDefault();
+                confirmarOcuparMesa();
+            });
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalOcuparMesa();
+                }
+            });
+        }
+
+        function adicionarCampoCliente() {
+            const container = document.getElementById('lista-clientes');
+            const novoCliente = document.createElement('div');
+            novoCliente.className = 'flex space-x-3';
+            novoCliente.innerHTML = `
+                <input type="text" class="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors" placeholder="Nome do cliente">
+                <button type="button" onclick="this.parentElement.remove()" class="px-3 py-3 text-gray-400 hover:text-red-600 transition-colors rounded-xl hover:bg-red-50">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(novoCliente);
+        }
+
+        function fecharModalOcuparMesa() {
+            if (window.modalOcuparMesaAberto) {
+                const { overlay, modal } = window.modalOcuparMesaAberto;
+                
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalOcuparMesaAberto = null;
+                }, 300);
+            }
+        }
+
+        function confirmarOcuparMesa() {
+            const mesaId = window.modalOcuparMesaAberto?.mesaId;
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            // Coletar todos os nomes dos clientes
+            const clientesInputs = document.querySelectorAll('#lista-clientes input');
+            const nomes = [];
+            
+            clientesInputs.forEach(input => {
+                const nome = input.value.trim();
+                if (nome) {
+                    nomes.push(nome);
+                }
+            });
+            
+            if (nomes.length === 0) {
+                alert('Digite pelo menos um nome de cliente.');
+                return;
+            }
+
+            // Configurar mesa
+            mesa.status = 'ocupada';
+            mesa.cliente = nomes[0]; // Primeiro cliente como principal
+            mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            mesa.pedidos = [];
+            mesa.pagamentos = [];
+            mesa.tipoAtendimento = nomes.length > 1 ? 'individual' : 'coletivo';
+            mesa.ocupantes = [];
+
+            // Se há múltiplos clientes, criar ocupantes individuais
+            if (nomes.length > 1) {
+                nomes.forEach((nome, index) => {
+                    mesa.ocupantes.push({
+                        id: index + 1,
+                        nome,
+                        pedidos: [],
+                        pagamentos: []
+                    });
+                });
+            }
+
+            fecharModalOcuparMesa();
+            renderizarMesas();
+            alert(`Mesa ${mesa.numero} ocupada com sucesso!`);
+        }
+
+
+
         function atualizarAba(tabName) {
             if (tabName === 'pedidos') {
                 renderizarPedidos(pedidosData.aguardando, 'coluna-aguardando', 'aguardando');
@@ -1490,6 +1922,11 @@
                 renderizarColaboradores();
             }
             atualizarContadores();
+            
+            // Inicializar botões deslizantes após renderizar
+            setTimeout(() => {
+                initSlideButtons();
+            }, 100);
         }
 
         // Funções de ação dos pedidos
@@ -1498,7 +1935,9 @@
             if (pedidoIndex !== -1) {
                 const pedido = pedidosData.aguardando.splice(pedidoIndex, 1)[0];
                 pedidosData.novos.push(pedido);
+                atualizarContadores();
                 atualizarAba('pedidos');
+                atualizarAba('kds');
             }
         }
 
@@ -1509,18 +1948,20 @@
                 pedido.tempo = '15min';
                 pedidosData.preparo.push(pedido);
                 
-                // Se for pedido do salão, atualizar status na mesa
+                // Atualizar status do pedido na mesa se for do salão
                 if (pedido.tipo === 'salao' && pedido.mesaId) {
                     const mesa = salaoData.mesas.find(m => m.id === pedido.mesaId);
                     if (mesa) {
-                        const pedidoMesa = mesa.pedidos.find(p => p.id === id);
+                        const pedidoMesa = mesa.pedidos.find(p => p.id === pedido.id);
                         if (pedidoMesa) {
                             pedidoMesa.status = 'preparando';
                         }
                     }
                 }
                 
+                atualizarContadores();
                 atualizarAba('kds');
+                atualizarAba('salao');
             }
         }
 
@@ -1528,83 +1969,453 @@
             const pedidoIndex = pedidosData.preparo.findIndex(p => p.id === id);
             if (pedidoIndex !== -1) {
                 const pedido = pedidosData.preparo.splice(pedidoIndex, 1)[0];
+                pedido.tempo = '2min';
                 
-                // Se for pedido do salão, marcar como pronto na mesa
-                if (pedido.tipo === 'salao' && pedido.mesaId) {
-                    const mesa = salaoData.mesas.find(m => m.id === pedido.mesaId);
-                    if (mesa) {
-                        const pedidoMesa = mesa.pedidos.find(p => p.id === id);
-                        if (pedidoMesa) {
-                            pedidoMesa.status = 'pronto';
+                if (pedido.tipo === 'salao') {
+                    // Para pedidos do salão, não vai para "prontos" do delivery, fica disponível na mesa
+                    if (pedido.mesaId) {
+                        const mesa = salaoData.mesas.find(m => m.id === pedido.mesaId);
+                        if (mesa) {
+                            const pedidoMesa = mesa.pedidos.find(p => p.id === pedido.id);
+                            if (pedidoMesa) {
+                                pedidoMesa.status = 'pronto';
+                            }
                         }
                     }
                 } else {
-                    // Se for delivery, mover para prontos
-                    pedido.tempo = '2min';
+                    // Para pedidos delivery, vai para a coluna de prontos
                     pedidosData.prontos.push(pedido);
                 }
                 
+                atualizarContadores();
                 atualizarAba('kds');
+                atualizarAba('pedidos');
+                atualizarAba('salao');
             }
         }
 
-        function confirmarEntregaPedidoMesa(pedidoId, mesaId) {
-            const mesa = salaoData.mesas.find(m => m.id === mesaId);
-            if (mesa) {
-                const pedido = mesa.pedidos.find(p => p.id === pedidoId);
-                if (pedido) {
-                    pedido.status = 'entregue';
-                    
-                    // Atualizar o modal sem fechar
-                    atualizarModalMesa(mesaId);
+        function despacharPedido(id) {
+            const pedidoIndex = pedidosData.prontos.findIndex(p => p.id === id);
+            if (pedidoIndex !== -1) {
+                const pedido = pedidosData.prontos.splice(pedidoIndex, 1)[0];
+                if (pedido.tipo === 'delivery') {
+                    // Simular designação de entregador
+                    pedido.entregador = 'Carlos Moto';
+                    pedido.tempoDesignacao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    pedido.status = 'pendente';
+                    pedidosData.pendentes.push(pedido);
                 }
+                atualizarContadores();
+                atualizarAba('pedidos');
+                atualizarAba('entregas');
             }
         }
 
-        function confirmarEntregaItemMesa(pedidoId, itemIndex, mesaId) {
+        function coletarPedido(id) {
+            const pedidoIndex = pedidosData.pendentes.findIndex(p => p.id === id);
+            if (pedidoIndex !== -1) {
+                const pedido = pedidosData.pendentes.splice(pedidoIndex, 1)[0];
+                pedido.tempoSaida = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                const agora = new Date();
+                agora.setMinutes(agora.getMinutes() + 30);
+                pedido.previsaoEntrega = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                pedido.status = 'saindo';
+                pedidosData.rota.push(pedido);
+                atualizarContadores();
+                atualizarAba('entregas');
+            }
+        }
+
+        function confirmarEntrega(id) {
+            const pedidoIndex = pedidosData.rota.findIndex(p => p.id === id);
+            if (pedidoIndex !== -1) {
+                pedidosData.rota.splice(pedidoIndex, 1);
+                alert('Entrega confirmada com sucesso!');
+                atualizarContadores();
+                atualizarAba('entregas');
+            }
+        }
+
+        function atualizarConteudoModalMesa(mesaId) {
+            if (!window.modalMesaAberto || window.modalMesaAberto.mesaId !== mesaId) return;
+            
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const { modal } = window.modalMesaAberto;
+            const conteudoAtual = modal.querySelector('.flex-1.overflow-y-auto');
+            
+            if (conteudoAtual) {
+                // Calcular totais
+                const totalPedidos = mesa.pedidos.reduce((total, pedido) => total + pedido.subtotal, 0);
+                const totalPagamentos = mesa.pagamentos.reduce((total, pagamento) => total + pagamento.valor, 0);
+                const taxaServico = totalPedidos * mesa.taxaServico;
+                const totalComTaxa = totalPedidos + taxaServico;
+                const saldo = totalComTaxa - totalPagamentos;
+
+                const novoConteudo = `
+                    <div class="space-y-8">
+                        <!-- Informações do Cliente -->
+                        <div class="text-center pb-6 border-b border-gray-100">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-left">
+                                    <p class="text-sm text-gray-500">Atendente</p>
+                                    <p class="text-sm font-medium text-gray-900">Maria Silva</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500">Tempo</p>
+                                    <p class="text-sm font-medium text-gray-900" id="timer-mesa-${mesa.id}">00:45</p>
+                                </div>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-900">${mesa.cliente}</h4>
+                            <p class="text-gray-500 text-sm">Desde ${mesa.horario}</p>
+                        </div>
+
+                        <!-- Pedidos -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h5 class="text-sm font-medium text-gray-900 uppercase tracking-wide">Pedidos</h5>
+                                <button onclick="alert('Funcionalidade em desenvolvimento')" class="text-gray-600 hover:text-gray-900 text-sm">
+                                    + Adicionar
+                                </button>
+                            </div>
+                            
+                            ${mesa.pedidos.length === 0 ? `
+                                <div class="text-center py-8">
+                                    <p class="text-gray-400 text-sm">Nenhum pedido realizado</p>
+                                </div>
+                            ` : `
+                                <div class="space-y-3">
+                                    ${mesa.pedidos.map(pedido => `
+                                        <div class="border border-gray-100 rounded-lg p-4">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="text-xs px-2 py-1 rounded-full ${
+                                                        pedido.status === 'pendente' ? 'bg-amber-100 text-amber-700' :
+                                                        pedido.status === 'preparando' ? 'bg-blue-100 text-blue-700' :
+                                                        pedido.status === 'pronto' ? 'bg-green-100 text-green-700' :
+                                                        pedido.status === 'entregue' ? 'bg-gray-100 text-gray-700' :
+                                                        'bg-gray-100 text-gray-700'
+                                                    }">
+                                                        ${pedido.status === 'pendente' ? 'Pendente' :
+                                                          pedido.status === 'preparando' ? 'Preparando' :
+                                                          pedido.status === 'pronto' ? 'Pronto' :
+                                                          pedido.status === 'entregue' ? 'Entregue' :
+                                                          pedido.status}
+                                                    </span>
+                                                    <span class="text-xs text-gray-500">${pedido.horario}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-2">
+                                                ${pedido.itens.map(item => `
+                                                    <div class="flex justify-between text-sm">
+                                                        <div class="flex-1">
+                                                            <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
+                                                            ${item.observacoes && item.observacoes.length > 0 ? `
+                                                                <div class="text-xs text-gray-500 mt-1">${item.observacoes.join(', ')}</div>
+                                                            ` : ''}
+                                                        </div>
+                                                        <span class="text-gray-600">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                            
+                                            <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                                                <span class="text-sm font-medium">Subtotal</span>
+                                                <span class="text-sm font-medium">R$ ${pedido.subtotal.toFixed(2)}</span>
+                                            </div>
+                                            
+                                            ${pedido.status === 'pronto' ? `
+                                                <div class="mt-3 pt-3 border-t border-gray-100">
+                                                    <button onclick="confirmarEntregaMesa('${pedido.id}', ${mesa.id})" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+                                                        Confirmar Entrega
+                                                    </button>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `}
+                        </div>
+
+                        <!-- Resumo Financeiro -->
+                        <div class="space-y-4">
+                            <h5 class="text-sm font-medium text-gray-900 uppercase tracking-wide">Resumo</h5>
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">Subtotal</span>
+                                    <span>R$ ${totalPedidos.toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">Taxa de serviço</span>
+                                    <span>R$ ${taxaServico.toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between text-sm border-t border-gray-100 pt-3">
+                                    <span class="font-medium">Total</span>
+                                    <span class="font-medium">R$ ${totalComTaxa.toFixed(2)}</span>
+                                </div>
+                                ${totalPagamentos > 0 ? `
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-600">Pago</span>
+                                        <span class="text-green-600">R$ ${totalPagamentos.toFixed(2)}</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm border-t border-gray-100 pt-3">
+                                        <span class="font-medium">Saldo</span>
+                                        <span class="font-medium ${saldo > 0 ? 'text-red-600' : saldo < 0 ? 'text-green-600' : 'text-gray-600'}">
+                                            R$ ${Math.abs(saldo).toFixed(2)}
+                                        </span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Rodapé para futuras melhorias -->
+                        <div class="pt-6 border-t border-gray-100">
+                            <!-- Espaço reservado para ações futuras -->
+                        </div>
+                    </div>
+                `;
+                
+                conteudoAtual.innerHTML = `<div class="p-6">${novoConteudo}</div>`;
+                
+                // Reinicializar botões deslizantes após atualizar conteúdo
+                setTimeout(() => {
+                    initSlideButtons();
+                }, 100);
+            }
+        }
+
+        function confirmarEntregaMesa(pedidoId, mesaId) {
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (mesa) {
-                const pedido = mesa.pedidos.find(p => p.id === pedidoId);
-                if (pedido && pedido.itens[itemIndex]) {
-                    // Criar um novo pedido apenas com este item como entregue
-                    const item = pedido.itens[itemIndex];
-                    const novoPedidoEntregue = {
-                        id: `${pedidoId}-item-${itemIndex}`,
-                        status: 'entregue',
-                        itens: [item],
-                        subtotal: item.preco * item.quantidade,
-                        horario: pedido.horario,
-                        cliente: pedido.cliente
-                    };
+                const pedidoIndex = mesa.pedidos.findIndex(p => p.id === pedidoId);
+                if (pedidoIndex !== -1) {
+                    mesa.pedidos[pedidoIndex].status = 'entregue';
+                    alert('Pedido entregue na mesa!');
+                    atualizarAba('salao');
                     
-                    // Adicionar o novo pedido entregue
-                    mesa.pedidos.push(novoPedidoEntregue);
-                    
-                    // Remover o item do pedido original
-                    pedido.itens.splice(itemIndex, 1);
-                    
-                    // Recalcular subtotal do pedido original
-                    pedido.subtotal = pedido.itens.reduce((total, item) => total + (item.preco * item.quantidade), 0);
-                    
-                    // Se não sobrou nenhum item, remover o pedido original
-                    if (pedido.itens.length === 0) {
-                        const pedidoIndex = mesa.pedidos.findIndex(p => p.id === pedidoId);
-                        if (pedidoIndex !== -1) {
-                            mesa.pedidos.splice(pedidoIndex, 1);
-                        }
+                    // Se o modal estiver aberto, apenas atualizar o conteúdo sem fechar e reabrir
+                    if (window.modalMesaAberto && window.modalMesaAberto.mesaId === mesaId) {
+                        atualizarConteudoModalMesa(mesaId);
                     }
-                    
-                    // Atualizar o modal sem fechar
-                    atualizarModalMesa(mesaId);
                 }
             }
         }
 
-        function ocuparMesa(mesaId) {
-            abrirModalOcuparMesa(mesaId);
+        // Funcionalidade dos botões deslizantes
+        function initSlideButtons() {
+            document.querySelectorAll('.slide-button').forEach(button => {
+                let isDragging = false;
+                let startX = 0;
+                let currentX = 0;
+                let initialTransform = 0;
+                let maxSlide = 0;
+                
+                const handle = button.querySelector('.slide-handle');
+                
+                function updateMaxSlide() {
+                    maxSlide = button.offsetWidth - handle.offsetWidth - 4;
+                }
+                
+                function handleStart(e) {
+                    if (button.classList.contains('completed')) return;
+                    
+                    isDragging = true;
+                    button.classList.add('dragging');
+                    
+                    updateMaxSlide();
+                    
+                    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+                    startX = clientX;
+                    
+                    const transform = handle.style.transform;
+                    initialTransform = transform ? parseInt(transform.replace('translateX(', '').replace('px)', '')) : 0;
+                    
+                    e.preventDefault();
+                }
+                
+                function handleMove(e) {
+                    if (!isDragging) return;
+                    
+                    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                    currentX = clientX - startX;
+                    
+                    let newTransform = Math.max(0, Math.min(maxSlide, initialTransform + currentX));
+                    handle.style.transform = `translateX(${newTransform}px)`;
+                    
+                    // Feedback visual baseado no progresso
+                    const progress = newTransform / maxSlide;
+                    const text = button.querySelector('.slide-text');
+                    text.style.opacity = 1 - progress;
+                    
+                    e.preventDefault();
+                }
+                
+                function handleEnd(e) {
+                    if (!isDragging) return;
+                    
+                    isDragging = false;
+                    button.classList.remove('dragging');
+                    
+                    const transform = handle.style.transform;
+                    const currentTransform = transform ? parseInt(transform.replace('translateX(', '').replace('px)', '')) : 0;
+                    const progress = currentTransform / maxSlide;
+                    
+                    if (progress > 0.7) {
+                        // Completar ação
+                        button.classList.add('completed');
+                        handle.style.transform = `translateX(${maxSlide}px)`;
+                        
+                        // Executar ação após animação
+                        setTimeout(() => {
+                            executeSlideAction(button);
+                        }, 300);
+                    } else {
+                        // Voltar ao início
+                        handle.style.transform = 'translateX(0px)';
+                        const text = button.querySelector('.slide-text');
+                        text.style.opacity = 1;
+                    }
+                }
+                
+                // Event listeners para mouse
+                handle.addEventListener('mousedown', handleStart);
+                document.addEventListener('mousemove', handleMove);
+                document.addEventListener('mouseup', handleEnd);
+                
+                // Event listeners para touch
+                handle.addEventListener('touchstart', handleStart, { passive: false });
+                document.addEventListener('touchmove', handleMove, { passive: false });
+                document.addEventListener('touchend', handleEnd);
+                
+                // Atualizar maxSlide quando a janela redimensionar
+                window.addEventListener('resize', updateMaxSlide);
+            });
+        }
+        
+        function executeSlideAction(button) {
+            const action = button.dataset.action;
+            const pedidoId = button.dataset.pedidoId;
+            const mesaId = button.dataset.mesaId;
+            
+            switch(action) {
+                case 'aceitarPedido':
+                    aceitarPedido(pedidoId);
+                    break;
+                case 'prepararPedido':
+                    prepararPedido(pedidoId);
+                    break;
+                case 'finalizarPedido':
+                    finalizarPedido(pedidoId);
+                    break;
+                case 'despacharPedido':
+                    despacharPedido(pedidoId);
+                    break;
+                case 'coletarPedido':
+                    coletarPedido(pedidoId);
+                    break;
+                case 'confirmarEntrega':
+                    confirmarEntrega(pedidoId);
+                    break;
+                case 'confirmarEntregaMesa':
+                    confirmarEntregaMesa(pedidoId, parseInt(mesaId));
+                    break;
+            }
         }
 
-        function abrirModalOcuparMesa(mesaId) {
+        // Funções de gerenciamento de ocupantes
+        function alterarTipoAtendimento(mesaId, novoTipo) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            if (novoTipo === 'individual' && mesa.tipoAtendimento === 'coletivo') {
+                // Mudando para individual - criar ocupante principal se não existir
+                if (mesa.ocupantes.length === 0) {
+                    mesa.ocupantes = [{ 
+                        id: 1, 
+                        nome: mesa.cliente || 'Cliente Principal', 
+                        pedidos: [], 
+                        pagamentos: [] 
+                    }];
+                    
+                    // Associar pedidos existentes ao ocupante principal
+                    mesa.pedidos.forEach(pedido => {
+                        pedido.ocupanteId = 1;
+                    });
+                }
+            } else if (novoTipo === 'coletivo' && mesa.tipoAtendimento === 'individual') {
+                // Mudando para coletivo - remover associação de ocupantes dos pedidos
+                mesa.pedidos.forEach(pedido => {
+                    delete pedido.ocupanteId;
+                });
+            }
+
+            mesa.tipoAtendimento = novoTipo;
+            atualizarConteudoModalMesa(mesaId);
+        }
+
+        function adicionarOcupante(mesaId) {
+            const nomeOcupante = prompt('Nome do ocupante:');
+            if (!nomeOcupante) return;
+
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const novoId = mesa.ocupantes.length > 0 ? Math.max(...mesa.ocupantes.map(o => o.id)) + 1 : 1;
+            mesa.ocupantes.push({
+                id: novoId,
+                nome: nomeOcupante,
+                pedidos: [],
+                pagamentos: []
+            });
+
+            atualizarConteudoModalMesa(mesaId);
+        }
+
+        function removerOcupante(mesaId, ocupanteId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const ocupante = mesa.ocupantes.find(o => o.id === ocupanteId);
+            if (!ocupante) return;
+
+            // Verificar se o ocupante tem pedidos
+            const pedidosOcupante = mesa.pedidos.filter(p => p.ocupanteId === ocupanteId);
+            if (pedidosOcupante.length > 0) {
+                if (!confirm(`${ocupante.nome} possui ${pedidosOcupante.length} pedido(s). Deseja remover mesmo assim? Os pedidos serão transferidos para o primeiro ocupante.`)) {
+                    return;
+                }
+                
+                // Transferir pedidos para o primeiro ocupante restante
+                const primeiroOcupante = mesa.ocupantes.find(o => o.id !== ocupanteId);
+                if (primeiroOcupante) {
+                    pedidosOcupante.forEach(pedido => {
+                        pedido.ocupanteId = primeiroOcupante.id;
+                    });
+                }
+            }
+
+            // Remover ocupante
+            mesa.ocupantes = mesa.ocupantes.filter(o => o.id !== ocupanteId);
+
+            // Se não sobrou nenhum ocupante, voltar para coletivo
+            if (mesa.ocupantes.length === 0) {
+                mesa.tipoAtendimento = 'coletivo';
+                mesa.pedidos.forEach(pedido => {
+                    delete pedido.ocupanteId;
+                });
+            }
+
+            atualizarConteudoModalMesa(mesaId);
+        }
+
+        function adicionarPedidoMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            // Modal para adicionar pedido
             const overlay = document.createElement('div');
             overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
             
@@ -1615,45 +2426,52 @@
                 modal.classList.remove('scale-95', 'opacity-0');
                 modal.classList.add('scale-100', 'opacity-100');
             }, 10);
+
+            const ocupanteOptions = mesa.tipoAtendimento === 'individual' && mesa.ocupantes.length > 0 
+                ? mesa.ocupantes.map(o => `<option value="${o.id}">${o.nome}</option>`).join('')
+                : '';
             
             const modalHTML = `
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-gray-900">Ocupar Mesa</h3>
-                        <button onclick="fecharModalOcuparMesa()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <h3 class="text-lg font-semibold text-gray-900">Novo Pedido - Mesa ${mesa.numero}</h3>
+                        <button onclick="fecharModalPedido()" class="text-gray-400 hover:text-gray-600 transition-colors">
                             <i class="fas fa-times text-lg"></i>
                         </button>
                     </div>
                 </div>
                 
-                <form id="form-ocupar-mesa" class="p-6 space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Cliente</label>
-                        <input type="text" id="nome-cliente" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
-                    </div>
+                <form id="form-pedido-mesa" class="p-6 space-y-4">
+                    ${mesa.tipoAtendimento === 'individual' && mesa.ocupantes.length > 0 ? `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ocupante</label>
+                            <select id="ocupante-pedido" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                                <option value="">Selecione o ocupante</option>
+                                ${ocupanteOptions}
+                            </select>
+                        </div>
+                    ` : ''}
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefone (opcional)</label>
-                        <input type="tel" id="telefone-cliente" placeholder="(11) 99999-9999" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Atendente</label>
-                        <select id="atendente-mesa" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
-                            <option value="">Selecione um atendente</option>
-                            ${colaboradoresData.colaboradores
-                                .filter(c => c.funcao === 'balconista' || c.funcao === 'atendente')
-                                .map(c => `<option value="${c.nome}">${c.nome}</option>`)
-                                .join('')}
-                        </select>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Itens do Pedido</label>
+                        <div class="space-y-2" id="itens-pedido">
+                            <div class="flex space-x-2">
+                                <input type="text" placeholder="Nome do item" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                                <input type="number" placeholder="Qtd" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                                <input type="number" placeholder="Preço" step="0.01" min="0" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                            </div>
+                        </div>
+                        <button type="button" onclick="adicionarItemPedido()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                            + Adicionar item
+                        </button>
                     </div>
                     
                     <div class="flex space-x-3 pt-4">
-                        <button type="button" onclick="fecharModalOcuparMesa()" class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                        <button type="button" onclick="fecharModalPedido()" class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
                             Cancelar
                         </button>
-                        <button type="submit" class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                            Ocupar Mesa
+                        <button type="submit" class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                            Adicionar Pedido
                         </button>
                     </div>
                 </form>
@@ -1663,138 +2481,39 @@
             overlay.appendChild(modal);
             document.body.appendChild(overlay);
             
-            window.modalOcuparMesaAberto = { overlay, modal, mesaId };
+            window.modalPedidoAberto = { overlay, modal, mesaId };
             
-            document.getElementById('form-ocupar-mesa').addEventListener('submit', function(e) {
+            // Event listeners
+            document.getElementById('form-pedido-mesa').addEventListener('submit', function(e) {
                 e.preventDefault();
-                confirmarOcupacaoMesa();
+                salvarPedidoMesa();
             });
             
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
-                    fecharModalOcuparMesa();
+                    fecharModalPedido();
                 }
             });
         }
 
-        function fecharModalOcuparMesa() {
-            if (window.modalOcuparMesaAberto) {
-                const { overlay, modal } = window.modalOcuparMesaAberto;
-                
-                modal.classList.remove('scale-100', 'opacity-100');
-                modal.classList.add('scale-95', 'opacity-0');
-                
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) {
-                        overlay.remove();
-                    }
-                    window.modalOcuparMesaAberto = null;
-                }, 300);
-            }
-        }
-
-        function confirmarOcupacaoMesa() {
-            const mesaId = window.modalOcuparMesaAberto?.mesaId;
-            const nomeCliente = document.getElementById('nome-cliente').value;
-            const telefoneCliente = document.getElementById('telefone-cliente').value;
-            const atendente = document.getElementById('atendente-mesa').value;
-            
-            if (mesaId && nomeCliente && atendente) {
-                const mesa = salaoData.mesas.find(m => m.id === mesaId);
-                if (mesa) {
-                    mesa.status = 'ocupada';
-                    mesa.cliente = nomeCliente;
-                    mesa.telefone = telefoneCliente.replace(/\D/g, '');
-                    mesa.telefoneFormatado = telefoneCliente;
-                    mesa.atendente = atendente;
-                    mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                    
-                    renderizarMesas();
-                    fecharModalOcuparMesa();
-                }
-            }
-        }
-
-        function abrirModalNovoPedido(mesaId) {
-            const overlay = document.createElement('div');
-            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
-            
-            const modal = document.createElement('div');
-            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0';
-            
-            setTimeout(() => {
-                modal.classList.remove('scale-95', 'opacity-0');
-                modal.classList.add('scale-100', 'opacity-100');
-            }, 10);
-            
-            const modalHTML = `
-                <div class="px-6 py-4 border-b border-gray-200 flex-shrink-0">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-gray-900">Novo Pedido - Mesa ${salaoData.mesas.find(m => m.id === mesaId)?.numero}</h3>
-                        <button onclick="fecharModalNovoPedido()" class="text-gray-400 hover:text-gray-600 transition-colors">
-                            <i class="fas fa-times text-lg"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex-1 overflow-y-auto p-6">
-                    <div class="space-y-6">
-                        ${cardapioData.categorias.map(categoria => `
-                            <div>
-                                <h4 class="text-lg font-semibold text-gray-900 mb-3">${categoria.nome}</h4>
-                                <div class="space-y-2">
-                                    ${categoria.itens.map(item => `
-                                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                                            <div class="flex items-center justify-between">
-                                                <div class="flex-1">
-                                                    <h5 class="font-medium text-gray-900">${item.nome}</h5>
-                                                    <p class="text-sm text-gray-600 mt-1">${item.descricao}</p>
-                                                    <p class="text-lg font-bold text-orange-600 mt-2">R$ ${item.preco.toFixed(2)}</p>
-                                                </div>
-                                                <div class="flex items-center space-x-2 ml-4">
-                                                    <button onclick="diminuirQuantidade(${item.id})" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
-                                                        <i class="fas fa-minus text-sm"></i>
-                                                    </button>
-                                                    <span id="qty-${item.id}" class="w-8 text-center font-medium">0</span>
-                                                    <button onclick="aumentarQuantidade(${item.id})" class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors">
-                                                        <i class="fas fa-plus text-sm"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                
-                <div class="px-6 py-4 border-t border-gray-200 flex-shrink-0">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-lg font-semibold text-gray-900">Total: <span id="total-pedido" class="text-orange-600">R$ 0,00</span></span>
-                        <button onclick="finalizarNovoPedido(${mesaId})" id="btn-finalizar-pedido" class="bg-orange-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
-                            Fazer Pedido
-                        </button>
-                    </div>
-                </div>
+        function adicionarItemPedido() {
+            const container = document.getElementById('itens-pedido');
+            const novoItem = document.createElement('div');
+            novoItem.className = 'flex space-x-2';
+            novoItem.innerHTML = `
+                <input type="text" placeholder="Nome do item" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                <input type="number" placeholder="Qtd" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                <input type="number" placeholder="Preço" step="0.01" min="0" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                <button type="button" onclick="this.parentElement.remove()" class="px-2 py-2 text-red-600 hover:text-red-800">
+                    <i class="fas fa-trash"></i>
+                </button>
             `;
-            
-            modal.innerHTML = modalHTML;
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-            
-            window.modalNovoPedidoAberto = { overlay, modal, mesaId, carrinho: {} };
-            
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    fecharModalNovoPedido();
-                }
-            });
+            container.appendChild(novoItem);
         }
 
-        function fecharModalNovoPedido() {
-            if (window.modalNovoPedidoAberto) {
-                const { overlay, modal } = window.modalNovoPedidoAberto;
+        function fecharModalPedido() {
+            if (window.modalPedidoAberto) {
+                const { overlay, modal } = window.modalPedidoAberto;
                 
                 modal.classList.remove('scale-100', 'opacity-100');
                 modal.classList.add('scale-95', 'opacity-0');
@@ -1803,942 +2522,284 @@
                     if (overlay && overlay.parentNode) {
                         overlay.remove();
                     }
-                    window.modalNovoPedidoAberto = null;
+                    window.modalPedidoAberto = null;
                 }, 300);
             }
         }
 
-        function aumentarQuantidade(itemId) {
-            if (!window.modalNovoPedidoAberto) return;
-            
-            const { carrinho } = window.modalNovoPedidoAberto;
-            carrinho[itemId] = (carrinho[itemId] || 0) + 1;
-            
-            document.getElementById(`qty-${itemId}`).textContent = carrinho[itemId];
-            atualizarTotalPedido();
-        }
-
-        function diminuirQuantidade(itemId) {
-            if (!window.modalNovoPedidoAberto) return;
-            
-            const { carrinho } = window.modalNovoPedidoAberto;
-            if (carrinho[itemId] > 0) {
-                carrinho[itemId]--;
-                if (carrinho[itemId] === 0) {
-                    delete carrinho[itemId];
-                }
-            }
-            
-            document.getElementById(`qty-${itemId}`).textContent = carrinho[itemId] || 0;
-            atualizarTotalPedido();
-        }
-
-        function atualizarTotalPedido() {
-            if (!window.modalNovoPedidoAberto) return;
-            
-            const { carrinho } = window.modalNovoPedidoAberto;
-            let total = 0;
-            
-            Object.keys(carrinho).forEach(itemId => {
-                const quantidade = carrinho[itemId];
-                const item = cardapioData.categorias
-                    .flatMap(cat => cat.itens)
-                    .find(item => item.id == itemId);
-                
-                if (item) {
-                    total += item.preco * quantidade;
-                }
-            });
-            
-            document.getElementById('total-pedido').textContent = `R$ ${total.toFixed(2)}`;
-            document.getElementById('btn-finalizar-pedido').disabled = total === 0;
-        }
-
-        function finalizarNovoPedido(mesaId) {
-            if (!window.modalNovoPedidoAberto) return;
-            
-            const { carrinho } = window.modalNovoPedidoAberto;
+        function salvarPedidoMesa() {
+            const mesaId = window.modalPedidoAberto?.mesaId;
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
-            
-            if (!mesa || Object.keys(carrinho).length === 0) return;
-            
-            // Gerar ID do pedido
-            const proximoNumero = (mesa.pedidos.length + 1).toString().padStart(3, '0');
-            const pedidoId = `M${mesa.numero}-${proximoNumero}`;
-            
-            // Criar itens do pedido
-            const itens = Object.keys(carrinho).map(itemId => {
-                const quantidade = carrinho[itemId];
-                const item = cardapioData.categorias
-                    .flatMap(cat => cat.itens)
-                    .find(item => item.id == itemId);
-                
-                return {
-                    nome: item.nome,
-                    quantidade: quantidade,
-                    preco: item.preco,
-                    observacoes: []
-                };
-            });
-            
-            const subtotal = itens.reduce((total, item) => total + (item.preco * item.quantidade), 0);
-            const horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            // Adicionar pedido à mesa
-            const novoPedido = {
-                id: pedidoId,
-                status: 'aguardando',
-                itens: itens,
-                subtotal: subtotal,
-                horario: horario,
-                cliente: mesa.cliente
-            };
-            
-            mesa.pedidos.push(novoPedido);
-            
-            // Adicionar pedido ao KDS
-            const pedidoKDS = {
-                id: pedidoId,
-                cliente: mesa.cliente,
-                mesa: `Mesa ${mesa.numero}`,
-                total: subtotal,
-                itens: itens,
-                tempo: '0min',
-                hora: horario,
-                tipo: 'salao',
-                mesaId: mesaId
-            };
-            
-            pedidosData.novos.push(pedidoKDS);
-            
-            fecharModalNovoPedido();
-            fecharModalMesa();
-            
-            // Reabrir modal da mesa para mostrar o novo pedido
-            setTimeout(() => abrirDetalheMesa(mesaId), 100);
-            
-            // Atualizar contadores
-            atualizarContadores();
-        }
+            if (!mesa) return;
 
-        function despacharPedido(id) {
-            const pedidoIndex = pedidosData.prontos.findIndex(p => p.id === id);
-            if (pedidoIndex !== -1) {
-                const pedido = pedidosData.prontos[pedidoIndex];
-                
-                // Se for pedido delivery, abrir modal de seleção de entregador
-                if (pedido.tipo === 'delivery') {
-                    abrirModalEntregadores(id);
-                } else {
-                    // Se for pedido do salão, finalizar diretamente
-                    pedidosData.prontos.splice(pedidoIndex, 1);
-                    atualizarAba('pedidos');
+            const ocupanteId = document.getElementById('ocupante-pedido')?.value;
+            const itensInputs = document.querySelectorAll('#itens-pedido > div');
+            
+            const itens = [];
+            let subtotal = 0;
+
+            itensInputs.forEach(itemDiv => {
+                const inputs = itemDiv.querySelectorAll('input');
+                if (inputs.length >= 3) {
+                    const nome = inputs[0].value.trim();
+                    const quantidade = parseInt(inputs[1].value) || 0;
+                    const preco = parseFloat(inputs[2].value) || 0;
+                    
+                    if (nome && quantidade > 0 && preco > 0) {
+                        itens.push({
+                            nome,
+                            quantidade,
+                            preco,
+                            observacoes: []
+                        });
+                        subtotal += quantidade * preco;
+                    }
                 }
-            }
-        }
+            });
 
-        function abrirModalEntregadores(pedidoId) {
-            // Filtrar apenas entregadores ativos
-            const entregadores = colaboradoresData.colaboradores.filter(c => c.funcao === 'entregador' && c.status === 'ativo');
-            
-            if (entregadores.length === 0) {
-                alert('Nenhum entregador disponível. Cadastre entregadores na seção Configurações > Colaboradores.');
+            if (itens.length === 0) {
+                alert('Adicione pelo menos um item ao pedido.');
                 return;
             }
 
-            const overlay = document.createElement('div');
-            overlay.className = 'fixed inset-0 bg-black bg-opacity-30 z-50 flex items-end justify-center';
+            // Gerar ID do pedido
+            const novoPedidoId = `M${mesa.numero.padStart(3, '0')}-${String(mesa.pedidos.length + 1).padStart(3, '0')}`;
             
-            const modal = document.createElement('div');
-            modal.className = 'bg-white rounded-t-2xl shadow-2xl w-full max-w-md mx-4 mb-0 transform transition-all duration-300 translate-y-full';
+            const novoPedido = {
+                id: novoPedidoId,
+                status: 'pendente',
+                itens,
+                subtotal,
+                horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                cliente: mesa.tipoAtendimento === 'individual' && ocupanteId 
+                    ? mesa.ocupantes.find(o => o.id == ocupanteId)?.nome 
+                    : mesa.cliente
+            };
+
+            if (mesa.tipoAtendimento === 'individual' && ocupanteId) {
+                novoPedido.ocupanteId = parseInt(ocupanteId);
+            }
+
+            mesa.pedidos.push(novoPedido);
+
+            // Adicionar ao KDS
+            const pedidoKDS = {
+                ...novoPedido,
+                tipo: 'salao',
+                mesa: `Mesa ${mesa.numero}`,
+                mesaId: mesa.id,
+                telefone: null,
+                telefoneFormatado: null,
+                total: subtotal,
+                formaPagamento: null,
+                statusPagamento: null,
+                tempo: '2min'
+            };
+
+            pedidosData.novos.push(pedidoKDS);
+
+            fecharModalPedido();
+            atualizarConteudoModalMesa(mesaId);
+            atualizarAba('kds');
+            atualizarContadores();
+        }
+
+        // Funções de união de mesas
+        function iniciarUniaoMesas() {
+            if (estadoUniaoMesas.ativo) {
+                cancelarUniaoMesas();
+                return;
+            }
+
+            estadoUniaoMesas.ativo = true;
+            estadoUniaoMesas.mesasSelecionadas = [];
+            estadoUniaoMesas.mesaPrincipal = null;
+
+            // Atualizar botão
+            const btnUnir = document.getElementById('btn-unir-mesas');
+            btnUnir.innerHTML = '<i class="fas fa-times mr-2"></i>Cancelar';
+            btnUnir.className = 'bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-colors flex items-center text-sm';
+
+            // Mostrar instruções
+            mostrarInstrucoesUniao();
+            renderizarMesas();
+        }
+
+        function cancelarUniaoMesas() {
+            estadoUniaoMesas.ativo = false;
+            estadoUniaoMesas.mesasSelecionadas = [];
+            estadoUniaoMesas.mesaPrincipal = null;
+
+            // Restaurar botão
+            const btnUnir = document.getElementById('btn-unir-mesas');
+            btnUnir.innerHTML = '<i class="fas fa-link mr-2"></i>Unir Mesas';
+            btnUnir.className = 'bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center text-sm';
+
+            // Remover instruções
+            removerInstrucoesUniao();
+            renderizarMesas();
+        }
+
+        function selecionarMesaParaUniao(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa || mesa.status === 'livre') return;
+
+            const index = estadoUniaoMesas.mesasSelecionadas.indexOf(mesaId);
             
-            setTimeout(() => {
-                modal.classList.remove('translate-y-full');
-                modal.classList.add('translate-y-0');
-            }, 10);
-            
-            const modalHTML = `
-                <div class="px-4 py-3 border-b border-gray-200">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-gray-900">Selecionar Entregador</h3>
-                        <button onclick="fecharModalEntregadores()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
-                            <i class="fas fa-times text-lg"></i>
-                        </button>
+            if (index === -1) {
+                // Adicionar mesa
+                if (estadoUniaoMesas.mesasSelecionadas.length === 0) {
+                    estadoUniaoMesas.mesaPrincipal = mesaId;
+                }
+                estadoUniaoMesas.mesasSelecionadas.push(mesaId);
+            } else {
+                // Remover mesa
+                estadoUniaoMesas.mesasSelecionadas.splice(index, 1);
+                if (estadoUniaoMesas.mesaPrincipal === mesaId) {
+                    estadoUniaoMesas.mesaPrincipal = estadoUniaoMesas.mesasSelecionadas[0] || null;
+                }
+            }
+
+            // Mostrar/esconder botão de confirmar
+            atualizarBotaoConfirmarUniao();
+            renderizarMesas();
+        }
+
+        function mostrarInstrucoesUniao() {
+            const container = document.getElementById('grade-mesas').parentElement;
+            const instrucoes = document.createElement('div');
+            instrucoes.id = 'instrucoes-uniao';
+            instrucoes.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4';
+            instrucoes.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-500 text-lg"></i>
                     </div>
-                    <p class="text-sm text-gray-600 mt-1">Escolha quem fará esta entrega</p>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium text-blue-900 mb-2">Como unir mesas:</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Clique nas mesas ocupadas ou reservadas que deseja unir</li>
+                            <li>• A primeira mesa selecionada será a mesa principal (azul)</li>
+                            <li>• Selecione pelo menos 2 mesas para continuar</li>
+                            <li>• Todos os pedidos serão consolidados na mesa principal</li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="max-h-80 overflow-y-auto">
-                    ${entregadores.map(entregador => `
-                        <button onclick="selecionarEntregador('${pedidoId}', ${entregador.id})" class="w-full px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 text-left">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                                    <i class="fas fa-motorcycle text-purple-600"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="font-medium text-gray-900">${entregador.nome}</div>
-                                    <div class="text-sm text-gray-600 flex items-center space-x-3">
-                                        <span>${entregador.telefoneFormatado}</span>
-                                        <span class="text-xs px-2 py-1 bg-gray-100 rounded-full">${entregador.turno.charAt(0).toUpperCase() + entregador.turno.slice(1)}</span>
-                                    </div>
-                                </div>
-                                <div class="text-gray-400">
-                                    <i class="fas fa-chevron-right"></i>
-                                </div>
-                            </div>
-                        </button>
-                    `).join('')}
-                </div>
-                
-                <div class="px-4 py-3 bg-gray-50 rounded-b-2xl">
-                    <button onclick="fecharModalEntregadores()" class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        Cancelar
+            `;
+            container.insertBefore(instrucoes, container.firstChild);
+        }
+
+        function removerInstrucoesUniao() {
+            const instrucoes = document.getElementById('instrucoes-uniao');
+            if (instrucoes) {
+                instrucoes.remove();
+            }
+            
+            const botaoConfirmar = document.getElementById('botao-confirmar-uniao');
+            if (botaoConfirmar) {
+                botaoConfirmar.remove();
+            }
+        }
+
+        function atualizarBotaoConfirmarUniao() {
+            const botaoExistente = document.getElementById('botao-confirmar-uniao');
+            if (botaoExistente) {
+                botaoExistente.remove();
+            }
+
+            if (estadoUniaoMesas.mesasSelecionadas.length >= 2) {
+                const container = document.getElementById('grade-mesas').parentElement;
+                const botaoConfirmar = document.createElement('div');
+                botaoConfirmar.id = 'botao-confirmar-uniao';
+                botaoConfirmar.className = 'mt-4 text-center';
+                botaoConfirmar.innerHTML = `
+                    <button onclick="confirmarUniaoMesas()" class="bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors">
+                        <i class="fas fa-check mr-2"></i>
+                        Confirmar União (${estadoUniaoMesas.mesasSelecionadas.length} mesas)
                     </button>
-                </div>
-            `;
-            
-            modal.innerHTML = modalHTML;
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-            
-            window.modalEntregadoresAberto = { overlay, modal, pedidoId };
-            
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    fecharModalEntregadores();
-                }
-            });
+                `;
+                container.appendChild(botaoConfirmar);
+            }
         }
 
-        function fecharModalEntregadores() {
-            if (window.modalEntregadoresAberto) {
-                const { overlay, modal } = window.modalEntregadoresAberto;
-                
-                modal.classList.remove('translate-y-0');
-                modal.classList.add('translate-y-full');
-                
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) {
-                        overlay.remove();
+        function confirmarUniaoMesas() {
+            if (estadoUniaoMesas.mesasSelecionadas.length < 2) return;
+
+            const mesaPrincipal = salaoData.mesas.find(m => m.id === estadoUniaoMesas.mesaPrincipal);
+            const mesasSecundarias = estadoUniaoMesas.mesasSelecionadas
+                .filter(id => id !== estadoUniaoMesas.mesaPrincipal)
+                .map(id => salaoData.mesas.find(m => m.id === id));
+
+            // Consolidar informações na mesa principal
+            let capacidadeTotal = mesaPrincipal.capacidade;
+            let pedidosConsolidados = [...mesaPrincipal.pedidos];
+            let pagamentosConsolidados = [...mesaPrincipal.pagamentos];
+
+            mesasSecundarias.forEach(mesa => {
+                capacidadeTotal += mesa.capacidade;
+                pedidosConsolidados = pedidosConsolidados.concat(mesa.pedidos);
+                pagamentosConsolidados = pagamentosConsolidados.concat(mesa.pagamentos);
+            });
+
+            // Atualizar mesa principal
+            mesaPrincipal.capacidade = capacidadeTotal;
+            mesaPrincipal.pedidos = pedidosConsolidados;
+            mesaPrincipal.pagamentos = pagamentosConsolidados;
+            mesaPrincipal.mesasUnidas = mesasSecundarias.map(m => ({ id: m.id, numero: m.numero }));
+            mesaPrincipal.status = 'unida';
+
+            // Marcar mesas secundárias como unidas e ocultar
+            mesasSecundarias.forEach(mesa => {
+                mesa.status = 'oculta';
+                mesa.mesaPrincipal = mesaPrincipal.id;
+            });
+
+            // Atualizar pedidos no KDS se necessário
+            pedidosConsolidados.forEach(pedido => {
+                if (pedido.mesaId && mesasSecundarias.some(m => m.id === pedido.mesaId)) {
+                    pedido.mesaId = mesaPrincipal.id;
+                    pedido.mesa = `Mesa ${mesaPrincipal.numero}`;
+                }
+            });
+
+            alert(`Mesas unidas com sucesso! Mesa principal: ${mesaPrincipal.numero}`);
+            cancelarUniaoMesas();
+            atualizarAba('salao');
+        }
+
+        function separarMesas(mesaPrincipalId) {
+            const mesaPrincipal = salaoData.mesas.find(m => m.id === mesaPrincipalId);
+            if (!mesaPrincipal || !mesaPrincipal.mesasUnidas) return;
+
+            if (confirm('Tem certeza que deseja separar as mesas? Os pedidos permanecerão na mesa principal.')) {
+                // Restaurar mesas secundárias
+                mesaPrincipal.mesasUnidas.forEach(mesaInfo => {
+                    const mesa = salaoData.mesas.find(m => m.id === mesaInfo.id);
+                    if (mesa) {
+                        mesa.status = 'livre';
+                        mesa.cliente = null;
+                        mesa.horario = null;
+                        mesa.pedidos = [];
+                        mesa.pagamentos = [];
+                        mesa.mesaPrincipal = null;
+                        mesa.capacidade = salaoData.mesas.find(m => m.id === mesaInfo.id && m.numero === mesaInfo.numero)?.capacidade || 2;
                     }
-                    window.modalEntregadoresAberto = null;
-                }, 300);
-            }
-        }
+                });
 
-        function selecionarEntregador(pedidoId, entregadorId) {
-            const pedidoIndex = pedidosData.prontos.findIndex(p => p.id === pedidoId);
-            const entregador = colaboradoresData.colaboradores.find(c => c.id === entregadorId);
-            
-            if (pedidoIndex !== -1 && entregador) {
-                const pedido = pedidosData.prontos.splice(pedidoIndex, 1)[0];
-                pedido.entregador = entregador.nome;
-                pedido.entregadorId = entregador.id;
-                pedido.tempoDesignacao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                pedido.status = 'pendente';
-                pedidosData.pendentes.push(pedido);
-                
-                fecharModalEntregadores();
-                atualizarAba('pedidos');
-            }
-        }
+                // Restaurar mesa principal
+                mesaPrincipal.mesasUnidas = null;
+                mesaPrincipal.status = mesaPrincipal.pedidos.length > 0 ? 'ocupada' : 'livre';
+                mesaPrincipal.capacidade = salaoData.mesas.find(m => m.numero === mesaPrincipal.numero && !m.mesasUnidas)?.capacidade || 2;
 
-        function coletarPedido(id) {
-            const pedidoIndex = pedidosData.pendentes.findIndex(p => p.id === id);
-            if (pedidoIndex !== -1) {
-                const pedido = pedidosData.pendentes.splice(pedidoIndex, 1)[0];
-                pedido.tempoSaida = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                pedido.previsaoEntrega = new Date(Date.now() + 30*60000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                pedido.status = 'saindo';
-                pedidosData.rota.push(pedido);
-                atualizarAba('entregas');
-            }
-        }
-
-        function confirmarEntrega(id) {
-            const pedidoIndex = pedidosData.rota.findIndex(p => p.id === id);
-            if (pedidoIndex !== -1) {
-                pedidosData.rota.splice(pedidoIndex, 1);
-                atualizarAba('entregas');
-            }
-        }
-
-        function abrirDetalheMesa(mesaId) {
-            const mesa = salaoData.mesas.find(m => m.id === mesaId);
-            if (!mesa) return;
-
-            const overlay = document.createElement('div');
-            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
-            
-            const modal = document.createElement('div');
-            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0';
-            
-            setTimeout(() => {
-                modal.classList.remove('scale-95', 'opacity-0');
-                modal.classList.add('scale-100', 'opacity-100');
-            }, 10);
-            
-            const statusConfig = {
-                'livre': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Livre' },
-                'ocupada': { color: 'text-red-600', bg: 'bg-red-100', icon: 'user-friends', label: 'Ocupada' },
-                'reservada': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Reservada' }
-            };
-            
-            const config = statusConfig[mesa.status];
-            
-            const modalHTML = `
-                <!-- Cabeçalho do Modal -->
-                <div class="bg-white px-6 py-4 border-b border-gray-200 flex-shrink-0">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900">Mesa ${mesa.numero}</h3>
-                        </div>
-                        <button onclick="fecharModalMesa()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Conteúdo do Modal -->
-                <div class="flex-1 overflow-y-auto">
-                    ${mesa.status !== 'livre' ? `
-                        <!-- Seção de Identificação -->
-                        <div class="px-6 py-4 border-b border-gray-100">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-black uppercase tracking-wider">${mesa.atendente || 'Sem atendente'}</span>
-                                <span class="text-sm font-medium text-black">${mesa.horario || '--:--'} • <span id="cronometro-mesa-${mesa.id}">00:00</span></span>
-                            </div>
-                        </div>
-
-                        <!-- Seção de Clientes e Pedidos -->
-                        ${mesa.clientes && mesa.clientes.length > 0 ? `
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-lg font-semibold text-gray-900">Clientes e Pedidos</h4>
-                                    <button onclick="abrirModalNovoPedido(${mesa.id})" class="bg-orange-500 text-white px-3 py-1 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                        <i class="fas fa-plus mr-1"></i>Novo Pedido
-                                    </button>
-                                </div>
-                                
-                                <div class="space-y-6">
-                                    ${mesa.clientes.map((cliente, index) => {
-                                        // Filtrar pedidos deste cliente
-                                        const pedidosCliente = mesa.pedidos ? mesa.pedidos.filter(p => p.cliente === cliente.nome) : [];
-                                        const pedidosEntregues = pedidosCliente.filter(p => p.status === 'entregue');
-                                        const pedidosAtivos = pedidosCliente.filter(p => p.status !== 'entregue');
-                                        const totalEntregues = pedidosEntregues.reduce((total, p) => total + p.subtotal, 0);
-                                        
-                                        return `
-                                            <div class="${index > 0 ? 'border-t border-gray-200 pt-6' : ''}">
-                                                <div class="flex items-center justify-between mb-3">
-                                                    <h5 class="text-base font-semibold text-gray-900">${cliente.nome}</h5>
-                                                    ${cliente.telefone ? `
-                                                        <a href="https://wa.me/${cliente.telefone}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">
-                                                            <i class="fab fa-whatsapp mr-1"></i>${cliente.telefoneFormatado || cliente.telefone}
-                                                        </a>
-                                                    ` : ''}
-                                                </div>
-                                                
-                                                <div class="space-y-3">
-                                                    ${pedidosEntregues.length > 0 ? `
-                                                        <div>
-                                                            <div class="mb-2">
-                                                                <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
-                                                            </div>
-                                                            
-                                                            <div class="space-y-1 mb-3">
-                                                                ${pedidosEntregues.flatMap(p => p.itens).map(item => `
-                                                                    <div class="flex items-start justify-between text-sm">
-                                                                        <div class="flex-1">
-                                                                            <span class="text-black">${item.quantidade}x ${item.nome}</span>
-                                                                            ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                            ` : ''}
-                                                                        </div>
-                                                                        <span class="text-black font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                    </div>
-                                                                `).join('')}
-                                                            </div>
-                                                            
-                                                            <div class="flex justify-end pt-2 border-t border-gray-200">
-                                                                <span class="text-sm font-bold text-black">Total Entregue: R$ ${totalEntregues.toFixed(2)}</span>
-                                                            </div>
-                                                        </div>
-                                                    ` : ''}
-                                                    
-                                                    ${pedidosAtivos.length > 0 ? `
-                                                        <div class="space-y-3">
-                                                            ${pedidosAtivos.map(pedido => {
-                                                                const statusConfig = {
-                                                                    'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                                    'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                                    'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
-                                                                };
-                                                                const config = statusConfig[pedido.status];
-                                                                
-                                                                return `
-                                                                    <div class="py-3">
-                                                                        <div class="flex items-center justify-between mb-2">
-                                                                            <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                                            <div class="flex items-center space-x-2">
-                                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                                    <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                                </span>
-                                                                                <span class="text-xs text-gray-500">${pedido.horario}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                        <div class="space-y-1 mb-2">
-                                                                            ${pedido.itens.map(item => `
-                                                                                <div class="flex items-start justify-between text-sm">
-                                                                                    <div class="flex-1">
-                                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                                        ` : ''}
-                                                                                    </div>
-                                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                                </div>
-                                                                            `).join('')}
-                                                                        </div>
-                                                                        
-                                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                                                            <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                                            ${pedido.status === 'pronto' ? `
-                                                                                <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                                    Confirmar Entrega
-                                                                                </button>
-                                                                            ` : ''}
-                                                                        </div>
-                                                                    </div>
-                                                                `;
-                                                            }).join('')}
-                                                        </div>
-                                                    ` : ''}
-                                                    
-                                                    ${pedidosCliente.length === 0 ? `
-                                                        <div class="py-2 text-sm text-gray-500 italic">
-                                                            Nenhum pedido ainda
-                                                        </div>
-                                                    ` : ''}
-                                                </div>
-                                            </div>
-                                        `;
-                                    }).join('')}
-                                </div>
-                            </div>
-                        ` : mesa.cliente ? `
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-lg font-semibold text-gray-900">Cliente e Pedidos</h4>
-                                    <button onclick="abrirModalNovoPedido(${mesa.id})" class="bg-orange-500 text-white px-3 py-1 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                        <i class="fas fa-plus mr-1"></i>Novo Pedido
-                                    </button>
-                                </div>
-                                
-                                <div>
-                                    <div class="flex items-center justify-between mb-3">
-                                        <h5 class="text-base font-semibold text-gray-900">${mesa.cliente}</h5>
-                                    </div>
-                                    
-                                    ${mesa.pedidos && mesa.pedidos.length > 0 ? `
-                                        <div class="space-y-3">
-                                            ${mesa.pedidos.filter(p => p.status === 'entregue').length > 0 ? `
-                                                <div>
-                                                    <div class="mb-2">
-                                                        <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
-                                                    </div>
-                                                    
-                                                    <div class="space-y-1 mb-3">
-                                                        ${mesa.pedidos.filter(p => p.status === 'entregue').flatMap(p => p.itens).map(item => `
-                                                            <div class="flex items-start justify-between text-sm">
-                                                                <div class="flex-1">
-                                                                    <span class="text-black">${item.quantidade}x ${item.nome}</span>
-                                                                    ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                        <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                    ` : ''}
-                                                                </div>
-                                                                <span class="text-black font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                            </div>
-                                                        `).join('')}
-                                                    </div>
-                                                    
-                                                    <div class="flex justify-end pt-2 border-t border-gray-200">
-                                                        <span class="text-sm font-bold text-black">Total Entregue: R$ ${mesa.pedidos.filter(p => p.status === 'entregue').reduce((total, p) => total + p.subtotal, 0).toFixed(2)}</span>
-                                                    </div>
-                                                </div>
-                                            ` : ''}
-                                            
-                                            ${mesa.pedidos.filter(p => p.status !== 'entregue').length > 0 ? `
-                                                <div class="space-y-3">
-                                                    ${mesa.pedidos.filter(p => p.status !== 'entregue').map(pedido => {
-                                                        const statusConfig = {
-                                                            'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                            'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                            'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
-                                                        };
-                                                        const config = statusConfig[pedido.status];
-                                                        
-                                                        return `
-                                                            <div class="py-3">
-                                                                <div class="flex items-center justify-between mb-2">
-                                                                    <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                                    <div class="flex items-center space-x-2">
-                                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                            <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                        </span>
-                                                                        <span class="text-xs text-gray-500">${pedido.horario}</span>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                <div class="space-y-1 mb-2">
-                                                                    ${pedido.itens.map(item => `
-                                                                        <div class="flex items-start justify-between text-sm">
-                                                                            <div class="flex-1">
-                                                                                <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                                ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                    <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                                ` : ''}
-                                                                            </div>
-                                                                            <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                        </div>
-                                                                    `).join('')}
-                                                                </div>
-                                                                
-                                                                <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                                                    <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                                    ${pedido.status === 'pronto' ? `
-                                                                        <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                            Confirmar Entrega
-                                                                        </button>
-                                                                    ` : ''}
-                                                                </div>
-                                                            </div>
-                                                        `;
-                                                    }).join('')}
-                                                </div>
-                                            ` : ''}
-                                        </div>
-                                    ` : `
-                                        <div class="py-2 text-sm text-gray-500 italic">
-                                            Nenhum pedido ainda
-                                        </div>
-                                    `}
-                                </div>
-                            </div>
-                        ` : `
-                            <div class="px-6 py-8 text-center">
-                                <i class="fas fa-utensils text-3xl text-gray-300 mb-3"></i>
-                                <p class="text-gray-500 mb-4">Nenhum pedido ainda</p>
-                                <button onclick="abrirModalNovoPedido(${mesa.id})" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-                                    <i class="fas fa-plus mr-2"></i>Fazer Pedido
-                                </button>
-                            </div>
-                        `}
-                    ` : `
-                        <!-- Mesa Livre -->
-                        <div class="px-6 py-8 text-center">
-                            <i class="fas fa-chair text-3xl text-gray-300 mb-3"></i>
-                            <p class="text-gray-500 mb-4">Mesa disponível</p>
-                            <button onclick="ocuparMesa(${mesa.id})" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors">
-                                <i class="fas fa-user-plus mr-2"></i>Ocupar Mesa
-                            </button>
-                        </div>
-                    `}
-                </div>
-            `;
-            
-            modal.innerHTML = modalHTML;
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-            
-            window.modalMesaAberto = { overlay, modal };
-            
-            // Iniciar cronômetro se a mesa estiver ocupada ou reservada
-            if (mesa.status !== 'livre' && mesa.horario) {
-                iniciarCronometroMesa(mesa.id, mesa.horario);
-            }
-            
-
-            
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    fecharModalMesa();
-                }
-            });
-        }
-
-        function atualizarModalMesa(mesaId) {
-            if (!window.modalMesaAberto) return;
-            
-            const mesa = salaoData.mesas.find(m => m.id === mesaId);
-            if (!mesa) return;
-
-            const { modal } = window.modalMesaAberto;
-            
-            // Regenerar conteúdo do modal
-            const statusConfig = {
-                'livre': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Livre' },
-                'ocupada': { color: 'text-red-600', bg: 'bg-red-100', icon: 'user-friends', label: 'Ocupada' },
-                'reservada': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Reservada' }
-            };
-            
-            const config = statusConfig[mesa.status];
-            
-            const modalHTML = `
-                <!-- Cabeçalho do Modal -->
-                <div class="bg-white px-6 py-4 border-b border-gray-200 flex-shrink-0">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900">Mesa ${mesa.numero}</h3>
-                        </div>
-                        <button onclick="fecharModalMesa()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Conteúdo do Modal -->
-                <div class="flex-1 overflow-y-auto">
-                    ${mesa.status !== 'livre' ? `
-                        <!-- Seção de Identificação -->
-                        <div class="px-6 py-4 border-b border-gray-100">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-black uppercase tracking-wider">${mesa.atendente || 'Sem atendente'}</span>
-                                <span class="text-sm font-medium text-black">${mesa.horario || '--:--'} • <span id="cronometro-mesa-${mesa.id}">00:00</span></span>
-                            </div>
-                        </div>
-
-                        <!-- Seção de Clientes e Pedidos -->
-                        ${mesa.clientes && mesa.clientes.length > 0 ? `
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-lg font-semibold text-gray-900">Clientes e Pedidos</h4>
-                                    <button onclick="abrirModalNovoPedido(${mesa.id})" class="bg-orange-500 text-white px-3 py-1 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                        <i class="fas fa-plus mr-1"></i>Novo Pedido
-                                    </button>
-                                </div>
-                                
-                                <div class="space-y-6">
-                                    ${mesa.clientes.map((cliente, index) => {
-                                        // Filtrar pedidos deste cliente
-                                        const pedidosCliente = mesa.pedidos ? mesa.pedidos.filter(p => p.cliente === cliente.nome) : [];
-                                        const pedidosAtivos = pedidosCliente.filter(p => p.status !== 'entregue');
-                                        const pedidosEntregues = pedidosCliente.filter(p => p.status === 'entregue');
-                                        const totalEntregues = pedidosEntregues.reduce((total, p) => total + p.subtotal, 0);
-                                        
-                                        return `
-                                            <div class="${index > 0 ? 'border-t border-gray-200 pt-6' : ''}">
-                                                <div class="flex items-center justify-between mb-3">
-                                                    <h5 class="text-base font-semibold text-gray-900">${cliente.nome}</h5>
-                                                </div>
-                                                
-                                                <div class="space-y-3">
-                                                    ${pedidosEntregues.length > 0 ? `
-                                                        <div>
-                                                            <div class="mb-2">
-                                                                <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
-                                                            </div>
-                                                            
-                                                            <div class="space-y-1 mb-3">
-                                                                ${pedidosEntregues.flatMap(p => p.itens).map(item => `
-                                                                    <div class="flex items-start justify-between text-sm">
-                                                                        <div class="flex-1">
-                                                                            <span class="text-black">${item.quantidade}x ${item.nome}</span>
-                                                                            ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                            ` : ''}
-                                                                        </div>
-                                                                        <span class="text-black font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                    </div>
-                                                                `).join('')}
-                                                            </div>
-                                                            
-                                                            <div class="flex justify-end pt-2 border-t border-gray-200">
-                                                                <span class="text-sm font-bold text-black">Total Entregue: R$ ${totalEntregues.toFixed(2)}</span>
-                                                            </div>
-                                                        </div>
-                                                    ` : ''}
-                                                    
-                                                    ${pedidosAtivos.length > 0 ? `
-                                                        <div class="space-y-3">
-                                                            ${pedidosAtivos.map(pedido => {
-                                                                const statusConfig = {
-                                                                    'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                                    'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                                    'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
-                                                                };
-                                                                const config = statusConfig[pedido.status];
-                                                                
-                                                                return `
-                                                                    <div class="py-3">
-                                                                        <div class="flex items-center justify-between mb-2">
-                                                                            <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                                            <div class="flex items-center space-x-2">
-                                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                                    <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                                </span>
-                                                                                <span class="text-xs text-gray-500">${pedido.horario}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                        <div class="space-y-1 mb-2">
-                                                                            ${pedido.itens.map(item => `
-                                                                                <div class="flex items-start justify-between text-sm">
-                                                                                    <div class="flex-1">
-                                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                                        ` : ''}
-                                                                                    </div>
-                                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                                </div>
-                                                                            `).join('')}
-                                                                        </div>
-                                                                        
-                                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                                                            <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                                            ${pedido.status === 'pronto' ? `
-                                                                                <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                                    Confirmar Entrega
-                                                                                </button>
-                                                                            ` : ''}
-                                                                        </div>
-                                                                    </div>
-                                                                `;
-                                                            }).join('')}
-                                                        </div>
-                                                    ` : ''}
-                                                    
-                                                    ${pedidosCliente.length === 0 ? `
-                                                        <div class="py-2 text-sm text-gray-500 italic">
-                                                            Nenhum pedido ainda
-                                                        </div>
-                                                    ` : ''}
-                                                </div>
-                                            </div>
-                                        `;
-                                    }).join('')}
-                                </div>
-                            </div>
-                        ` : mesa.cliente ? `
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-lg font-semibold text-gray-900">Cliente e Pedidos</h4>
-                                    <button onclick="abrirModalNovoPedido(${mesa.id})" class="bg-orange-500 text-white px-3 py-1 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
-                                        <i class="fas fa-plus mr-1"></i>Novo Pedido
-                                    </button>
-                                </div>
-                                
-                                <div>
-                                    <div class="flex items-center justify-between mb-3">
-                                        <h5 class="text-base font-semibold text-gray-900">${mesa.cliente}</h5>
-
-                                    </div>
-                                    
-                                    ${mesa.pedidos && mesa.pedidos.length > 0 ? `
-                                        <div class="space-y-3 ml-4">
-                                            ${mesa.pedidos.filter(p => p.status !== 'entregue').map(pedido => {
-                                                const statusConfig = {
-                                                    'aguardando': { color: 'text-amber-600', bg: 'bg-amber-100', icon: 'clock', label: 'Aguardando' },
-                                                    'preparando': { color: 'text-blue-600', bg: 'bg-blue-100', icon: 'utensils', label: 'Preparando' },
-                                                    'pronto': { color: 'text-green-600', bg: 'bg-green-100', icon: 'check-circle', label: 'Pronto' }
-                                                };
-                                                const config = statusConfig[pedido.status];
-                                                
-                                                return `
-                                                    <div class="py-3 pl-4">
-                                                        <div class="flex items-center justify-between mb-2">
-                                                            <span class="text-sm font-medium text-gray-900">#${pedido.id}</span>
-                                                            <div class="flex items-center space-x-2">
-                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
-                                                                    <i class="fas fa-${config.icon} mr-1"></i>${config.label}
-                                                                </span>
-                                                                <span class="text-xs text-gray-500">${pedido.horario}</span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="space-y-1 mb-2">
-                                                            ${pedido.itens.map(item => `
-                                                                <div class="flex items-start justify-between text-sm">
-                                                                    <div class="flex-1">
-                                                                        <span class="text-gray-900">${item.quantidade}x ${item.nome}</span>
-                                                                        ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                            <div class="text-xs text-gray-600 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                        ` : ''}
-                                                                    </div>
-                                                                    <span class="text-gray-900 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                                </div>
-                                                            `).join('')}
-                                                        </div>
-                                                        
-                                                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                                            <span class="text-sm font-bold text-orange-600">R$ ${pedido.subtotal.toFixed(2)}</span>
-                                                            ${pedido.status === 'pronto' ? `
-                                                                <button onclick="confirmarEntregaPedidoMesa('${pedido.id}', ${mesa.id})" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-medium hover:bg-green-600 transition-colors">
-                                                                    Confirmar Entrega
-                                                                </button>
-                                                            ` : ''}
-                                                        </div>
-                                                    </div>
-                                                `;
-                                            }).join('')}
-                                            
-                                            ${mesa.pedidos.filter(p => p.status === 'entregue').length > 0 ? `
-                                                <div class="mt-4">
-                                                    <div class="mb-3">
-                                                        <span class="text-sm font-medium text-gray-700">Pedidos Entregues</span>
-                                                    </div>
-                                                    
-                                                    <div class="space-y-1 mb-3 ml-4">
-                                                        ${mesa.pedidos.filter(p => p.status === 'entregue').flatMap(p => p.itens).map(item => `
-                                                            <div class="flex items-start justify-between text-sm">
-                                                                <div class="flex-1">
-                                                                    <span class="text-gray-600">${item.quantidade}x ${item.nome}</span>
-                                                                    ${item.observacoes && item.observacoes.length > 0 ? `
-                                                                        <div class="text-xs text-gray-500 ml-2">(${item.observacoes.join(', ')})</div>
-                                                                    ` : ''}
-                                                                </div>
-                                                                <span class="text-gray-600 font-medium ml-3">R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-                                                            </div>
-                                                        `).join('')}
-                                                    </div>
-                                                </div>
-                                            ` : ''}
-                                        </div>
-                                    ` : `
-                                        <div class="py-2 text-sm text-gray-500 italic">
-                                            Nenhum pedido ainda
-                                        </div>
-                                    `}
-                                </div>
-                            </div>
-                        ` : `
-                            <div class="px-6 py-8 text-center">
-                                <i class="fas fa-utensils text-3xl text-gray-300 mb-3"></i>
-                                <p class="text-gray-500 mb-4">Nenhum pedido ainda</p>
-                                <button onclick="abrirModalNovoPedido(${mesa.id})" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-                                    <i class="fas fa-plus mr-2"></i>Fazer Pedido
-                                </button>
-                            </div>
-                        `}
-                    ` : `
-                        <!-- Mesa Livre -->
-                        <div class="px-6 py-8 text-center">
-                            <i class="fas fa-chair text-3xl text-gray-300 mb-3"></i>
-                            <p class="text-gray-500 mb-4">Mesa disponível</p>
-                            <button onclick="ocuparMesa(${mesa.id})" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors">
-                                <i class="fas fa-user-plus mr-2"></i>Ocupar Mesa
-                            </button>
-                        </div>
-                    `}
-                </div>
-            `;
-            
-            modal.innerHTML = modalHTML;
-            
-            // Reiniciar cronômetro se necessário
-            if (mesa.status !== 'livre' && mesa.horario) {
-                iniciarCronometroMesa(mesa.id, mesa.horario);
-            }
-        }
-
-        function fecharModalMesa() {
-            if (window.modalMesaAberto) {
-                const { overlay, modal } = window.modalMesaAberto;
-                
-                // Parar cronômetro se estiver rodando
-                if (window.cronometroMesaInterval) {
-                    clearInterval(window.cronometroMesaInterval);
-                    window.cronometroMesaInterval = null;
-                }
-                
-                modal.classList.remove('scale-100', 'opacity-100');
-                modal.classList.add('scale-95', 'opacity-0');
-                
-                setTimeout(() => {
-                    if (overlay && overlay.parentNode) {
-                        overlay.remove();
-                    }
-                    window.modalMesaAberto = null;
-                }, 300);
-            }
-        }
-
-        function iniciarCronometroMesa(mesaId, horarioInicio) {
-            const cronometroElement = document.getElementById(`cronometro-mesa-${mesaId}`);
-            if (!cronometroElement) return;
-
-            // Parar cronômetro anterior se existir
-            if (window.cronometroMesaInterval) {
-                clearInterval(window.cronometroMesaInterval);
-            }
-
-            // Calcular tempo inicial baseado no horário de início
-            const [horas, minutos] = horarioInicio.split(':').map(Number);
-            const inicioDate = new Date();
-            inicioDate.setHours(horas, minutos, 0, 0);
-            
-            function atualizarCronometro() {
-                const agora = new Date();
-                const diferenca = agora - inicioDate;
-                
-                if (diferenca < 0) {
-                    cronometroElement.textContent = '00:00';
-                    return;
-                }
-                
-                const totalMinutos = Math.floor(diferenca / 60000);
-                const horas = Math.floor(totalMinutos / 60);
-                const minutos = totalMinutos % 60;
-                
-                const horasStr = horas.toString().padStart(2, '0');
-                const minutosStr = minutos.toString().padStart(2, '0');
-                
-                cronometroElement.textContent = `${horasStr}:${minutosStr}`;
-            }
-
-            // Atualizar imediatamente
-            atualizarCronometro();
-            
-            // Atualizar a cada minuto
-            window.cronometroMesaInterval = setInterval(atualizarCronometro, 60000);
-        }
-
-
-
-        // Função para alternar seções de configuração
-        function switchConfigSection(sectionName) {
-            // Remover classes ativas dos botões
-            document.querySelectorAll('.config-section-button').forEach(btn => {
-                btn.classList.remove('text-orange-600', 'bg-orange-50', 'font-medium', 'border-l-3', 'border-orange-500');
-                btn.classList.add('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
-            });
-            
-            // Esconder todos os conteúdos
-            document.querySelectorAll('.config-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            
-            // Ativar botão selecionado
-            const activeButton = document.getElementById(`config-${sectionName}`);
-            if (activeButton) {
-                activeButton.classList.add('text-orange-600', 'bg-orange-50', 'font-medium', 'border-l-3', 'border-orange-500');
-                activeButton.classList.remove('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
-            }
-            
-            // Mostrar conteúdo selecionado
-            const activeContent = document.getElementById(`config-content-${sectionName}`);
-            if (activeContent) {
-                activeContent.classList.remove('hidden');
+                alert('Mesas separadas com sucesso!');
+                atualizarAba('salao');
             }
         }
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
-            // Carregar aba inicial
             atualizarAba('pedidos');
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986ccbee6100e0e1',t:'MTc1OTE2MjcwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ad042c96aa6d3a',t:'MTc1OTgzNjEwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
