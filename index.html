@@ -12,12 +12,97 @@
             box-sizing: border-box;
         }
         * { font-family: 'Inter', sans-serif; }
+        
+        /* Botão Flutuante de Status */
+        .status-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 40;
+            transition: all 0.3s ease;
+        }
+        
+        .status-button.hidden-by-modal {
+            z-index: 30;
+        }
+        
+        .status-button-inner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        
+        .status-button-inner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-button-inner:active {
+            transform: translateY(0px);
+        }
+        
+        .status-button.aberto .status-button-inner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .status-button.fechado .status-button-inner {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .status-icon {
+            font-size: 18px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .status-text {
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+        
+        @media (max-width: 640px) {
+            .status-button {
+                bottom: 16px;
+                left: 16px;
+            }
+            
+            .status-button-inner {
+                padding: 12px 16px;
+                gap: 10px;
+            }
+            
+            .status-icon {
+                font-size: 16px;
+            }
+            
+            .status-text {
+                font-size: 13px;
+            }
+        }
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
  </head>
- <body class="bg-gray-50"><!-- Barra de Menu Superior -->
+ <body class="bg-gray-50"><!-- Botão Flutuante de Status (sempre visível em modo manual) -->
+  <div id="status-button" class="status-button aberto" style="display: none;">
+   <div class="status-button-inner" onclick="toggleStatusFuncionamento()"><i class="fas fa-store status-icon"></i> <span class="status-text" id="status-text">Aberto</span>
+   </div>
+  </div><!-- Barra de Menu Superior -->
   <nav class="bg-white border-b border-gray-200 shadow-sm">
    <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
     <div class="flex justify-between items-center h-14 md:h-16">
@@ -246,8 +331,24 @@
            </div><button onclick="removerImagem(this)" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-xs"> <i class="fas fa-times"></i> </button>
           </div>
          </div>
-        </div><!-- Horários de Funcionamento -->
-        <div class="space-y-3"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-clock text-gray-400 mr-2 text-xs"></i> Horários de Funcionamento </label>
+        </div><!-- Modo de Funcionamento -->
+        <div class="space-y-4 border-t border-gray-200 pt-6"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-clock text-gray-400 mr-2 text-xs"></i> Modo de Funcionamento </label>
+         <div class="space-y-3"><label class="flex items-start space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-colors" id="modo-automatico-label"> <input type="radio" name="modo-funcionamento" value="automatico" checked class="mt-1 text-orange-500 focus:ring-orange-500" onchange="alterarModoFuncionamento('automatico')">
+           <div class="flex-1">
+            <div class="font-medium text-gray-900 text-sm">
+             Modo Automático (por turnos)
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Configure turnos com horários de início e término</p>
+           </div></label> <label class="flex items-start space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-colors" id="modo-manual-label"> <input type="radio" name="modo-funcionamento" value="manual" class="mt-1 text-orange-500 focus:ring-orange-500" onchange="alterarModoFuncionamento('manual')">
+           <div class="flex-1">
+            <div class="font-medium text-gray-900 text-sm">
+             Modo Manual (abertura/fechamento manual)
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Controle manualmente com botão flutuante Aberto/Fechado</p>
+           </div></label>
+         </div>
+        </div><!-- Horários de Funcionamento (Modo Automático) -->
+        <div id="horarios-container" class="space-y-3"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-calendar-alt text-gray-400 mr-2 text-xs"></i> Horários de Funcionamento </label>
          <div class="space-y-2" id="horarios-funcionamento"><!-- Segunda-feira -->
           <div class="flex items-center space-x-3">
            <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Segunda</span> </label>
@@ -351,7 +452,7 @@
              • Visualizar pedidos na cozinha
             </div>
             <div class="text-sm text-gray-700">
-             • Marcar pratos como prontos
+             ��� Marcar pratos como prontos
             </div>
             <div class="text-sm text-gray-700">
              • Gerenciar tempo de preparo
@@ -671,14 +772,119 @@
 
         const salaoData = {
             mesas: [
-                { id: 1, numero: '01', capacidade: 2, status: 'livre', cliente: null, horario: null },
-                { id: 2, numero: '02', capacidade: 4, status: 'ocupada', cliente: 'João Silva', horario: '14:30' },
-                { id: 3, numero: '03', capacidade: 2, status: 'reservada', cliente: 'Maria Santos', horario: '15:00' },
-                { id: 4, numero: '04', capacidade: 6, status: 'livre', cliente: null, horario: null },
-                { id: 5, numero: '05', capacidade: 4, status: 'livre', cliente: null, horario: null },
-                { id: 6, numero: '06', capacidade: 2, status: 'livre', cliente: null, horario: null }
+                { 
+                    id: 1, 
+                    numero: '01', 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null,
+                    atendente: null,
+                    pessoas: [],
+                    pedidos: []
+                },
+                { 
+                    id: 2, 
+                    numero: '02', 
+                    capacidade: 4, 
+                    status: 'ocupada', 
+                    cliente: 'João Silva', 
+                    horario: '14:30',
+                    atendente: 'Maria Silva',
+                    pessoas: [
+                        {
+                            id: 1,
+                            nome: 'João Silva',
+                            responsavel: true,
+                            pedidos: [
+                                { 
+                                    id: 1, 
+                                    produtoNome: 'Hambúrguer Artesanal', 
+                                    quantidade: 2, 
+                                    precoUnitario: 18.90, 
+                                    observacoes: 'Sem cebola' 
+                                },
+                                { 
+                                    id: 2, 
+                                    produtoNome: 'Refrigerante', 
+                                    quantidade: 1, 
+                                    precoUnitario: 4.50, 
+                                    observacoes: '' 
+                                }
+                            ],
+                            gorjetaHabilitada: true,
+                            gorjetaPercentual: 10,
+                            pagamentos: []
+                        },
+                        {
+                            id: 2,
+                            nome: 'Maria Costa',
+                            responsavel: false,
+                            pedidos: [
+                                { 
+                                    id: 3, 
+                                    produtoNome: 'Pizza Margherita', 
+                                    quantidade: 1, 
+                                    precoUnitario: 24.90, 
+                                    observacoes: 'Borda recheada' 
+                                }
+                            ],
+                            gorjetaHabilitada: true,
+                            gorjetaPercentual: 10,
+                            pagamentos: []
+                        }
+                    ]
+                },
+                { 
+                    id: 3, 
+                    numero: '03', 
+                    capacidade: 2, 
+                    status: 'reservada', 
+                    cliente: 'Maria Santos', 
+                    horario: '15:00',
+                    atendente: null,
+                    pessoas: [],
+                    pedidos: []
+                },
+                { 
+                    id: 4, 
+                    numero: '04', 
+                    capacidade: 6, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null,
+                    atendente: null,
+                    pessoas: [],
+                    pedidos: []
+                },
+                { 
+                    id: 5, 
+                    numero: '05', 
+                    capacidade: 4, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null,
+                    atendente: null,
+                    pessoas: [],
+                    pedidos: []
+                },
+                { 
+                    id: 6, 
+                    numero: '06', 
+                    capacidade: 2, 
+                    status: 'livre', 
+                    cliente: null, 
+                    horario: null,
+                    atendente: null,
+                    pessoas: [],
+                    pedidos: []
+                }
             ]
         };
+
+        // Estado do sistema de funcionamento
+        let modoFuncionamento = 'automatico'; // 'automatico' ou 'manual'
+        let statusFuncionamento = 'aberto'; // 'aberto' ou 'fechado'
 
         // Funções principais
         function toggleMobileMenu() {
@@ -754,6 +960,76 @@
             } else if (sectionName === 'perfil') {
                 configurarHorariosFuncionamento();
             }
+        }
+
+        // Funções de controle de funcionamento
+        function alterarModoFuncionamento(modo) {
+            modoFuncionamento = modo;
+            
+            const horariosContainer = document.getElementById('horarios-container');
+            const statusButton = document.getElementById('status-button');
+            
+            if (modo === 'manual') {
+                // Esconder horários e mostrar botão flutuante
+                horariosContainer.style.display = 'none';
+                statusButton.style.display = 'block';
+            } else {
+                // Mostrar horários e esconder botão flutuante
+                horariosContainer.style.display = 'block';
+                statusButton.style.display = 'none';
+            }
+            
+            // Atualizar estilos dos labels
+            const modoAutomaticoLabel = document.getElementById('modo-automatico-label');
+            const modoManualLabel = document.getElementById('modo-manual-label');
+            
+            if (modo === 'automatico') {
+                modoAutomaticoLabel.classList.add('border-orange-500', 'bg-orange-50');
+                modoAutomaticoLabel.classList.remove('border-gray-200');
+                modoManualLabel.classList.remove('border-orange-500', 'bg-orange-50');
+                modoManualLabel.classList.add('border-gray-200');
+            } else {
+                modoManualLabel.classList.add('border-orange-500', 'bg-orange-50');
+                modoManualLabel.classList.remove('border-gray-200');
+                modoAutomaticoLabel.classList.remove('border-orange-500', 'bg-orange-50');
+                modoAutomaticoLabel.classList.add('border-gray-200');
+            }
+        }
+
+        function toggleStatusFuncionamento() {
+            const statusButton = document.getElementById('status-button');
+            const statusText = document.getElementById('status-text');
+            
+            if (statusFuncionamento === 'aberto') {
+                statusFuncionamento = 'fechado';
+                statusButton.classList.remove('aberto');
+                statusButton.classList.add('fechado');
+                statusText.textContent = 'Fechado';
+            } else {
+                statusFuncionamento = 'aberto';
+                statusButton.classList.remove('fechado');
+                statusButton.classList.add('aberto');
+                statusText.textContent = 'Aberto';
+            }
+        }
+
+        // Detectar quando modais estão abertos
+        function detectarModaisAbertos() {
+            const observer = new MutationObserver(() => {
+                const modaisAbertos = document.querySelectorAll('.fixed.inset-0.bg-black.bg-opacity-50.z-50');
+                const statusButton = document.getElementById('status-button');
+                
+                if (modaisAbertos.length > 0) {
+                    statusButton.classList.add('hidden-by-modal');
+                } else {
+                    statusButton.classList.remove('hidden-by-modal');
+                }
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
         }
 
         // Funções para o Perfil do Estabelecimento
@@ -1699,19 +1975,74 @@
                 return;
             }
 
-            alert('Funcionalidades em desenvolvimento');
+            // Mesa ocupada - abrir modal de detalhes
+            abrirModalDetalheMesa(mesaId);
         }
 
         function mostrarOpcoesOcuparReservar(mesaId) {
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (!mesa) return;
 
-            const opcao = confirm(`Mesa ${mesa.numero} (${mesa.capacidade} pessoas)\n\nOK = Ocupar Mesa\nCancelar = Reservar Mesa`);
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            overlay.id = 'overlay-dropdown-mesa';
             
-            if (opcao) {
-                ocuparMesaSimples(mesaId);
-            } else {
-                reservarMesaSimples(mesaId);
+            const dropdown = document.createElement('div');
+            dropdown.className = 'bg-white rounded-xl shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto transform transition-all duration-300 opacity-0 scale-95';
+            
+            setTimeout(() => {
+                dropdown.classList.remove('opacity-0', 'scale-95');
+                dropdown.classList.add('opacity-100', 'scale-100');
+            }, 10);
+            
+            dropdown.innerHTML = `
+                <div class="px-4 py-3 border-b border-gray-200 bg-white">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            Mesa ${mesa.numero} • ${mesa.capacidade} lugares • Livre
+                        </div>
+                        <button onclick="fecharDropdownMesa()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-4 space-y-2">
+                    <button onclick="ocuparMesaSimples(${mesaId})" class="w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left">
+                        <i class="fas fa-user-friends mr-2"></i>Ocupar Mesa
+                    </button>
+                    
+                    <button onclick="reservarMesaSimples(${mesaId})" class="w-full px-3 py-2 text-sm text-amber-600 hover:bg-amber-50 rounded-lg transition-colors text-left">
+                        <i class="fas fa-clock mr-2"></i>Reservar Mesa
+                    </button>
+                </div>
+            `;
+            
+            overlay.appendChild(dropdown);
+            document.body.appendChild(overlay);
+            
+            window.dropdownMesaAberto = { overlay, dropdown };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharDropdownMesa();
+                }
+            });
+        }
+
+        function fecharDropdownMesa() {
+            if (window.dropdownMesaAberto) {
+                const { overlay, dropdown } = window.dropdownMesaAberto;
+                
+                dropdown.classList.remove('opacity-100', 'scale-100');
+                dropdown.classList.add('opacity-0', 'scale-95');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.dropdownMesaAberto = null;
+                }, 300);
             }
         }
 
@@ -1719,40 +2050,877 @@
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (!mesa) return;
 
-            const cliente = prompt(`Ocupar Mesa ${mesa.numero}\n\nNome do cliente:`);
+            const cliente = prompt(`Ocupar Mesa ${mesa.numero}\n\nNome do responsável pela conta:`);
             if (!cliente) return;
+
+            const atendente = prompt('Nome do atendente:');
+            if (!atendente) return;
 
             mesa.status = 'ocupada';
             mesa.cliente = cliente;
+            mesa.atendente = atendente;
             mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            mesa.pessoas = [
+                {
+                    id: 1,
+                    nome: cliente,
+                    responsavel: true,
+                    pedidos: [],
+                    gorjetaHabilitada: true,
+                    pagamentos: []
+                }
+            ];
 
             renderizarMesas();
-            alert(`Mesa ${mesa.numero} ocupada com sucesso!`);
+            abrirModalDetalheMesa(mesaId);
         }
 
         function reservarMesaSimples(mesaId) {
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (!mesa) return;
 
+            const cliente = prompt(`Reservar Mesa ${mesa.numero}\n\nNome do responsável pela reserva:`);
+            if (!cliente) return;
+
             mesa.status = 'reservada';
-            mesa.cliente = 'Reservada';
+            mesa.cliente = cliente;
             mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
             renderizarMesas();
-            alert(`Mesa ${mesa.numero} reservada com sucesso!`);
+            alert(`Mesa ${mesa.numero} reservada com sucesso para ${cliente}!`);
         }
 
         function mostrarOpcoesReservada(mesaId) {
             const mesa = salaoData.mesas.find(m => m.id === mesaId);
             if (!mesa) return;
 
-            const opcao = confirm(`Mesa ${mesa.numero} - Reservada às ${mesa.horario}\n\nOK = Ocupar Mesa\nCancelar = Liberar Mesa`);
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
             
-            if (opcao) {
-                ocuparMesaSimples(mesaId);
-            } else {
-                liberarMesaReservada(mesaId);
+            const dropdown = document.createElement('div');
+            dropdown.className = 'bg-white rounded-xl shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto transform transition-all duration-300 opacity-0 scale-95';
+            
+            setTimeout(() => {
+                dropdown.classList.remove('opacity-0', 'scale-95');
+                dropdown.classList.add('opacity-100', 'scale-100');
+            }, 10);
+            
+            dropdown.innerHTML = `
+                <div class="px-4 py-3 border-b border-gray-200 bg-white">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            Mesa ${mesa.numero} • ${mesa.capacidade} lugares • Reservada${mesa.cliente && mesa.cliente !== 'Reservada' ? ` - ${mesa.cliente}` : ''} às ${mesa.horario}
+                        </div>
+                        <button onclick="fecharDropdownMesaReservada()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-4 space-y-2">
+                    <button onclick="clienteChegou(${mesaId})" class="w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left">
+                        <i class="fas fa-check-circle mr-2"></i>Cliente Chegou
+                    </button>
+                    
+                    <button onclick="confirmarLiberarReserva(${mesaId})" class="w-full px-3 py-2 text-sm text-green-600 hover:bg-green-50 rounded-lg transition-colors text-left">
+                        <i class="fas fa-times-circle mr-2"></i>Liberar Mesa
+                    </button>
+                </div>
+            `;
+            
+            overlay.appendChild(dropdown);
+            document.body.appendChild(overlay);
+            
+            window.dropdownMesaReservadaAberto = { overlay, dropdown };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharDropdownMesaReservada();
+                }
+            });
+        }
+
+        function fecharDropdownMesaReservada() {
+            if (window.dropdownMesaReservadaAberto) {
+                const { overlay, dropdown } = window.dropdownMesaReservadaAberto;
+                
+                dropdown.classList.remove('opacity-100', 'scale-100');
+                dropdown.classList.add('opacity-0', 'scale-95');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.dropdownMesaReservadaAberto = null;
+                }, 300);
             }
+        }
+
+        function clienteChegou(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            fecharDropdownMesaReservada();
+            
+            setTimeout(() => {
+                const clienteReserva = mesa.cliente;
+                const atendente = prompt(`Cliente ${clienteReserva} chegou!\n\nNome do atendente:`);
+                if (!atendente) return;
+
+                mesa.status = 'ocupada';
+                mesa.atendente = atendente;
+                mesa.horario = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                mesa.pessoas = [
+                    {
+                        id: 1,
+                        nome: clienteReserva,
+                        responsavel: true,
+                        pedidos: [],
+                        gorjetaHabilitada: true,
+                        pagamentos: []
+                    }
+                ];
+
+                renderizarMesas();
+                abrirModalDetalheMesa(mesaId);
+            }, 300);
+        }
+
+        function confirmarLiberarReserva(mesaId) {
+            fecharDropdownMesaReservada();
+            setTimeout(() => liberarMesaReservada(mesaId), 300);
+        }
+
+        // Funções do Modal de Detalhes da Mesa
+        function abrirModalDetalheMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            overlay.style.overflowY = 'auto';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 opacity-0 scale-95';
+            
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'scale-95');
+                modal.classList.add('opacity-100', 'scale-100');
+            }, 10);
+            
+            modal.innerHTML = gerarHTMLDetalheMesa(mesa);
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalMesaAberto = { overlay, modal, mesaId };
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalDetalheMesa();
+                }
+            });
+        }
+
+        function gerarHTMLDetalheMesa(mesa) {
+            const subtotalGeral = calcularSubtotalMesa(mesa);
+            const totalPagoGeral = calcularTotalPagoMesa(mesa);
+            const subtotalRestante = subtotalGeral - totalPagoGeral;
+            const totalGorjeta = calcularGorjetaMesa(mesa);
+            const totalFinal = subtotalRestante + totalGorjeta;
+
+            return `
+                <!-- Cabeçalho Minimalista -->
+                <div class="px-4 py-3 border-b border-gray-200 bg-white">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 text-sm">
+                            <button onclick="mostrarTransferenciaAtendente(${mesa.id})" class="text-gray-700 hover:text-orange-600 transition-colors font-medium">
+                                ${mesa.atendente || 'Sem atendente'}
+                            </button>
+                            <span class="text-gray-400">•</span>
+                            <span class="text-gray-600">${mesa.horario}</span>
+                            <span class="text-gray-400">•</span>
+                            <span class="text-gray-600">${mesa.capacidade} lugares</span>
+                        </div>
+                        <button onclick="fecharModalDetalheMesa()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Formulário de Transferência (oculto por padrão) -->
+                    <div id="form-transferencia-${mesa.id}" class="hidden mt-3 pt-3 border-t border-gray-200">
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="input-atendente-${mesa.id}" placeholder="Nome do novo atendente" class="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+                            <button onclick="confirmarTransferenciaAtendente(${mesa.id})" class="px-3 py-1.5 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600">
+                                OK
+                            </button>
+                            <button onclick="cancelarTransferenciaAtendente(${mesa.id})" class="px-3 py-1.5 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo -->
+                <div class="p-4">
+                    <!-- Lista de Pessoas -->
+                    <div class="space-y-3 mb-4">
+                        ${mesa.pessoas.map(pessoa => gerarHTMLPessoa(mesa, pessoa)).join('')}
+                    </div>
+
+                    <!-- Botão Adicionar Pessoa -->
+                    <button onclick="mostrarFormAdicionarPessoa(${mesa.id})" class="w-full py-2 text-sm text-gray-500 hover:text-orange-600 transition-colors">
+                        + Adicionar pessoa
+                    </button>
+                    
+                    <!-- Formulário Adicionar Pessoa (oculto por padrão) -->
+                    <div id="form-adicionar-pessoa-${mesa.id}" class="hidden mt-2 p-3 bg-gray-50 rounded-lg">
+                        <input type="text" id="input-nome-pessoa-${mesa.id}" placeholder="Nome da pessoa" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-orange-500 focus:border-orange-500 mb-2">
+                        <div class="flex space-x-2">
+                            <button onclick="confirmarAdicionarPessoa(${mesa.id})" class="flex-1 px-3 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600">
+                                Adicionar
+                            </button>
+                            <button onclick="cancelarAdicionarPessoa(${mesa.id})" class="flex-1 px-3 py-2 bg-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-300">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Resumo -->
+                    <div class="border-t border-gray-200 pt-3 mt-4 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-medium text-gray-900">R$ ${subtotalGeral.toFixed(2)}</span>
+                        </div>
+                        ${totalPagoGeral > 0 ? `
+                            <div class="flex justify-between text-sm text-red-600">
+                                <span>Pago</span>
+                                <span>- R$ ${totalPagoGeral.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between text-sm font-medium border-t border-gray-200 pt-1">
+                                <span class="text-gray-900">Subtotal Restante</span>
+                                <span class="text-gray-900">R$ ${subtotalRestante.toFixed(2)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Gorjeta</span>
+                            <span class="font-medium text-gray-900">R$ ${totalGorjeta.toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between font-bold border-t border-gray-200 pt-2">
+                            <span class="text-gray-900">Total</span>
+                            <span class="text-orange-600">R$ ${totalFinal.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex space-x-2 mt-4">
+                        <button onclick="fecharModalDetalheMesa()" class="flex-1 px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Fechar
+                        </button>
+                        <button onclick="finalizarMesa(${mesa.id})" class="flex-1 px-4 py-2 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors ${todosJaPagaram(mesa) ? '' : 'opacity-50 cursor-not-allowed'}" ${todosJaPagaram(mesa) ? '' : 'disabled'}>
+                            Finalizar Mesa
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function gerarHTMLPessoa(mesa, pessoa) {
+            const totalPessoa = calcularTotalPessoa(pessoa);
+            const totalPago = calcularTotalPagoPessoa(pessoa);
+            const subtotalRestante = totalPessoa - totalPago;
+            
+            let gorjetaPessoa = 0;
+            if (pessoa.gorjetaHabilitada) {
+                if (!pessoa.gorjetaTipo || pessoa.gorjetaTipo === 'percentual') {
+                    const gorjetaPercentual = pessoa.gorjetaPercentual || 10;
+                    gorjetaPessoa = subtotalRestante * (gorjetaPercentual / 100);
+                } else if (pessoa.gorjetaTipo === 'fixo') {
+                    gorjetaPessoa = pessoa.gorjetaValorFixo || 0;
+                }
+            }
+            
+            const totalComGorjeta = subtotalRestante + gorjetaPessoa;
+            const jaQuitou = totalComGorjeta <= 0;
+
+            return `
+                <div class="border-b border-gray-100 pb-3">
+                    <!-- Nome e Status -->
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-sm font-medium text-gray-900">${pessoa.nome}</h4>
+                        ${jaQuitou ? '<span class="text-xs text-green-600">✓ Pago</span>' : ''}
+                    </div>
+
+                    <!-- Pedidos -->
+                    ${pessoa.pedidos.length === 0 ? `
+                        <p class="text-xs text-gray-400 mb-2">Nenhum pedido ainda</p>
+                    ` : `
+                        <div class="space-y-1 mb-2">
+                            ${pessoa.pedidos.map(pedido => `
+                                <div class="flex items-start justify-between text-xs">
+                                    <div class="flex-1">
+                                        <span class="text-gray-700">${pedido.quantidade}x ${pedido.produtoNome}</span>
+                                        ${pedido.observacoes ? `<span class="text-gray-500"> (${pedido.observacoes})</span>` : ''}
+                                    </div>
+                                    <span class="text-gray-900 font-medium ml-2">R$ ${(pedido.quantidade * pedido.precoUnitario).toFixed(2)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `}
+                    
+                    <button onclick="mostrarFormPedido(${mesa.id}, ${pessoa.id})" class="text-xs text-blue-600 hover:text-blue-800 mb-2">
+                        + Adicionar pedido
+                    </button>
+                    
+                    <!-- Formulário de Pedido (oculto por padrão) -->
+                    <div id="form-pedido-${mesa.id}-${pessoa.id}" class="hidden mt-2 p-2 bg-gray-50 rounded-lg space-y-2">
+                        <select id="select-produto-${mesa.id}-${pessoa.id}" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500">
+                            <option value="">Selecione um produto...</option>
+                            ${cardapioData.produtos.filter(p => p.disponivel).map(produto => `
+                                <option value="${produto.id}">${produto.nome} - R$ ${produto.preco.toFixed(2)}</option>
+                            `).join('')}
+                        </select>
+                        <input type="number" id="input-qtd-${mesa.id}-${pessoa.id}" value="1" min="1" placeholder="Qtd" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500">
+                        <input type="text" id="input-obs-${mesa.id}-${pessoa.id}" placeholder="Observações (opcional)" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500">
+                        <div class="flex space-x-2">
+                            <button onclick="confirmarPedido(${mesa.id}, ${pessoa.id})" class="flex-1 px-2 py-1.5 bg-blue-500 text-white text-xs rounded hover:bg-blue-600">
+                                Adicionar
+                            </button>
+                            <button onclick="cancelarFormPedido(${mesa.id}, ${pessoa.id})" class="flex-1 px-2 py-1.5 bg-gray-200 text-gray-600 text-xs rounded hover:bg-gray-300">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pagamentos -->
+                    ${pessoa.pagamentos.length > 0 ? `
+                        <div class="mt-2 space-y-1">
+                            ${pessoa.pagamentos.map(pagamento => `
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-gray-600">${pagamento.forma}</span>
+                                    <span class="text-red-600 font-medium">- R$ ${pagamento.valor.toFixed(2)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    <!-- Resumo -->
+                    <div class="mt-2 space-y-1">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="text-gray-900">R$ ${totalPessoa.toFixed(2)}</span>
+                        </div>
+                        ${totalPago > 0 ? `
+                            <div class="flex justify-between text-xs text-red-600">
+                                <span>Pago</span>
+                                <span>- R$ ${totalPago.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between text-xs font-medium border-t border-gray-200 pt-1">
+                                <span class="text-gray-900">Subtotal Restante</span>
+                                <span class="text-gray-900">R$ ${subtotalRestante.toFixed(2)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="flex justify-between text-xs items-center">
+                            <div class="flex items-center">
+                                <label class="relative inline-flex items-center cursor-pointer mr-1.5">
+                                    <input type="checkbox" ${pessoa.gorjetaHabilitada ? 'checked' : ''} onchange="toggleGorjeta(${mesa.id}, ${pessoa.id})" class="sr-only peer">
+                                    <div class="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-orange-500"></div>
+                                </label>
+                                <span class="text-gray-600">Gorjeta</span>
+                                ${pessoa.gorjetaHabilitada ? `
+                                    <button onclick="editarGorjeta(${mesa.id}, ${pessoa.id})" class="ml-1.5 text-blue-600 hover:text-blue-800 text-xs" title="Editar gorjeta">
+                                        Editar
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <span class="text-gray-900">R$ ${gorjetaPessoa.toFixed(2)}${pessoa.gorjetaHabilitada ? (pessoa.gorjetaTipo === 'fixo' ? ' (fixo)' : (pessoa.gorjetaPercentual !== 10 ? ` (${pessoa.gorjetaPercentual}%)` : '')) : ''}</span>
+                        </div>
+                        <div class="flex justify-between text-xs font-semibold border-t border-gray-200 pt-1">
+                            <span class="text-gray-900">Total</span>
+                            <span class="text-orange-600">R$ ${totalComGorjeta.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    ${!jaQuitou ? `
+                        <button onclick="mostrarFormPagamento(${mesa.id}, ${pessoa.id})" class="mt-2 text-xs text-green-600 hover:text-green-800">
+                            + Registrar pagamento
+                        </button>
+                        
+                        <!-- Formulário de Pagamento (oculto por padrão) -->
+                        <div id="form-pagamento-${mesa.id}-${pessoa.id}" class="hidden mt-2 p-2 bg-gray-50 rounded-lg space-y-2">
+                            <div class="bg-white p-2 rounded border border-gray-200">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-gray-600">Total a pagar</span>
+                                    <span class="font-bold text-orange-600">R$ ${totalComGorjeta.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <select id="select-forma-${mesa.id}-${pessoa.id}" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-green-500">
+                                <option value="">Forma de pagamento...</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                                <option value="Pix">Pix</option>
+                                <option value="Débito">Débito</option>
+                                <option value="Crédito">Crédito</option>
+                            </select>
+                            <input type="number" id="input-valor-${mesa.id}-${pessoa.id}" step="0.01" min="0.01" max="${totalComGorjeta.toFixed(2)}" value="${totalComGorjeta.toFixed(2)}" placeholder="Valor" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-green-500">
+                            <div class="flex space-x-2">
+                                <button onclick="confirmarPagamento(${mesa.id}, ${pessoa.id})" class="flex-1 px-2 py-1.5 bg-green-500 text-white text-xs rounded hover:bg-green-600">
+                                    Confirmar
+                                </button>
+                                <button onclick="cancelarFormPagamento(${mesa.id}, ${pessoa.id})" class="flex-1 px-2 py-1.5 bg-gray-200 text-gray-600 text-xs rounded hover:bg-gray-300">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function fecharModalDetalheMesa() {
+            if (window.modalMesaAberto) {
+                const { overlay, modal } = window.modalMesaAberto;
+                
+                modal.classList.remove('opacity-100', 'scale-100');
+                modal.classList.add('opacity-0', 'scale-95');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalMesaAberto = null;
+                }, 300);
+            }
+        }
+
+        function atualizarModalDetalheMesa() {
+            if (window.modalMesaAberto) {
+                const { mesaId, modal } = window.modalMesaAberto;
+                const mesa = salaoData.mesas.find(m => m.id === mesaId);
+                if (mesa) {
+                    modal.innerHTML = gerarHTMLDetalheMesa(mesa);
+                }
+            }
+        }
+
+        // Funções de Cálculo
+        function calcularTotalPessoa(pessoa) {
+            return pessoa.pedidos.reduce((total, pedido) => {
+                return total + (pedido.quantidade * pedido.precoUnitario);
+            }, 0);
+        }
+
+        function calcularTotalPagoPessoa(pessoa) {
+            return pessoa.pagamentos.reduce((total, pagamento) => total + pagamento.valor, 0);
+        }
+
+        function calcularSubtotalMesa(mesa) {
+            return mesa.pessoas.reduce((total, pessoa) => total + calcularTotalPessoa(pessoa), 0);
+        }
+
+        function calcularTotalPagoMesa(mesa) {
+            return mesa.pessoas.reduce((total, pessoa) => total + calcularTotalPagoPessoa(pessoa), 0);
+        }
+
+        function calcularGorjetaMesa(mesa) {
+            return mesa.pessoas.reduce((total, pessoa) => {
+                if (pessoa.gorjetaHabilitada) {
+                    // Se for tipo 'percentual', calcula baseado no percentual
+                    if (!pessoa.gorjetaTipo || pessoa.gorjetaTipo === 'percentual') {
+                        const totalPessoa = calcularTotalPessoa(pessoa);
+                        const totalPago = calcularTotalPagoPessoa(pessoa);
+                        const subtotalRestante = totalPessoa - totalPago;
+                        const percentual = pessoa.gorjetaPercentual || 10;
+                        return total + (subtotalRestante * (percentual / 100));
+                    }
+                    // Se for tipo 'fixo', usa o valor fixo
+                    else if (pessoa.gorjetaTipo === 'fixo') {
+                        return total + (pessoa.gorjetaValorFixo || 0);
+                    }
+                }
+                return total;
+            }, 0);
+        }
+
+        function todosJaPagaram(mesa) {
+            return mesa.pessoas.every(pessoa => {
+                const totalPessoa = calcularTotalPessoa(pessoa);
+                const totalPago = calcularTotalPagoPessoa(pessoa);
+                const subtotalRestante = totalPessoa - totalPago;
+                
+                let gorjetaPessoa = 0;
+                if (pessoa.gorjetaHabilitada) {
+                    if (!pessoa.gorjetaTipo || pessoa.gorjetaTipo === 'percentual') {
+                        const percentual = pessoa.gorjetaPercentual || 10;
+                        gorjetaPessoa = subtotalRestante * (percentual / 100);
+                    } else if (pessoa.gorjetaTipo === 'fixo') {
+                        gorjetaPessoa = pessoa.gorjetaValorFixo || 0;
+                    }
+                }
+                
+                const totalComGorjeta = subtotalRestante + gorjetaPessoa;
+                return totalComGorjeta <= 0;
+            });
+        }
+
+        // Funções de Ação
+        function mostrarTransferenciaAtendente(mesaId) {
+            const form = document.getElementById(`form-transferencia-${mesaId}`);
+            const input = document.getElementById(`input-atendente-${mesaId}`);
+            
+            form.classList.toggle('hidden');
+            if (!form.classList.contains('hidden')) {
+                input.focus();
+            }
+        }
+
+        function confirmarTransferenciaAtendente(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const novoAtendente = document.getElementById(`input-atendente-${mesaId}`).value.trim();
+            if (!novoAtendente) return;
+
+            mesa.atendente = novoAtendente;
+            atualizarModalDetalheMesa();
+        }
+
+        function cancelarTransferenciaAtendente(mesaId) {
+            const form = document.getElementById(`form-transferencia-${mesaId}`);
+            form.classList.add('hidden');
+        }
+
+        function mostrarFormAdicionarPessoa(mesaId) {
+            const form = document.getElementById(`form-adicionar-pessoa-${mesaId}`);
+            const input = document.getElementById(`input-nome-pessoa-${mesaId}`);
+            
+            form.classList.toggle('hidden');
+            if (!form.classList.contains('hidden')) {
+                input.focus();
+            }
+        }
+
+        function confirmarAdicionarPessoa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const nome = document.getElementById(`input-nome-pessoa-${mesaId}`).value.trim();
+            if (!nome) return;
+
+            const novoId = Math.max(...mesa.pessoas.map(p => p.id), 0) + 1;
+            
+            mesa.pessoas.push({
+                id: novoId,
+                nome: nome,
+                responsavel: false,
+                pedidos: [],
+                gorjetaHabilitada: true,
+                pagamentos: []
+            });
+
+            document.getElementById(`input-nome-pessoa-${mesaId}`).value = '';
+            atualizarModalDetalheMesa();
+        }
+
+        function cancelarAdicionarPessoa(mesaId) {
+            const form = document.getElementById(`form-adicionar-pessoa-${mesaId}`);
+            const input = document.getElementById(`input-nome-pessoa-${mesaId}`);
+            
+            form.classList.add('hidden');
+            input.value = '';
+        }
+
+        function mostrarFormPedido(mesaId, pessoaId) {
+            const form = document.getElementById(`form-pedido-${mesaId}-${pessoaId}`);
+            form.classList.toggle('hidden');
+        }
+
+        function confirmarPedido(mesaId, pessoaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const pessoa = mesa.pessoas.find(p => p.id === pessoaId);
+            if (!pessoa) return;
+
+            const produtoId = parseInt(document.getElementById(`select-produto-${mesaId}-${pessoaId}`).value);
+            const quantidade = parseInt(document.getElementById(`input-qtd-${mesaId}-${pessoaId}`).value);
+            const observacoes = document.getElementById(`input-obs-${mesaId}-${pessoaId}`).value.trim();
+            
+            if (!produtoId || quantidade < 1) return;
+            
+            const produto = cardapioData.produtos.find(p => p.id === produtoId);
+            if (!produto) return;
+            
+            const novoPedidoId = Math.max(...pessoa.pedidos.map(p => p.id), 0) + 1;
+            
+            pessoa.pedidos.push({
+                id: novoPedidoId,
+                produtoNome: produto.nome,
+                quantidade: quantidade,
+                precoUnitario: produto.preco,
+                observacoes: observacoes
+            });
+            
+            document.getElementById(`select-produto-${mesaId}-${pessoaId}`).value = '';
+            document.getElementById(`input-qtd-${mesaId}-${pessoaId}`).value = '1';
+            document.getElementById(`input-obs-${mesaId}-${pessoaId}`).value = '';
+            
+            atualizarModalDetalheMesa();
+        }
+
+        function cancelarFormPedido(mesaId, pessoaId) {
+            const form = document.getElementById(`form-pedido-${mesaId}-${pessoaId}`);
+            form.classList.add('hidden');
+            
+            document.getElementById(`select-produto-${mesaId}-${pessoaId}`).value = '';
+            document.getElementById(`input-qtd-${mesaId}-${pessoaId}`).value = '1';
+            document.getElementById(`input-obs-${mesaId}-${pessoaId}`).value = '';
+        }
+
+        function mostrarFormPagamento(mesaId, pessoaId) {
+            const form = document.getElementById(`form-pagamento-${mesaId}-${pessoaId}`);
+            form.classList.toggle('hidden');
+        }
+
+        function confirmarPagamento(mesaId, pessoaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const pessoa = mesa.pessoas.find(p => p.id === pessoaId);
+            if (!pessoa) return;
+
+            const forma = document.getElementById(`select-forma-${mesaId}-${pessoaId}`).value;
+            const valor = parseFloat(document.getElementById(`input-valor-${mesaId}-${pessoaId}`).value);
+            
+            if (!forma || valor <= 0) return;
+            
+            pessoa.pagamentos.push({
+                forma: forma,
+                valor: valor,
+                horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+            });
+            
+            atualizarModalDetalheMesa();
+        }
+
+        function cancelarFormPagamento(mesaId, pessoaId) {
+            const form = document.getElementById(`form-pagamento-${mesaId}-${pessoaId}`);
+            form.classList.add('hidden');
+        }
+
+        function adicionarPessoa(mesaId) {
+            // Função mantida para compatibilidade, mas agora usa o formulário inline
+            mostrarFormAdicionarPessoa(mesaId);
+        }
+
+        function adicionarPedidoPessoa(mesaId, pessoaId) {
+            // Função mantida para compatibilidade, mas agora usa o formulário inline
+            mostrarFormPedido(mesaId, pessoaId);
+        }
+
+        function registrarPagamento(mesaId, pessoaId) {
+            // Função mantida para compatibilidade, mas agora usa o formulário inline
+            mostrarFormPagamento(mesaId, pessoaId);
+        }
+
+        function transferirAtendente(mesaId) {
+            // Função mantida para compatibilidade, mas agora usa o formulário inline
+            mostrarTransferenciaAtendente(mesaId);
+        }
+
+        function toggleGorjeta(mesaId, pessoaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const pessoa = mesa.pessoas.find(p => p.id === pessoaId);
+            if (!pessoa) return;
+
+            pessoa.gorjetaHabilitada = !pessoa.gorjetaHabilitada;
+            
+            // Quando desabilitar gorjeta, resetar o percentual para 10%
+            if (!pessoa.gorjetaHabilitada) {
+                pessoa.gorjetaPercentual = 10;
+            }
+            
+            atualizarModalDetalheMesa();
+        }
+
+        function editarGorjeta(mesaId, pessoaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const pessoa = mesa.pessoas.find(p => p.id === pessoaId);
+            if (!pessoa) return;
+
+            // Definir valores padrão
+            if (!pessoa.gorjetaTipo) pessoa.gorjetaTipo = 'percentual';
+            const percentualAtual = pessoa.gorjetaPercentual || 10;
+            const valorFixoAtual = pessoa.gorjetaValorFixo || 0;
+            
+            // Criar modal personalizado inline
+            const formId = `form-editar-gorjeta-${mesaId}-${pessoaId}`;
+            const formExistente = document.getElementById(formId);
+            
+            if (formExistente) {
+                formExistente.remove();
+            }
+            
+            const formHTML = `
+                <div id="${formId}" class="mt-2 p-2 bg-blue-50 rounded-lg space-y-2 border border-blue-200">
+                    <div class="text-xs font-medium text-blue-900 mb-1">Editar Gorjeta de ${pessoa.nome}</div>
+                    
+                    <!-- Alternância de tipo -->
+                    <div class="flex bg-white rounded-lg p-1 border border-blue-200">
+                        <button onclick="alternarTipoGorjeta(${mesaId}, ${pessoaId}, 'percentual')" id="btn-tipo-percentual-${mesaId}-${pessoaId}" class="flex-1 px-2 py-1.5 text-xs rounded ${pessoa.gorjetaTipo === 'percentual' ? 'bg-blue-500 text-white' : 'text-gray-600'}">
+                            Percentual (%)
+                        </button>
+                        <button onclick="alternarTipoGorjeta(${mesaId}, ${pessoaId}, 'fixo')" id="btn-tipo-fixo-${mesaId}-${pessoaId}" class="flex-1 px-2 py-1.5 text-xs rounded ${pessoa.gorjetaTipo === 'fixo' ? 'bg-blue-500 text-white' : 'text-gray-600'}">
+                            Valor Fixo (R$)
+                        </button>
+                    </div>
+                    
+                    <!-- Campo de entrada (percentual) -->
+                    <div id="campo-percentual-${mesaId}-${pessoaId}" class="${pessoa.gorjetaTipo === 'percentual' ? '' : 'hidden'} flex items-center space-x-2">
+                        <input type="number" id="input-percentual-${mesaId}-${pessoaId}" value="${percentualAtual}" min="0" max="100" step="0.5" class="flex-1 px-2 py-1.5 text-xs border border-blue-300 rounded focus:ring-1 focus:ring-blue-500" placeholder="% gorjeta">
+                        <span class="text-xs text-gray-600">%</span>
+                    </div>
+                    
+                    <!-- Campo de entrada (valor fixo) -->
+                    <div id="campo-fixo-${mesaId}-${pessoaId}" class="${pessoa.gorjetaTipo === 'fixo' ? '' : 'hidden'} flex items-center space-x-2">
+                        <span class="text-xs text-gray-600">R$</span>
+                        <input type="number" id="input-fixo-${mesaId}-${pessoaId}" value="${valorFixoAtual.toFixed(2)}" min="0" step="0.01" class="flex-1 px-2 py-1.5 text-xs border border-blue-300 rounded focus:ring-1 focus:ring-blue-500" placeholder="Valor da gorjeta">
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="confirmarEdicaoGorjeta(${mesaId}, ${pessoaId})" class="flex-1 px-2 py-1.5 bg-blue-500 text-white text-xs rounded hover:bg-blue-600">
+                            Salvar
+                        </button>
+                        <button onclick="cancelarEdicaoGorjeta(${mesaId}, ${pessoaId})" class="flex-1 px-2 py-1.5 bg-gray-200 text-gray-600 text-xs rounded hover:bg-gray-300">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Inserir o formulário após o resumo da pessoa
+            const resumoElement = document.querySelector(`#form-pagamento-${mesaId}-${pessoaId}`);
+            if (resumoElement && resumoElement.parentElement) {
+                resumoElement.parentElement.insertAdjacentHTML('beforeend', formHTML);
+                
+                // Focar no input apropriado
+                setTimeout(() => {
+                    if (pessoa.gorjetaTipo === 'percentual') {
+                        const input = document.getElementById(`input-percentual-${mesaId}-${pessoaId}`);
+                        if (input) input.select();
+                    } else {
+                        const input = document.getElementById(`input-fixo-${mesaId}-${pessoaId}`);
+                        if (input) input.select();
+                    }
+                }, 100);
+            }
+        }
+
+        function alternarTipoGorjeta(mesaId, pessoaId, tipo) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const pessoa = mesa.pessoas.find(p => p.id === pessoaId);
+            if (!pessoa) return;
+
+            pessoa.gorjetaTipo = tipo;
+
+            // Atualizar botões
+            const btnPercentual = document.getElementById(`btn-tipo-percentual-${mesaId}-${pessoaId}`);
+            const btnFixo = document.getElementById(`btn-tipo-fixo-${mesaId}-${pessoaId}`);
+            const campoPercentual = document.getElementById(`campo-percentual-${mesaId}-${pessoaId}`);
+            const campoFixo = document.getElementById(`campo-fixo-${mesaId}-${pessoaId}`);
+
+            if (tipo === 'percentual') {
+                btnPercentual.className = 'flex-1 px-2 py-1.5 text-xs rounded bg-blue-500 text-white';
+                btnFixo.className = 'flex-1 px-2 py-1.5 text-xs rounded text-gray-600';
+                campoPercentual.classList.remove('hidden');
+                campoFixo.classList.add('hidden');
+                
+                // Focar no input
+                const input = document.getElementById(`input-percentual-${mesaId}-${pessoaId}`);
+                if (input) input.select();
+            } else {
+                btnPercentual.className = 'flex-1 px-2 py-1.5 text-xs rounded text-gray-600';
+                btnFixo.className = 'flex-1 px-2 py-1.5 text-xs rounded bg-blue-500 text-white';
+                campoPercentual.classList.add('hidden');
+                campoFixo.classList.remove('hidden');
+                
+                // Focar no input
+                const input = document.getElementById(`input-fixo-${mesaId}-${pessoaId}`);
+                if (input) input.select();
+            }
+        }
+
+        function confirmarEdicaoGorjeta(mesaId, pessoaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            const pessoa = mesa.pessoas.find(p => p.id === pessoaId);
+            if (!pessoa) return;
+            
+            if (pessoa.gorjetaTipo === 'percentual') {
+                const input = document.getElementById(`input-percentual-${mesaId}-${pessoaId}`);
+                if (!input) return;
+                
+                const percentual = parseFloat(input.value);
+                
+                if (isNaN(percentual) || percentual < 0 || percentual > 100) {
+                    alert('Por favor, digite um percentual válido entre 0 e 100.');
+                    return;
+                }
+                
+                pessoa.gorjetaPercentual = percentual;
+            } else if (pessoa.gorjetaTipo === 'fixo') {
+                const input = document.getElementById(`input-fixo-${mesaId}-${pessoaId}`);
+                if (!input) return;
+                
+                const valorFixo = parseFloat(input.value);
+                
+                if (isNaN(valorFixo) || valorFixo < 0) {
+                    alert('Por favor, digite um valor válido maior ou igual a 0.');
+                    return;
+                }
+                
+                pessoa.gorjetaValorFixo = valorFixo;
+            }
+            
+            atualizarModalDetalheMesa();
+        }
+
+        function cancelarEdicaoGorjeta(mesaId, pessoaId) {
+            const formId = `form-editar-gorjeta-${mesaId}-${pessoaId}`;
+            const form = document.getElementById(formId);
+            if (form) {
+                form.remove();
+            }
+        }
+
+        function finalizarMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            if (!todosJaPagaram(mesa)) {
+                alert('Ainda há contas pendentes. Registre todos os pagamentos antes de finalizar a mesa.');
+                return;
+            }
+
+            if (!confirm(`Finalizar Mesa ${mesa.numero}?\n\nTodos os pagamentos foram realizados. A mesa será liberada.`)) {
+                return;
+            }
+
+            mesa.status = 'livre';
+            mesa.cliente = null;
+            mesa.atendente = null;
+            mesa.horario = null;
+            mesa.pessoas = [];
+            mesa.pedidos = [];
+
+            fecharModalDetalheMesa();
+            renderizarMesas();
         }
 
         function liberarMesaReservada(mesaId) {
@@ -1979,7 +3147,8 @@
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             atualizarAba('pedidos');
+            detectarModaisAbertos();
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99a53c6277d9e29d',t:'MTc2MjQzODg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c0fea2b0105e0fb',t:'MTc2ODkyNjE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
