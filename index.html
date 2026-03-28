@@ -94,13 +94,16 @@
             }
         }
     </style>
-  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
  </head>
- <body class="bg-gray-50"><!-- Botão Flutuante de Status (sempre visível em modo manual) -->
+ <body class="bg-gray-50">
+  <!-- Botão Flutuante de Status (sempre visível em modo manual) -->
   <div id="status-button" class="status-button aberto" style="display: none;">
-   <div class="status-button-inner" onclick="toggleStatusFuncionamento()"><i class="fas fa-store status-icon"></i> <span class="status-text" id="status-text">Aberto</span>
+   <div class="status-button-inner" onclick="toggleStatusFuncionamento()">
+    <i class="fas fa-store status-icon"></i> <span class="status-text" id="status-text">Aberto</span>
    </div>
   </div><!-- Barra de Menu Superior -->
   <nav class="bg-white border-b border-gray-200 shadow-sm">
@@ -108,18 +111,22 @@
     <div class="flex justify-between items-center h-14 md:h-16">
      <h1 class="text-gray-800 text-lg md:text-xl font-semibold"><i class="fas fa-store text-orange-500 mr-1 md:mr-2"></i> <span class="hidden sm:inline">Sistema Restaurante</span> <span class="sm:hidden">Sistema</span></h1><!-- Mobile Menu Button --> <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600"> <i class="fas fa-bars text-lg"></i> </button> <!-- Desktop Navigation -->
      <div class="hidden md:block">
-      <nav class="flex space-x-8"><button onclick="switchTab('pedidos')" id="tab-pedidos" class="tab-button text-orange-600 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-orange-500"> <i class="fas fa-clipboard-list mr-2"></i>Pedidos </button> <button onclick="switchTab('salao')" id="tab-salao" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-utensils mr-2"></i>Salão </button> <button onclick="switchTab('kds')" id="tab-kds" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-tv mr-2"></i>KDS </button> <button onclick="switchTab('entregas')" id="tab-entregas" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-truck mr-2"></i>Entregas </button> <button onclick="switchTab('cardapio')" id="tab-cardapio" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-book-open mr-2"></i>Cardápio </button> <button onclick="switchTab('configuracoes')" id="tab-configuracoes" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-cog mr-2"></i>Configurações </button>
+      <nav class="flex space-x-8">
+       <button onclick="switchTab('pedidos')" id="tab-pedidos" class="tab-button text-orange-600 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-orange-500"> <i class="fas fa-clipboard-list mr-2"></i>Pedidos </button> <button onclick="switchTab('salao')" id="tab-salao" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-utensils mr-2"></i>Salão </button> <button onclick="switchTab('kds')" id="tab-kds" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-tv mr-2"></i>KDS </button> <button onclick="switchTab('entregas')" id="tab-entregas" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-truck mr-2"></i>Entregas </button> <button onclick="switchTab('cardapio')" id="tab-cardapio" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-book-open mr-2"></i>Cardápio </button> <button onclick="switchTab('configuracoes')" id="tab-configuracoes" class="tab-button text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium flex items-center border-b-2 border-transparent hover:border-gray-300"> <i class="fas fa-cog mr-2"></i>Configurações </button>
       </nav>
      </div>
     </div><!-- Mobile Navigation -->
     <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200 py-2">
-     <div class="grid grid-cols-3 gap-2 px-2"><button onclick="switchTab('pedidos'); toggleMobileMenu();" id="mobile-tab-pedidos" class="mobile-tab-button bg-orange-100 text-orange-700 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-clipboard-list text-lg mb-1"></i> <span>Pedidos</span> </button> <button onclick="switchTab('salao'); toggleMobileMenu();" id="mobile-tab-salao" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-utensils text-lg mb-1"></i> <span>Salão</span> </button> <button onclick="switchTab('kds'); toggleMobileMenu();" id="mobile-tab-kds" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-tv text-lg mb-1"></i> <span>KDS</span> </button> <button onclick="switchTab('entregas'); toggleMobileMenu();" id="mobile-tab-entregas" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-truck text-lg mb-1"></i> <span>Entregas</span> </button> <button onclick="switchTab('cardapio'); toggleMobileMenu();" id="mobile-tab-cardapio" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-book-open text-lg mb-1"></i> <span>Cardápio</span> </button> <button onclick="switchTab('configuracoes'); toggleMobileMenu();" id="mobile-tab-configuracoes" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-cog text-lg mb-1"></i> <span>Config</span> </button>
+     <div class="grid grid-cols-3 gap-2 px-2">
+      <button onclick="switchTab('pedidos'); toggleMobileMenu();" id="mobile-tab-pedidos" class="mobile-tab-button bg-orange-100 text-orange-700 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-clipboard-list text-lg mb-1"></i> <span>Pedidos</span> </button> <button onclick="switchTab('salao'); toggleMobileMenu();" id="mobile-tab-salao" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-utensils text-lg mb-1"></i> <span>Salão</span> </button> <button onclick="switchTab('kds'); toggleMobileMenu();" id="mobile-tab-kds" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-tv text-lg mb-1"></i> <span>KDS</span> </button> <button onclick="switchTab('entregas'); toggleMobileMenu();" id="mobile-tab-entregas" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-truck text-lg mb-1"></i> <span>Entregas</span> </button> <button onclick="switchTab('cardapio'); toggleMobileMenu();" id="mobile-tab-cardapio" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-book-open text-lg mb-1"></i> <span>Cardápio</span> </button> <button onclick="switchTab('configuracoes'); toggleMobileMenu();" id="mobile-tab-configuracoes" class="mobile-tab-button bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-medium flex flex-col items-center"> <i class="fas fa-cog text-lg mb-1"></i> <span>Config</span> </button>
      </div>
     </div>
    </div>
   </nav><!-- Conteúdo Principal -->
-  <div class="max-w-7xl mx-auto py-3 px-2 sm:py-6 sm:px-6 lg:px-8"><!-- Aba Pedidos -->
-   <div id="content-pedidos" class="tab-content"><!-- Mobile Layout -->
+  <div class="max-w-7xl mx-auto py-3 px-2 sm:py-6 sm:px-6 lg:px-8">
+   <!-- Aba Pedidos -->
+   <div id="content-pedidos" class="tab-content">
+    <!-- Mobile Layout -->
     <div class="block md:hidden space-y-4">
      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
       <div class="bg-amber-50 border-b border-amber-200 px-3 py-3">
@@ -127,7 +134,8 @@
         <h3 class="text-sm font-semibold text-amber-700 uppercase tracking-wide"><i class="fas fa-clock text-amber-500 mr-1"></i>Aguardando</h3><span id="contador-aguardando-mobile" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">0</span>
        </div>
       </div>
-      <div id="coluna-aguardando-mobile" class="p-3"><!-- Pedidos serão carregados aqui -->
+      <div id="coluna-aguardando-mobile" class="p-3">
+       <!-- Pedidos serão carregados aqui -->
       </div>
      </div>
      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
@@ -136,7 +144,8 @@
         <h3 class="text-sm font-semibold text-green-700 uppercase tracking-wide"><i class="fas fa-check-circle text-green-500 mr-1"></i>Prontos</h3><span id="contador-prontos-mobile" class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">0</span>
        </div>
       </div>
-      <div id="coluna-prontos-mobile" class="p-3"><!-- Pedidos serão carregados aqui -->
+      <div id="coluna-prontos-mobile" class="p-3">
+       <!-- Pedidos serão carregados aqui -->
       </div>
      </div>
     </div><!-- Desktop Layout -->
@@ -155,9 +164,11 @@
        </div>
       </div>
       <div class="grid grid-cols-2 min-h-96">
-       <div id="coluna-aguardando" class="border-r border-gray-200 bg-white"><!-- Pedidos serão carregados aqui -->
+       <div id="coluna-aguardando" class="border-r border-gray-200 bg-white">
+        <!-- Pedidos serão carregados aqui -->
        </div>
-       <div id="coluna-prontos" class="bg-white"><!-- Pedidos serão carregados aqui -->
+       <div id="coluna-prontos" class="bg-white">
+        <!-- Pedidos serão carregados aqui -->
        </div>
       </div>
      </div>
@@ -169,12 +180,14 @@
       <h3 class="text-lg font-semibold text-gray-900">Gestão do Salão</h3>
      </div>
      <div class="p-4">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="grade-mesas"><!-- Mesas serão renderizadas aqui -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="grade-mesas">
+       <!-- Mesas serão renderizadas aqui -->
       </div>
      </div>
     </div>
    </div><!-- Aba KDS -->
-   <div id="content-kds" class="tab-content hidden"><!-- Mobile Layout -->
+   <div id="content-kds" class="tab-content hidden">
+    <!-- Mobile Layout -->
     <div class="block md:hidden space-y-4">
      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
       <div class="bg-orange-50 border-b border-orange-200 px-3 py-3">
@@ -182,7 +195,8 @@
         <h3 class="text-sm font-semibold text-orange-700 uppercase tracking-wide"><i class="fas fa-bell text-orange-500 mr-1"></i>Novos Pedidos</h3><span id="contador-novos-mobile" class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded">0</span>
        </div>
       </div>
-      <div id="coluna-novos-mobile" class="p-3"><!-- Pedidos serão carregados aqui -->
+      <div id="coluna-novos-mobile" class="p-3">
+       <!-- Pedidos serão carregados aqui -->
       </div>
      </div>
      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
@@ -191,7 +205,8 @@
         <h3 class="text-sm font-semibold text-blue-700 uppercase tracking-wide"><i class="fas fa-utensils text-blue-500 mr-1"></i>Em Preparação</h3><span id="contador-preparo-mobile" class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded">0</span>
        </div>
       </div>
-      <div id="coluna-preparo-mobile" class="p-3"><!-- Pedidos serão carregados aqui -->
+      <div id="coluna-preparo-mobile" class="p-3">
+       <!-- Pedidos serão carregados aqui -->
       </div>
      </div>
     </div><!-- Desktop Layout -->
@@ -210,15 +225,18 @@
        </div>
       </div>
       <div class="grid grid-cols-2 min-h-96">
-       <div id="coluna-novos" class="border-r border-gray-200 bg-white"><!-- Pedidos serão carregados aqui -->
+       <div id="coluna-novos" class="border-r border-gray-200 bg-white">
+        <!-- Pedidos serão carregados aqui -->
        </div>
-       <div id="coluna-preparo" class="bg-white"><!-- Pedidos serão carregados aqui -->
+       <div id="coluna-preparo" class="bg-white">
+        <!-- Pedidos serão carregados aqui -->
        </div>
       </div>
      </div>
     </div>
    </div><!-- Aba Entregas -->
-   <div id="content-entregas" class="tab-content hidden"><!-- Mobile Layout -->
+   <div id="content-entregas" class="tab-content hidden">
+    <!-- Mobile Layout -->
     <div class="block md:hidden space-y-4">
      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
       <div class="bg-amber-50 border-b border-amber-200 px-3 py-3">
@@ -226,7 +244,8 @@
         <h3 class="text-sm font-semibold text-amber-700 uppercase tracking-wide"><i class="fas fa-clock text-amber-500 mr-1"></i>Pendentes</h3><span id="contador-pendentes-mobile" class="bg-amber-100 text-amber-700 text-xs font-medium px-2 py-1 rounded">0</span>
        </div>
       </div>
-      <div id="coluna-pendentes-mobile" class="p-3"><!-- Entregas serão carregadas aqui -->
+      <div id="coluna-pendentes-mobile" class="p-3">
+       <!-- Entregas serão carregadas aqui -->
       </div>
      </div>
      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
@@ -235,7 +254,8 @@
         <h3 class="text-sm font-semibold text-blue-700 uppercase tracking-wide"><i class="fas fa-truck text-blue-500 mr-1"></i>Em Rota</h3><span id="contador-rota-mobile" class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded">0</span>
        </div>
       </div>
-      <div id="coluna-rota-mobile" class="p-3"><!-- Entregas serão carregadas aqui -->
+      <div id="coluna-rota-mobile" class="p-3">
+       <!-- Entregas serão carregadas aqui -->
       </div>
      </div>
     </div><!-- Desktop Layout -->
@@ -254,147 +274,187 @@
        </div>
       </div>
       <div class="grid grid-cols-2 min-h-96">
-       <div id="coluna-pendentes" class="border-r border-gray-200 bg-white"><!-- Entregas serão carregadas aqui -->
+       <div id="coluna-pendentes" class="border-r border-gray-200 bg-white">
+        <!-- Entregas serão carregadas aqui -->
        </div>
-       <div id="coluna-rota" class="bg-white"><!-- Entregas serão carregadas aqui -->
+       <div id="coluna-rota" class="bg-white">
+        <!-- Entregas serão carregadas aqui -->
        </div>
       </div>
      </div>
     </div>
    </div><!-- Aba Cardápio -->
    <div id="content-cardapio" class="tab-content hidden">
-    <div class="bg-white rounded-lg border border-gray-200 shadow-sm"><!-- Cabeçalho -->
+    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+     <!-- Cabeçalho -->
      <div class="px-4 py-3 border-b border-gray-200">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
        <div>
         <h3 class="text-lg font-semibold text-gray-900">Gestão do Cardápio</h3>
         <p class="text-sm text-gray-500 mt-1">Organize categorias e produtos do seu restaurante</p>
        </div>
-       <div class="flex flex-col sm:flex-row gap-2"><button onclick="abrirModalCategoria()" class="bg-orange-500 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-600 transition-colors flex items-center text-sm justify-center"> <i class="fas fa-plus mr-2 text-xs"></i> Nova Categoria </button> <button onclick="abrirModalProduto()" class="bg-blue-500 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-600 transition-colors flex items-center text-sm justify-center"> <i class="fas fa-plus mr-2 text-xs"></i> Novo Produto </button>
+       <div class="flex flex-col sm:flex-row gap-2">
+        <button onclick="abrirModalCategoria()" class="bg-orange-500 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-600 transition-colors flex items-center text-sm justify-center"> <i class="fas fa-plus mr-2 text-xs"></i> Nova Categoria </button> <button onclick="abrirModalProduto()" class="bg-blue-500 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-600 transition-colors flex items-center text-sm justify-center"> <i class="fas fa-plus mr-2 text-xs"></i> Novo Produto </button>
        </div>
       </div>
      </div><!-- Conteúdo do Cardápio -->
      <div class="p-4">
-      <div id="lista-categorias" class="space-y-6"><!-- Categorias e produtos serão renderizados aqui -->
+      <div id="lista-categorias" class="space-y-6">
+       <!-- Categorias e produtos serão renderizados aqui -->
       </div>
      </div>
     </div>
    </div><!-- Aba Configurações -->
    <div id="content-configuracoes" class="tab-content hidden">
-    <div class="bg-white rounded-lg border border-gray-200 shadow-sm"><!-- Cabeçalho -->
+    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+     <!-- Cabeçalho -->
      <div class="px-4 py-3 border-b border-gray-200">
       <h3 class="text-lg font-semibold text-gray-900">Configurações do Sistema</h3>
      </div><!-- Navegação por Abas -->
      <div class="border-b border-gray-200">
-      <nav class="flex space-x-8 px-4"><button onclick="switchConfigSection('perfil')" id="config-perfil" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-orange-500 text-orange-600"> <i class="fas fa-store mr-2"></i>Perfil </button> <button onclick="switchConfigSection('funcoes')" id="config-funcoes" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"> <i class="fas fa-user-tag mr-2"></i>Funções </button> <button onclick="switchConfigSection('colaboradores')" id="config-colaboradores" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"> <i class="fas fa-users mr-2"></i>Colaboradores </button>
+      <nav class="flex space-x-8 px-4">
+       <button onclick="switchConfigSection('perfil')" id="config-perfil" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-orange-500 text-orange-600"> <i class="fas fa-store mr-2"></i>Perfil </button> <button onclick="switchConfigSection('funcoes')" id="config-funcoes" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"> <i class="fas fa-user-tag mr-2"></i>Funções </button> <button onclick="switchConfigSection('colaboradores')" id="config-colaboradores" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"> <i class="fas fa-users mr-2"></i>Colaboradores </button> <button onclick="switchConfigSection('sistema')" id="config-sistema" class="config-section-button py-3 px-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"> <i class="fas fa-lock mr-2"></i>Sistema </button>
       </nav>
      </div><!-- Conteúdo das Seções -->
-     <div class="p-6"><!-- Seção Perfil -->
+     <div class="p-6">
+      <!-- Seção Perfil -->
       <div id="config-content-perfil" class="config-content">
        <div class="mb-8">
         <h4 class="text-lg font-medium text-gray-900 mb-2">Perfil do Estabelecimento</h4>
         <p class="text-sm text-gray-500">Configure as informações básicas do seu restaurante.</p>
        </div>
-       <form id="form-perfil" class="space-y-6"><!-- Nome do Estabelecimento -->
-        <div class="space-y-2"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-store text-gray-400 mr-2 text-xs"></i> Nome do Estabelecimento </label> <input type="text" id="nome-estabelecimento" value="Restaurante Sabor &amp; Arte" class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="Digite o nome do seu estabelecimento">
+       <form id="form-perfil" class="space-y-6">
+        <!-- Nome do Estabelecimento -->
+        <div class="space-y-2">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-store text-gray-400 mr-2 text-xs"></i> Nome do Estabelecimento </label> <input type="text" id="nome-estabelecimento" value="Restaurante Sabor &amp; Arte" class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="Digite o nome do seu estabelecimento">
         </div><!-- Localização -->
-        <div class="space-y-2"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-map-marker-alt text-gray-400 mr-2 text-xs"></i> Endereço </label> <input type="text" id="endereco-completo" value="Rua das Flores, 123 - Centro, São Paulo - SP, 01234-567" class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="Endereço completo do estabelecimento">
+        <div class="space-y-2">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-map-marker-alt text-gray-400 mr-2 text-xs"></i> Endereço </label> <input type="text" id="endereco-completo" value="Rua das Flores, 123 - Centro, São Paulo - SP, 01234-567" class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="Endereço completo do estabelecimento">
         </div><!-- Sobre Nós -->
-        <div class="space-y-2"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-info-circle text-gray-400 mr-2 text-xs"></i> Sobre Nós </label> <textarea id="sobre-nos" rows="4" class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 resize-none text-sm" placeholder="Conte a história do seu restaurante, sua especialidade, diferenciais...">Há mais de 10 anos servindo os melhores pratos da culinária brasileira com ingredientes frescos e selecionados. Nossa paixão é proporcionar experiências gastronômicas únicas em um ambiente acolhedor e familiar.</textarea>
+        <div class="space-y-2">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-info-circle text-gray-400 mr-2 text-xs"></i> Sobre Nós </label> <textarea id="sobre-nos" rows="4" class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 resize-none text-sm" placeholder="Conte a história do seu restaurante, sua especialidade, diferenciais...">Há mais de 10 anos servindo os melhores pratos da culinária brasileira com ingredientes frescos e selecionados. Nossa paixão é proporcionar experiências gastronômicas únicas em um ambiente acolhedor e familiar.</textarea>
         </div><!-- Redes Sociais -->
-        <div class="space-y-3"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-share-alt text-gray-400 mr-2 text-xs"></i> Redes Sociais </label>
+        <div class="space-y-3">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-share-alt text-gray-400 mr-2 text-xs"></i> Redes Sociais </label>
          <div class="space-y-3">
-          <div class="flex items-center space-x-3"><i class="fab fa-instagram text-pink-500 w-4"></i> <input type="url" id="instagram-link" value="https://instagram.com/restaurante" class="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="https://instagram.com/seurestaurante">
+          <div class="flex items-center space-x-3">
+           <i class="fab fa-instagram text-pink-500 w-4"></i> <input type="url" id="instagram-link" value="https://instagram.com/restaurante" class="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="https://instagram.com/seurestaurante">
           </div>
-          <div class="flex items-center space-x-3"><i class="fab fa-facebook text-blue-500 w-4"></i> <input type="url" id="facebook-link" value="https://facebook.com/restaurante" class="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="https://facebook.com/seurestaurante">
+          <div class="flex items-center space-x-3">
+           <i class="fab fa-facebook text-blue-500 w-4"></i> <input type="url" id="facebook-link" value="https://facebook.com/restaurante" class="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="https://facebook.com/seurestaurante">
           </div>
-          <div class="flex items-center space-x-3"><i class="fab fa-whatsapp text-green-500 w-4"></i> <input type="tel" id="whatsapp-link" value="5511999887766" class="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="5511999887766">
+          <div class="flex items-center space-x-3">
+           <i class="fab fa-whatsapp text-green-500 w-4"></i> <input type="tel" id="whatsapp-link" value="5511999887766" class="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 text-sm" placeholder="5511999887766">
           </div>
          </div>
         </div><!-- Imagens do Estabelecimento -->
-        <div class="space-y-3"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-images text-gray-400 mr-2 text-xs"></i> Imagens do Estabelecimento </label>
-         <div class="border-2 border-dashed border-gray-200 rounded-md p-4 text-center hover:border-gray-300 transition-colors cursor-pointer" onclick="document.getElementById('upload-imagens').click()"><i class="fas fa-cloud-upload-alt text-gray-400 text-lg mb-2"></i>
+        <div class="space-y-3">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-images text-gray-400 mr-2 text-xs"></i> Imagens do Estabelecimento </label>
+         <div class="border-2 border-dashed border-gray-200 rounded-md p-4 text-center hover:border-gray-300 transition-colors cursor-pointer" onclick="document.getElementById('upload-imagens').click()">
+          <i class="fas fa-cloud-upload-alt text-gray-400 text-lg mb-2"></i>
           <p class="text-sm text-gray-600 mb-1">Clique para adicionar imagens</p>
           <p class="text-xs text-gray-400">PNG, JPG até 5MB cada</p><input type="file" id="upload-imagens" multiple accept="image/*" class="hidden" onchange="previewImagens(this)">
          </div>
-         <div id="preview-imagens" class="grid grid-cols-3 gap-3"><!-- Imagens de exemplo -->
+         <div id="preview-imagens" class="grid grid-cols-3 gap-3">
+          <!-- Imagens de exemplo -->
           <div class="relative group">
            <div class="aspect-square bg-gray-100 rounded-md overflow-hidden">
-            <div class="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center"><i class="fas fa-utensils text-orange-400 text-lg"></i>
+            <div class="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+             <i class="fas fa-utensils text-orange-400 text-lg"></i>
             </div>
            </div><button onclick="removerImagem(this)" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-xs"> <i class="fas fa-times"></i> </button>
           </div>
           <div class="relative group">
            <div class="aspect-square bg-gray-100 rounded-md overflow-hidden">
-            <div class="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center"><i class="fas fa-store text-green-400 text-lg"></i>
+            <div class="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+             <i class="fas fa-store text-green-400 text-lg"></i>
             </div>
            </div><button onclick="removerImagem(this)" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-xs"> <i class="fas fa-times"></i> </button>
           </div>
          </div>
         </div><!-- Modo de Funcionamento -->
-        <div class="space-y-4 border-t border-gray-200 pt-6"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-clock text-gray-400 mr-2 text-xs"></i> Modo de Funcionamento </label>
-         <div class="space-y-3"><label class="flex items-start space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-colors" id="modo-automatico-label"> <input type="radio" name="modo-funcionamento" value="automatico" checked class="mt-1 text-orange-500 focus:ring-orange-500" onchange="alterarModoFuncionamento('automatico')">
+        <div class="space-y-4 border-t border-gray-200 pt-6">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-clock text-gray-400 mr-2 text-xs"></i> Modo de Funcionamento </label>
+         <div class="space-y-3">
+          <label class="flex items-start space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-colors" id="modo-automatico-label"> <input type="radio" name="modo-funcionamento" value="automatico" checked class="mt-1 text-orange-500 focus:ring-orange-500" onchange="alterarModoFuncionamento('automatico')">
            <div class="flex-1">
             <div class="font-medium text-gray-900 text-sm">
-             Modo Automático (por turnos)
+             Modo Automático
             </div>
-            <p class="text-xs text-gray-500 mt-1">Configure turnos com horários de início e término</p>
+            <p class="text-xs text-gray-500 mt-1">Configure turnos</p>
            </div></label> <label class="flex items-start space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-colors" id="modo-manual-label"> <input type="radio" name="modo-funcionamento" value="manual" class="mt-1 text-orange-500 focus:ring-orange-500" onchange="alterarModoFuncionamento('manual')">
            <div class="flex-1">
             <div class="font-medium text-gray-900 text-sm">
-             Modo Manual (abertura/fechamento manual)
+             Modo Manual
             </div>
-            <p class="text-xs text-gray-500 mt-1">Controle manualmente com botão flutuante Aberto/Fechado</p>
+            <p class="text-xs text-gray-500 mt-1">Alterne manualmente</p>
            </div></label>
          </div>
         </div><!-- Horários de Funcionamento (Modo Automático) -->
-        <div id="horarios-container" class="space-y-3"><label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-calendar-alt text-gray-400 mr-2 text-xs"></i> Horários de Funcionamento </label>
-         <div class="space-y-2" id="horarios-funcionamento"><!-- Segunda-feira -->
+        <div id="horarios-container" class="space-y-3">
+         <label class="text-sm font-medium text-gray-700 flex items-center"> <i class="fas fa-calendar-alt text-gray-400 mr-2 text-xs"></i> Horários de Funcionamento </label>
+         <div class="space-y-2" id="horarios-funcionamento">
+          <!-- Segunda-feira -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Segunda</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Segunda</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1"><input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+           <div class="flex items-center space-x-2 flex-1">
+            <input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
            </div>
           </div><!-- Terça-feira -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Terça</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Terça</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1"><input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+           <div class="flex items-center space-x-2 flex-1">
+            <input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
            </div>
           </div><!-- Quarta-feira -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Quarta</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Quarta</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1"><input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+           <div class="flex items-center space-x-2 flex-1">
+            <input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
            </div>
           </div><!-- Quinta-feira -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Quinta</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Quinta</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1"><input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+           <div class="flex items-center space-x-2 flex-1">
+            <input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="22:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
            </div>
           </div><!-- Sexta-feira -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Sexta</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Sexta</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1"><input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="23:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+           <div class="flex items-center space-x-2 flex-1">
+            <input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="23:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
            </div>
           </div><!-- Sábado -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Sábado</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" checked class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Sábado</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1"><input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="23:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
+           <div class="flex items-center space-x-2 flex-1">
+            <input type="time" value="11:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="23:00" class="px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500">
            </div>
           </div><!-- Domingo -->
           <div class="flex items-center space-x-3">
-           <div class="w-20"><label class="flex items-center"> <input type="checkbox" class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Domingo</span> </label>
+           <div class="w-20">
+            <label class="flex items-center"> <input type="checkbox" class="mr-2 text-orange-500 focus:ring-orange-500 rounded text-xs"> <span class="text-sm text-gray-700">Domingo</span> </label>
            </div>
-           <div class="flex items-center space-x-2 flex-1 opacity-50"><input type="time" value="11:00" disabled class="px-2 py-1 border border-gray-200 rounded text-sm"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="20:00" disabled class="px-2 py-1 border border-gray-200 rounded text-sm">
+           <div class="flex items-center space-x-2 flex-1 opacity-50">
+            <input type="time" value="11:00" disabled class="px-2 py-1 border border-gray-200 rounded text-sm"> <span class="text-gray-400 text-sm">às</span> <input type="time" value="20:00" disabled class="px-2 py-1 border border-gray-200 rounded text-sm">
            </div>
           </div>
          </div>
         </div><!-- Botões de Ação -->
-        <div class="flex justify-end space-x-3 pt-6 border-t border-gray-100"><button type="button" class="px-4 py-2 text-gray-600 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium"> Cancelar </button> <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors text-sm font-medium"> <i class="fas fa-save mr-1 text-xs"></i> Salvar Perfil </button>
+        <div class="flex justify-end space-x-3 pt-6 border-t border-gray-100">
+         <button type="button" class="px-4 py-2 text-gray-600 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium"> Cancelar </button> <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors text-sm font-medium"> <i class="fas fa-save mr-1 text-xs"></i> Salvar Perfil </button>
         </div>
        </form>
       </div><!-- Seção Funções -->
@@ -403,9 +463,11 @@
         <h4 class="text-lg font-medium text-gray-900 mb-2">Funções da Equipe</h4>
         <p class="text-sm text-gray-500">Gerencie as funções e permissões dos colaboradores do restaurante.</p>
        </div>
-       <div class="space-y-4"><!-- Balconista -->
+       <div class="space-y-4">
+        <!-- Balconista -->
         <div class="border border-gray-200 rounded-md p-4">
-         <div class="flex items-start space-x-3"><i class="fas fa-cash-register text-gray-400 mt-1 text-xs"></i>
+         <div class="flex items-start space-x-3">
+          <i class="fas fa-cash-register text-gray-400 mt-1 text-xs"></i>
           <div class="flex-1">
            <h5 class="text-sm font-medium text-gray-900 mb-1">Balconista</h5>
            <p class="text-sm text-gray-500 mb-3">Atendimento no balcão e caixa</p>
@@ -424,7 +486,8 @@
          </div>
         </div><!-- Atendente -->
         <div class="border border-gray-200 rounded-md p-4">
-         <div class="flex items-start space-x-3"><i class="fas fa-clipboard text-gray-400 mt-1 text-xs"></i>
+         <div class="flex items-start space-x-3">
+          <i class="fas fa-clipboard text-gray-400 mt-1 text-xs"></i>
           <div class="flex-1">
            <h5 class="text-sm font-medium text-gray-900 mb-1">Atendente</h5>
            <p class="text-sm text-gray-500 mb-3">Atendimento telefônico e online</p>
@@ -443,7 +506,8 @@
          </div>
         </div><!-- Chef -->
         <div class="border border-gray-200 rounded-md p-4">
-         <div class="flex items-start space-x-3"><i class="fas fa-utensils text-gray-400 mt-1 text-xs"></i>
+         <div class="flex items-start space-x-3">
+          <i class="fas fa-utensils text-gray-400 mt-1 text-xs"></i>
           <div class="flex-1">
            <h5 class="text-sm font-medium text-gray-900 mb-1">Chef</h5>
            <p class="text-sm text-gray-500 mb-3">Preparo e finalização dos pratos</p>
@@ -462,7 +526,8 @@
          </div>
         </div><!-- Entregador(a) -->
         <div class="border border-gray-200 rounded-md p-4">
-         <div class="flex items-start space-x-3"><i class="fas fa-motorcycle text-gray-400 mt-1 text-xs"></i>
+         <div class="flex items-start space-x-3">
+          <i class="fas fa-motorcycle text-gray-400 mt-1 text-xs"></i>
           <div class="flex-1">
            <h5 class="text-sm font-medium text-gray-900 mb-1">Entregador(a)</h5>
            <p class="text-sm text-gray-500 mb-3">Entrega de pedidos delivery</p>
@@ -489,7 +554,40 @@
          <p class="text-sm text-gray-500">Gerencie a equipe do restaurante e suas informações.</p>
         </div><button onclick="abrirModalColaborador()" class="bg-orange-500 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-600 transition-colors flex items-center text-sm justify-center sm:justify-start"> <i class="fas fa-plus mr-2 text-xs"></i> Novo Colaborador </button>
        </div><!-- Lista de Colaboradores -->
-       <div id="lista-colaboradores" class="space-y-4"><!-- Colaboradores serão renderizados aqui -->
+       <div id="lista-colaboradores" class="space-y-4">
+        <!-- Colaboradores serão renderizados aqui -->
+       </div>
+      </div><!-- Seção Sistema -->
+      <div id="config-content-sistema" class="config-content hidden">
+       <div class="mb-8">
+        <h4 class="text-lg font-medium text-gray-900 mb-2">Configurações do Sistema</h4>
+        <p class="text-sm text-gray-500">Configure opções avançadas e segurança do sistema.</p>
+       </div><!-- Senha Operacional -->
+       <div class="border border-gray-200 rounded-lg p-6 space-y-4">
+        <div class="flex items-start justify-between">
+         <div>
+          <h5 class="text-sm font-semibold text-gray-900 mb-1">Senha Operacional</h5>
+          <p class="text-sm text-gray-500">Configure uma senha de 4 dígitos para confirmar ações sensíveis</p>
+         </div>
+        </div>
+        <div class="space-y-4"><!-- Status da Senha -->
+         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex items-center space-x-2"><i class="fas fa-lock text-gray-400"></i> <span class="text-sm text-gray-700">Senha operacional:</span>
+          </div><span id="status-senha-operacional" class="text-sm font-medium text-gray-600">Não configurada</span>
+         </div><!-- Alternar modo edição --> <button onclick="toggleEditarSenhaOperacional()" id="btn-editar-senha" class="w-full px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded-lg border border-orange-200 font-medium transition-colors"> <i class="fas fa-edit mr-2"></i>Configurar Senha </button> <!-- Formulário de Edição (oculto por padrão) -->
+         <div id="form-senha-operacional" class="hidden p-4 bg-blue-50 rounded-lg border border-blue-200 space-y-3">
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Nova Senha (4 dígitos)</label> <input type="password" id="input-nova-senha" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full px-3 py-2 text-center text-2xl tracking-widest border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono">
+           <p class="text-xs text-gray-500 mt-1">Digite exatamente 4 dígitos</p>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Senha</label> <input type="password" id="input-confirmar-senha" maxlength="4" inputmode="numeric" placeholder="••••" class="w-full px-3 py-2 text-center text-2xl tracking-widest border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono">
+          </div>
+          <div class="flex space-x-2 pt-2"><button onclick="cancelarEditarSenhaOperacional()" class="flex-1 px-3 py-2 text-sm text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"> Cancelar </button> <button onclick="confirmarSenhaOperacional()" class="flex-1 px-3 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"> Salvar Senha </button>
+          </div>
+         </div><!-- Informações sobre a senha -->
+         <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+          <p class="text-xs text-amber-700"><i class="fas fa-info-circle mr-1"></i> <strong>Dica:</strong> Use uma sequência numérica de 4 dígitos que você lembre. Esta senha será solicitada para ações como descontos, cancelamentos e alterações sensíveis.</p>
+         </div>
+        </div>
        </div>
       </div>
      </div>
@@ -694,6 +792,13 @@
         const cardapioData = {
             categorias: [
                 {
+                    id: 'promocoes',
+                    nome: 'Promoções',
+                    imagem: null,
+                    ativo: true,
+                    padrao: true // Categoria padrão que não pode ser editada ou removida
+                },
+                {
                     id: 1,
                     nome: 'Hambúrgueres',
                     imagem: null,
@@ -710,6 +815,26 @@
                     nome: 'Bebidas',
                     imagem: null,
                     ativo: true
+                }
+            ],
+            promocoes: [
+                // Exemplo de promoção
+                {
+                    id: 1,
+                    nome: 'Happy Hour - 50% OFF',
+                    descricao: 'Metade do preço em bebidas durante happy hour',
+                    ativo: true,
+                    tipoDesconto: 'percentual', // 'percentual', 'valor_fixo', 'preco_fixo', 'compre_leve'
+                    valor: 50, // percentual ou valor em reais
+                    escopoDado: 'categoria', // 'categoria', 'produto', 'combo', 'pedido_minimo'
+                    categoriaId: 3, // Se categoria
+                    produtoId: null, // Se produto
+                    restricoes: {
+                        diasSemana: [1,2,3,4,5], // Segunda a Sexta
+                        horarioInicio: '17:00',
+                        horarioFim: '19:00',
+                        quantidadeMinima: null
+                    }
                 }
             ],
             produtos: [
@@ -768,6 +893,11 @@
                     disponivel: true
                 }
             ]
+        };
+
+        const sistemaDados = {
+            senhaOperacional: null,
+            diasFolga: []
         };
 
         const salaoData = {
@@ -959,6 +1089,9 @@
                 renderizarColaboradores();
             } else if (sectionName === 'perfil') {
                 configurarHorariosFuncionamento();
+            } else if (sectionName === 'sistema') {
+                renderizarListaDiasFolga();
+                atualizarStatusSenha();
             }
         }
 
@@ -1069,14 +1202,13 @@
         }
 
         function configurarHorariosFuncionamento() {
-            // Adicionar event listeners para os checkboxes dos dias
-            document.querySelectorAll('#horarios-funcionamento input[type="checkbox"]').forEach(checkbox => {
+            // Inicializar toggles dos dias
+            document.querySelectorAll('[data-dia] .dia-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
-                    toggleHorariosDia(this);
+                    toggleDiaFuncionamento(this);
                 });
-                
-                // Configurar estado inicial
-                toggleHorariosDia(checkbox);
+                // Aplicar estado inicial
+                toggleDiaFuncionamento(checkbox);
             });
 
             // Configurar form submit
@@ -1099,19 +1231,79 @@
             }
         }
 
-        function toggleHorariosDia(checkbox) {
-            const horarioInputs = checkbox.closest('.flex').querySelectorAll('input[type="time"]');
-            const container = checkbox.closest('.flex').querySelector('.flex-1');
+        function toggleDiaFuncionamento(checkbox) {
+            const diaBloco = checkbox.closest('[data-dia]');
+            if (!diaBloco) return;
             
-            horarioInputs.forEach(input => {
-                input.disabled = !checkbox.checked;
+            const isChecked = checkbox.checked;
+            const inputs = diaBloco.querySelectorAll('input[type="time"]');
+            const botaoAdicionar = diaBloco.querySelector('button[onclick*="adicionarTurno"]');
+            
+            // Habilitar/desabilitar inputs
+            inputs.forEach(input => {
+                input.disabled = !isChecked;
             });
             
-            // Atualizar opacidade visual
-            if (checkbox.checked) {
-                container.classList.remove('opacity-50');
+            // Habilitar/desabilitar botão de adicionar
+            if (botaoAdicionar) {
+                botaoAdicionar.disabled = !isChecked;
+                if (!isChecked) {
+                    botaoAdicionar.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    botaoAdicionar.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+            
+            // Atualizar visual do dia
+            if (isChecked) {
+                diaBloco.classList.remove('opacity-60');
             } else {
-                container.classList.add('opacity-50');
+                diaBloco.classList.add('opacity-60');
+            }
+        }
+
+        function adicionarTurno(button) {
+            const diaBloco = button.closest('[data-dia]');
+            if (!diaBloco) return;
+            
+            const turnosList = diaBloco.querySelector('.turnos-list');
+            if (!turnosList) return;
+            
+            const totalTurnos = turnosList.querySelectorAll('.turno-item').length;
+            
+            if (totalTurnos >= 3) {
+                alert('Máximo de 3 turnos por dia permitido.');
+                return;
+            }
+            
+            const checkbox = diaBloco.querySelector('.dia-checkbox');
+            const novoTurno = document.createElement('div');
+            novoTurno.className = 'turno-item flex items-center space-x-2';
+            novoTurno.innerHTML = `
+                <input type="time" value="08:00" class="horario-inicio px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500 flex-1" ${!checkbox.checked ? 'disabled' : ''}>
+                <span class="text-gray-400 text-sm">às</span>
+                <input type="time" value="12:00" class="horario-fim px-2 py-1 border border-gray-200 rounded text-sm focus:ring-1 focus:ring-orange-500 focus:border-orange-500 flex-1" ${!checkbox.checked ? 'disabled' : ''}>
+                <button type="button" onclick="removerTurno(this)" class="text-red-600 hover:text-red-800 text-xs font-medium" title="Remover turno">
+                    <i class="fas fa-trash text-xs"></i>
+                </button>
+            `;
+            
+            turnosList.appendChild(novoTurno);
+        }
+
+        function removerTurno(button) {
+            const turnoItem = button.closest('.turno-item');
+            if (!turnoItem) return;
+            
+            const turnosList = turnoItem.closest('.turnos-list');
+            if (!turnosList) return;
+            
+            const totalTurnos = turnosList.querySelectorAll('.turno-item').length;
+            
+            if (totalTurnos > 1) {
+                turnoItem.remove();
+            } else {
+                alert('É obrigatório ter pelo menos um turno por dia.');
             }
         }
 
@@ -1429,6 +1621,11 @@
             }
 
             const categoriasHTML = cardapioData.categorias.map(categoria => {
+                // Se for categoria Promoções, renderizar promoções ao invés de produtos
+                if (categoria.id === 'promocoes') {
+                    return renderizarCategoriaPromocoes(categoria);
+                }
+                
                 const produtosDaCategoria = cardapioData.produtos.filter(p => p.categoriaId === categoria.id);
                 
                 return `
@@ -1512,6 +1709,692 @@
             }).join('');
 
             container.innerHTML = categoriasHTML;
+        }
+
+        function renderizarCategoriaPromocoes(categoria) {
+            const promocoesAtivas = cardapioData.promocoes || [];
+            
+            return `
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <!-- Cabeçalho da Categoria Promoções -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 px-4 py-3 border-b border-green-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-tag text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900">${categoria.nome}</h4>
+                                    <p class="text-sm text-gray-500">${promocoesAtivas.length} promoção${promocoesAtivas.length !== 1 ? 's' : ''}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="abrirModalPromocao()" class="text-green-600 hover:text-green-800 transition-colors" title="Adicionar promoção">
+                                    <i class="fas fa-plus text-sm"></i>
+                                </button>
+                                <button onclick="toggleVisibilidadeCategoria('promocoes')" class="text-gray-400 hover:text-${categoria.ativo ? 'red' : 'green'}-600 transition-colors" title="${categoria.ativo ? 'Ocultar categoria' : 'Exibir categoria'}">
+                                    <i class="fas fa-${categoria.ativo ? 'eye-slash' : 'eye'} text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Promoções -->
+                    <div class="divide-y divide-gray-200">
+                        ${promocoesAtivas.length === 0 ? `
+                            <div class="p-6 text-center text-gray-500">
+                                <i class="fas fa-tag text-2xl mb-2"></i>
+                                <p class="text-sm">Nenhuma promoção cadastrada</p>
+                                <button onclick="abrirModalPromocao()" class="mt-2 text-green-600 hover:text-green-800 text-sm font-medium">
+                                    Criar primeira promoção
+                                </button>
+                            </div>
+                        ` : promocoesAtivas.map(promo => {
+                            const desconto = calcularDescontoTextoPromocao(promo);
+                            const restricoes = formatarRestricoesPromocao(promo);
+                            
+                            return `
+                                <div class="p-4 hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex items-start space-x-3 flex-1">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-tag text-green-600"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-start justify-between mb-2">
+                                                    <div class="flex-1">
+                                                        <h5 class="text-sm font-medium text-gray-900 mb-1">${promo.nome}</h5>
+                                                        <p class="text-sm text-gray-600 mb-2">${promo.descricao}</p>
+                                                        
+                                                        <div class="flex items-center space-x-3 flex-wrap gap-2 mb-2">
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                                                <i class="fas fa-bullseye mr-1" style="font-size: 10px;"></i>
+                                                                ${getEscopoTexto(promo)}
+                                                            </span>
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                                                <i class="fas fa-percent mr-1" style="font-size: 10px;"></i>
+                                                                ${desconto}
+                                                            </span>
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${promo.ativo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                                                <i class="fas fa-${promo.ativo ? 'check' : 'times'} mr-1" style="font-size: 10px;"></i>
+                                                                ${promo.ativo ? 'Ativa' : 'Inativa'}
+                                                            </span>
+                                                        </div>
+                                                        
+                                                        ${restricoes ? `
+                                                            <div class="text-xs text-gray-500">
+                                                                <i class="fas fa-info-circle mr-1"></i>
+                                                                ${restricoes}
+                                                            </div>
+                                                        ` : ''}
+                                                    </div>
+                                                    <div class="flex items-center space-x-2 ml-4">
+                                                        <button onclick="toggleDisponibilidadePromocao(${promo.id})" class="text-gray-400 hover:text-${promo.ativo ? 'red' : 'green'}-600 transition-colors" title="${promo.ativo ? 'Desativar' : 'Ativar'}">
+                                                            <i class="fas fa-${promo.ativo ? 'eye-slash' : 'eye'} text-sm"></i>
+                                                        </button>
+                                                        <button onclick="editarPromocao(${promo.id})" class="text-gray-400 hover:text-gray-600 transition-colors" title="Editar promoção">
+                                                            <i class="fas fa-edit text-sm"></i>
+                                                        </button>
+                                                        <button onclick="removerPromocao(${promo.id})" class="text-gray-400 hover:text-red-600 transition-colors" title="Remover promoção">
+                                                            <i class="fas fa-trash text-sm"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getEscopoTexto(promo) {
+            switch(promo.escopoDado) {
+                case 'categoria': return `Categoria: ${getCategoriaNome(promo.categoriaId)}`;
+                case 'produto': return `Produto: ${getProdutoNome(promo.produtoId)}`;
+                case 'combo': return 'Combo';
+                case 'pedido_minimo': return `Pedido acima de R$ ${promo.valor}`;
+                default: return 'Não definido';
+            }
+        }
+
+        function getCategoriaNome(categoriaId) {
+            const categoria = cardapioData.categorias.find(c => c.id === categoriaId);
+            return categoria ? categoria.nome : 'N/A';
+        }
+
+        function getProdutoNome(produtoId) {
+            const produto = cardapioData.produtos.find(p => p.id === produtoId);
+            return produto ? produto.nome : 'N/A';
+        }
+
+        function calcularDescontoTextoPromocao(promo) {
+            switch(promo.tipoDesconto) {
+                case 'percentual':
+                    return `${promo.valor}% OFF`;
+                case 'valor_fixo':
+                    return `R$ ${promo.valor.toFixed(2)} OFF`;
+                case 'preco_fixo':
+                    return `R$ ${promo.valor.toFixed(2)}`;
+                case 'compre_leve':
+                    return `Compre X, Leve Y`;
+                default:
+                    return 'Desconto';
+            }
+        }
+
+        function formatarRestricoesPromocao(promo) {
+            const restricoes = promo.restricoes;
+            const partes = [];
+            
+            if (restricoes.diasSemana && restricoes.diasSemana.length > 0 && restricoes.diasSemana.length < 7) {
+                const diasNomes = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                const diasTexto = restricoes.diasSemana.map(d => diasNomes[d]).join(', ');
+                partes.push(`Válido: ${diasTexto}`);
+            }
+            
+            if (restricoes.horarioInicio && restricoes.horarioFim) {
+                partes.push(`${restricoes.horarioInicio} - ${restricoes.horarioFim}`);
+            } else if (restricoes.horarioInicio) {
+                partes.push(`A partir de ${restricoes.horarioInicio}`);
+            } else if (restricoes.horarioFim) {
+                partes.push(`Até ${restricoes.horarioFim}`);
+            }
+
+            if (restricoes.quantidadeMinima && restricoes.quantidadeMinima > 0) {
+                partes.push(`Mínimo: ${restricoes.quantidadeMinima} item(s)`);
+            }
+            
+            return partes.join(' • ');
+        }
+
+        function abrirModalCombo(comboId = null) {
+            const isEdicao = comboId !== null;
+            const combo = isEdicao ? cardapioData.combos.find(c => c.id === comboId) : null;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-t-xl shadow-2xl w-full max-w-2xl max-h-[90%] overflow-y-auto transform transition-all duration-300 translate-y-full opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('translate-y-full', 'opacity-0');
+                modal.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+            
+            const produtosDisponiveis = cardapioData.produtos.filter(p => p.disponivel);
+            
+            const modalHTML = `
+                <div class="px-6 py-4 border-b border-gray-200 rounded-t-xl bg-gradient-to-r from-purple-50 to-pink-50">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            <i class="fas fa-box-open text-purple-600 mr-2"></i>
+                            ${isEdicao ? 'Editar Combo' : 'Novo Combo'}
+                        </h3>
+                        <button onclick="fecharModalCombo()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="form-combo" class="p-6 space-y-4">
+                    <!-- Nome do Combo -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Combo</label>
+                        <input type="text" id="nome-combo" value="${combo?.nome || ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Ex: Combo Clássico" required>
+                    </div>
+                    
+                    <!-- Descrição -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+                        <textarea id="descricao-combo" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none" placeholder="Descreva o combo..." required>${combo?.descricao || ''}</textarea>
+                    </div>
+                    
+                    <!-- Itens do Combo -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Itens do Combo</label>
+                        <div id="lista-itens-combo" class="space-y-2 mb-2">
+                            ${combo?.itens.map((item, index) => `
+                                <div class="flex items-center space-x-2 p-2 bg-purple-50 rounded-lg" data-item-index="${index}">
+                                    <select class="item-produto flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-purple-500">
+                                        ${produtosDisponiveis.map(p => `
+                                            <option value="${p.id}" data-preco="${p.preco}" data-nome="${p.nome}" ${p.id === item.produtoId ? 'selected' : ''}>${p.nome} - R$ ${p.preco.toFixed(2)}</option>
+                                        `).join('')}
+                                    </select>
+                                    <input type="number" class="item-quantidade w-20 px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-purple-500" value="${item.quantidade}" min="1" placeholder="Qtd">
+                                    <button type="button" onclick="removerItemCombo(this)" class="text-red-500 hover:text-red-700 px-2">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `).join('') || '<p class="text-sm text-gray-500">Nenhum item adicionado</p>'}
+                        </div>
+                        <button type="button" onclick="adicionarItemCombo()" class="text-sm text-purple-600 hover:text-purple-800 font-medium">
+                            <i class="fas fa-plus mr-1"></i>Adicionar item
+                        </button>
+                    </div>
+                    
+                    <!-- Tipo de Desconto -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Desconto</label>
+                        <select id="tipo-desconto-combo" onchange="atualizarCamposDesconto()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" required>
+                            <option value="percentual" ${combo?.tipoDesconto === 'percentual' ? 'selected' : ''}>Desconto Percentual (%)</option>
+                            <option value="valor_fixo" ${combo?.tipoDesconto === 'valor_fixo' ? 'selected' : ''}>Desconto em Valor (R$)</option>
+                            <option value="preco_fixo" ${combo?.tipoDesconto === 'preco_fixo' ? 'selected' : ''}>Preço Fixo do Combo (R$)</option>
+                            <option value="segundo_desconto" ${combo?.tipoDesconto === 'segundo_desconto' ? 'selected' : ''}>Desconto no 2º Item (%)</option>
+                            <option value="item_gratis" ${combo?.tipoDesconto === 'item_gratis' ? 'selected' : ''}>Item Grátis</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Campos de Desconto (dinâmicos) -->
+                    <div id="campos-desconto">
+                        <!-- Será preenchido dinamicamente -->
+                    </div>
+                    
+                    <!-- Restrições -->
+                    <div class="border-t border-gray-200 pt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">
+                            <i class="fas fa-calendar-alt text-gray-400 mr-1"></i>
+                            Restrições de Disponibilidade
+                        </label>
+                        
+                        <!-- Dias da Semana -->
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Dias da semana válidos (deixe vazio para todos os dias)</label>
+                            <div class="flex flex-wrap gap-2">
+                                ${['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((dia, index) => {
+                                    const checked = combo?.restricoes?.diasSemana?.includes(index) ? 'checked' : '';
+                                    return `
+                                        <label class="flex items-center space-x-1 px-3 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                                            <input type="checkbox" class="dia-semana-combo text-purple-500 focus:ring-purple-500 rounded" value="${index}" ${checked}>
+                                            <span class="text-sm">${dia}</span>
+                                        </label>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                        
+                        <!-- Horários -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Horário início</label>
+                                <input type="time" id="horario-inicio-combo" value="${combo?.restricoes?.horarioInicio || ''}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Horário fim</label>
+                                <input type="time" id="horario-fim-combo" value="${combo?.restricoes?.horarioFim || ''}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview de Preços -->
+                    <div id="preview-preco-combo" class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-gray-600">Preço original:</span>
+                            <span class="font-medium text-gray-900" id="preco-original-preview">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-gray-600">Desconto:</span>
+                            <span class="font-medium text-red-600" id="desconto-preview">- R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between font-bold border-t border-gray-300 pt-2">
+                            <span class="text-gray-900">Preço final:</span>
+                            <span class="text-purple-600" id="preco-final-preview">R$ 0,00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Botões de Ação -->
+                    <div class="flex space-x-3 pt-4">
+                        <button type="button" onclick="fecharModalCombo()" class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
+                            ${isEdicao ? 'Salvar' : 'Criar Combo'}
+                        </button>
+                    </div>
+                </form>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalComboAberto = { overlay, modal, comboId };
+            
+            // Inicializar campos de desconto
+            atualizarCamposDesconto();
+            atualizarPreviewCombo();
+            
+            // Event listeners
+            document.getElementById('form-combo').addEventListener('submit', function(e) {
+                e.preventDefault();
+                salvarCombo();
+            });
+            
+            // Event listeners para atualizar preview em tempo real
+            document.querySelectorAll('#form-combo input, #form-combo select, #form-combo textarea').forEach(el => {
+                el.addEventListener('change', atualizarPreviewCombo);
+                el.addEventListener('input', atualizarPreviewCombo);
+            });
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalCombo();
+                }
+            });
+        }
+
+        function fecharModalCombo() {
+            if (window.modalComboAberto) {
+                const { overlay, modal } = window.modalComboAberto;
+                
+                modal.classList.remove('translate-y-0', 'opacity-100');
+                modal.classList.add('translate-y-full', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalComboAberto = null;
+                }, 300);
+            }
+        }
+
+        function adicionarItemCombo() {
+            const produtosDisponiveis = cardapioData.produtos.filter(p => p.disponivel);
+            if (produtosDisponiveis.length === 0) {
+                alert('Nenhum produto disponível para adicionar ao combo.');
+                return;
+            }
+            
+            const listaItens = document.getElementById('lista-itens-combo');
+            
+            // Remover mensagem de vazio se existir
+            const mensagemVazia = listaItens.querySelector('p');
+            if (mensagemVazia) {
+                mensagemVazia.remove();
+            }
+            
+            const novoIndex = listaItens.children.length;
+            
+            const itemHTML = `
+                <div class="flex items-center space-x-2 p-2 bg-purple-50 rounded-lg" data-item-index="${novoIndex}">
+                    <select class="item-produto flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-purple-500">
+                        ${produtosDisponiveis.map(p => `
+                            <option value="${p.id}" data-preco="${p.preco}" data-nome="${p.nome}">${p.nome} - R$ ${p.preco.toFixed(2)}</option>
+                        `).join('')}
+                    </select>
+                    <input type="number" class="item-quantidade w-20 px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-purple-500" value="1" min="1" placeholder="Qtd">
+                    <button type="button" onclick="removerItemCombo(this)" class="text-red-500 hover:text-red-700 px-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            listaItens.insertAdjacentHTML('beforeend', itemHTML);
+            atualizarPreviewCombo();
+        }
+
+        function removerItemCombo(button) {
+            const itemDiv = button.closest('[data-item-index]');
+            itemDiv.remove();
+            
+            const listaItens = document.getElementById('lista-itens-combo');
+            if (listaItens.children.length === 0) {
+                listaItens.innerHTML = '<p class="text-sm text-gray-500">Nenhum item adicionado</p>';
+            }
+            
+            atualizarPreviewCombo();
+        }
+
+        function atualizarCamposDesconto() {
+            const tipoDesconto = document.getElementById('tipo-desconto-combo').value;
+            const camposDesconto = document.getElementById('campos-desconto');
+            const produtosDisponiveis = cardapioData.produtos.filter(p => p.disponivel);
+            
+            let html = '';
+            
+            switch(tipoDesconto) {
+                case 'percentual':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Percentual de Desconto (%)</label>
+                            <input type="number" id="valor-desconto-combo" step="0.01" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Ex: 10" required>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'valor_fixo':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Valor do Desconto (R$)</label>
+                            <input type="number" id="valor-desconto-combo" step="0.01" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Ex: 5.00" required>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'preco_fixo':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preço Fixo do Combo (R$)</label>
+                            <input type="number" id="preco-fixo-combo" step="0.01" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Ex: 25.00" required>
+                            <p class="text-xs text-gray-500 mt-1">O combo será vendido por este preço, independente dos itens</p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'segundo_desconto':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Desconto no 2º Item (%)</label>
+                            <input type="number" id="valor-desconto-combo" step="0.01" min="0" max="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Ex: 50" required>
+                            <p class="text-xs text-gray-500 mt-1">Aplica desconto no item de menor valor do combo</p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'item_gratis':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Item que sairá grátis</label>
+                            <select id="item-gratis-combo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500" required>
+                                <option value="">Selecione o item grátis...</option>
+                                ${produtosDisponiveis.map(p => `
+                                    <option value="${p.id}" data-preco="${p.preco}" data-nome="${p.nome}">${p.nome}</option>
+                                `).join('')}
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">Este item não será cobrado no combo</p>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            camposDesconto.innerHTML = html;
+            
+            // Adicionar event listeners para atualizar preview
+            camposDesconto.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('change', atualizarPreviewCombo);
+                el.addEventListener('input', atualizarPreviewCombo);
+            });
+            
+            atualizarPreviewCombo();
+        }
+
+        function atualizarPreviewCombo() {
+            const itens = Array.from(document.querySelectorAll('#lista-itens-combo [data-item-index]')).map(div => {
+                const select = div.querySelector('.item-produto');
+                const quantidade = parseInt(div.querySelector('.item-quantidade').value) || 0;
+                const option = select.options[select.selectedIndex];
+                
+                return {
+                    produtoId: parseInt(select.value),
+                    quantidade: quantidade,
+                    preco: parseFloat(option.dataset.preco),
+                    nome: option.dataset.nome
+                };
+            });
+            
+            const precoOriginal = itens.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            
+            const tipoDesconto = document.getElementById('tipo-desconto-combo').value;
+            let precoFinal = precoOriginal;
+            let descontoValor = 0;
+            
+            switch(tipoDesconto) {
+                case 'percentual':
+                    const percentual = parseFloat(document.getElementById('valor-desconto-combo')?.value) || 0;
+                    descontoValor = precoOriginal * (percentual / 100);
+                    precoFinal = precoOriginal - descontoValor;
+                    break;
+                    
+                case 'valor_fixo':
+                    descontoValor = parseFloat(document.getElementById('valor-desconto-combo')?.value) || 0;
+                    precoFinal = Math.max(0, precoOriginal - descontoValor);
+                    break;
+                    
+                case 'preco_fixo':
+                    precoFinal = parseFloat(document.getElementById('preco-fixo-combo')?.value) || 0;
+                    descontoValor = Math.max(0, precoOriginal - precoFinal);
+                    break;
+                    
+                case 'segundo_desconto':
+                    if (itens.length >= 2) {
+                        const itemMenorValor = itens.reduce((menor, item) => {
+                            const valorItem = item.preco * item.quantidade;
+                            const valorMenor = menor.preco * menor.quantidade;
+                            return valorItem < valorMenor ? item : menor;
+                        });
+                        const percentualSegundo = parseFloat(document.getElementById('valor-desconto-combo')?.value) || 0;
+                        descontoValor = (itemMenorValor.preco * itemMenorValor.quantidade) * (percentualSegundo / 100);
+                        precoFinal = precoOriginal - descontoValor;
+                    }
+                    break;
+                    
+                case 'item_gratis':
+                    const itemGratisSelect = document.getElementById('item-gratis-combo');
+                    if (itemGratisSelect) {
+                        const option = itemGratisSelect.options[itemGratisSelect.selectedIndex];
+                        if (option && option.value) {
+                            const itemGratisId = parseInt(option.value);
+                            const itemGratis = itens.find(i => i.produtoId === itemGratisId);
+                            if (itemGratis) {
+                                descontoValor = itemGratis.preco * itemGratis.quantidade;
+                                precoFinal = precoOriginal - descontoValor;
+                            }
+                        }
+                    }
+                    break;
+            }
+            
+            document.getElementById('preco-original-preview').textContent = `R$ ${precoOriginal.toFixed(2)}`;
+            document.getElementById('desconto-preview').textContent = `- R$ ${descontoValor.toFixed(2)}`;
+            document.getElementById('preco-final-preview').textContent = `R$ ${precoFinal.toFixed(2)}`;
+        }
+
+        function salvarCombo() {
+            const nome = document.getElementById('nome-combo').value.trim();
+            const descricao = document.getElementById('descricao-combo').value.trim();
+            
+            // Coletar itens
+            const itens = Array.from(document.querySelectorAll('#lista-itens-combo [data-item-index]')).map(div => {
+                const select = div.querySelector('.item-produto');
+                const quantidade = parseInt(div.querySelector('.item-quantidade').value);
+                const option = select.options[select.selectedIndex];
+                
+                return {
+                    produtoId: parseInt(select.value),
+                    quantidade: quantidade,
+                    nome: option.dataset.nome
+                };
+            });
+            
+            if (itens.length === 0) {
+                alert('Adicione pelo menos um item ao combo.');
+                return;
+            }
+            
+            // Calcular preços
+            const precoOriginal = itens.reduce((total, item) => {
+                const produto = cardapioData.produtos.find(p => p.id === item.produtoId);
+                return total + (produto.preco * item.quantidade);
+            }, 0);
+            
+            const tipoDesconto = document.getElementById('tipo-desconto-combo').value;
+            let valorDesconto = 0;
+            let precoFinal = precoOriginal;
+            let precoFixo = null;
+            let itemGratisId = null;
+            let itemGratisNome = null;
+            
+            switch(tipoDesconto) {
+                case 'percentual':
+                case 'segundo_desconto':
+                    valorDesconto = parseFloat(document.getElementById('valor-desconto-combo').value);
+                    break;
+                    
+                case 'valor_fixo':
+                    valorDesconto = parseFloat(document.getElementById('valor-desconto-combo').value);
+                    break;
+                    
+                case 'preco_fixo':
+                    precoFixo = parseFloat(document.getElementById('preco-fixo-combo').value);
+                    break;
+                    
+                case 'item_gratis':
+                    const itemGratisSelect = document.getElementById('item-gratis-combo');
+                    const option = itemGratisSelect.options[itemGratisSelect.selectedIndex];
+                    itemGratisId = parseInt(option.value);
+                    itemGratisNome = option.dataset.nome;
+                    break;
+            }
+            
+            // Calcular preço final
+            switch(tipoDesconto) {
+                case 'percentual':
+                    precoFinal = precoOriginal * (1 - valorDesconto / 100);
+                    break;
+                    
+                case 'valor_fixo':
+                    precoFinal = precoOriginal - valorDesconto;
+                    break;
+                    
+                case 'preco_fixo':
+                    precoFinal = precoFixo;
+                    break;
+                    
+                case 'segundo_desconto':
+                    if (itens.length >= 2) {
+                        let menorPreco = Infinity;
+                        itens.forEach(item => {
+                            const produto = cardapioData.produtos.find(p => p.id === item.produtoId);
+                            const valorItem = produto.preco * item.quantidade;
+                            if (valorItem < menorPreco) {
+                                menorPreco = valorItem;
+                            }
+                        });
+                        precoFinal = precoOriginal - (menorPreco * (valorDesconto / 100));
+                    }
+                    break;
+                    
+                case 'item_gratis':
+                    const itemGratis = itens.find(i => i.produtoId === itemGratisId);
+                    if (itemGratis) {
+                        const produtoGratis = cardapioData.produtos.find(p => p.id === itemGratisId);
+                        precoFinal = precoOriginal - (produtoGratis.preco * itemGratis.quantidade);
+                    }
+                    break;
+            }
+            
+            // Coletar restrições
+            const diasSemana = Array.from(document.querySelectorAll('.dia-semana-combo:checked')).map(cb => parseInt(cb.value));
+            const horarioInicio = document.getElementById('horario-inicio-combo').value || null;
+            const horarioFim = document.getElementById('horario-fim-combo').value || null;
+            
+            const isEdicao = window.modalComboAberto?.comboId !== null;
+            
+            const comboData = {
+                nome,
+                descricao,
+                ativo: true,
+                itens,
+                precoOriginal,
+                tipoDesconto,
+                valorDesconto,
+                precoFinal,
+                precoFixo,
+                itemGratisId,
+                itemGratisNome,
+                restricoes: {
+                    diasSemana,
+                    horarioInicio,
+                    horarioFim
+                }
+            };
+            
+            if (isEdicao) {
+                const comboId = window.modalComboAberto.comboId;
+                const comboIndex = cardapioData.combos.findIndex(c => c.id === comboId);
+                
+                if (comboIndex !== -1) {
+                    cardapioData.combos[comboIndex] = {
+                        ...cardapioData.combos[comboIndex],
+                        ...comboData
+                    };
+                }
+            } else {
+                const novoId = Math.max(...(cardapioData.combos.map(c => c.id) || [0]), 0) + 1;
+                
+                cardapioData.combos.push({
+                    id: novoId,
+                    ...comboData
+                });
+            }
+            
+            renderizarCardapio();
+            fecharModalCombo();
         }
 
         function abrirModalCategoria(categoriaId = null) {
@@ -1780,12 +2663,205 @@
             fecharModalProduto();
         }
 
+        function renderizarCategoriaCombos(categoria) {
+            const combosAtivos = cardapioData.combos || [];
+            
+            return `
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <!-- Cabeçalho da Categoria Combos -->
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 px-4 py-3 border-b border-purple-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-box-open text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900">${categoria.nome}</h4>
+                                    <p class="text-sm text-gray-500">${combosAtivos.length} combo${combosAtivos.length !== 1 ? 's' : ''}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="abrirModalCombo()" class="text-purple-600 hover:text-purple-800 transition-colors" title="Adicionar combo">
+                                    <i class="fas fa-plus text-sm"></i>
+                                </button>
+                                <button onclick="toggleVisibilidadeCategoria('combos')" class="text-gray-400 hover:text-${categoria.ativo ? 'red' : 'green'}-600 transition-colors" title="${categoria.ativo ? 'Ocultar categoria' : 'Exibir categoria'}">
+                                    <i class="fas fa-${categoria.ativo ? 'eye-slash' : 'eye'} text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Combos -->
+                    <div class="divide-y divide-gray-200">
+                        ${combosAtivos.length === 0 ? `
+                            <div class="p-6 text-center text-gray-500">
+                                <i class="fas fa-box-open text-2xl mb-2"></i>
+                                <p class="text-sm">Nenhum combo cadastrado</p>
+                                <button onclick="abrirModalCombo()" class="mt-2 text-purple-600 hover:text-purple-800 text-sm font-medium">
+                                    Criar primeiro combo
+                                </button>
+                            </div>
+                        ` : combosAtivos.map(combo => {
+                            const desconto = calcularDescontoTexto(combo);
+                            const restricoes = formatarRestricoesCombo(combo);
+                            
+                            return `
+                                <div class="p-4 hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex items-start space-x-3 flex-1">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-box-open text-purple-600"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-start justify-between mb-2">
+                                                    <div class="flex-1">
+                                                        <h5 class="text-sm font-medium text-gray-900 mb-1">${combo.nome}</h5>
+                                                        <p class="text-sm text-gray-600 mb-2">${combo.descricao}</p>
+                                                        
+                                                        <!-- Itens do Combo -->
+                                                        <div class="mb-2 space-y-1">
+                                                            ${combo.itens.map(item => `
+                                                                <div class="text-xs text-gray-600">
+                                                                    <i class="fas fa-check text-purple-500 mr-1"></i>
+                                                                    ${item.quantidade}x ${item.nome}
+                                                                </div>
+                                                            `).join('')}
+                                                        </div>
+                                                        
+                                                        <div class="flex items-center space-x-3 flex-wrap gap-2">
+                                                            <div class="flex items-center space-x-2">
+                                                                <span class="text-sm text-gray-500 line-through">R$ ${combo.precoOriginal.toFixed(2)}</span>
+                                                                <span class="text-lg font-bold text-purple-600">R$ ${combo.precoFinal.toFixed(2)}</span>
+                                                            </div>
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                                                                <i class="fas fa-tag mr-1" style="font-size: 10px;"></i>
+                                                                ${desconto}
+                                                            </span>
+                                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${combo.ativo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                                                <i class="fas fa-${combo.ativo ? 'check' : 'times'} mr-1" style="font-size: 10px;"></i>
+                                                                ${combo.ativo ? 'Disponível' : 'Indisponível'}
+                                                            </span>
+                                                        </div>
+                                                        
+                                                        ${restricoes ? `
+                                                            <div class="mt-2 text-xs text-gray-500">
+                                                                <i class="fas fa-info-circle mr-1"></i>
+                                                                ${restricoes}
+                                                            </div>
+                                                        ` : ''}
+                                                    </div>
+                                                    <div class="flex items-center space-x-2 ml-4">
+                                                        <button onclick="toggleDisponibilidadeCombo(${combo.id})" class="text-gray-400 hover:text-${combo.ativo ? 'red' : 'green'}-600 transition-colors" title="${combo.ativo ? 'Tornar indisponível' : 'Tornar disponível'}">
+                                                            <i class="fas fa-${combo.ativo ? 'eye-slash' : 'eye'} text-sm"></i>
+                                                        </button>
+                                                        <button onclick="editarCombo(${combo.id})" class="text-gray-400 hover:text-gray-600 transition-colors" title="Editar combo">
+                                                            <i class="fas fa-edit text-sm"></i>
+                                                        </button>
+                                                        <button onclick="removerCombo(${combo.id})" class="text-gray-400 hover:text-red-600 transition-colors" title="Remover combo">
+                                                            <i class="fas fa-trash text-sm"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function calcularDescontoTexto(combo) {
+            switch(combo.tipoDesconto) {
+                case 'percentual':
+                    return `${combo.valorDesconto}% OFF`;
+                case 'valor_fixo':
+                    return `R$ ${combo.valorDesconto.toFixed(2)} OFF`;
+                case 'preco_fixo':
+                    return `Preço fixo`;
+                case 'segundo_desconto':
+                    return `${combo.valorDesconto}% no 2º item`;
+                case 'item_gratis':
+                    return `${combo.itemGratisNome} grátis`;
+                default:
+                    return 'Desconto';
+            }
+        }
+
+        function formatarRestricoesCombo(combo) {
+            const restricoes = combo.restricoes;
+            const partes = [];
+            
+            if (restricoes.diasSemana && restricoes.diasSemana.length > 0 && restricoes.diasSemana.length < 7) {
+                const diasNomes = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                const diasTexto = restricoes.diasSemana.map(d => diasNomes[d]).join(', ');
+                partes.push(`Válido: ${diasTexto}`);
+            }
+            
+            if (restricoes.horarioInicio && restricoes.horarioFim) {
+                partes.push(`${restricoes.horarioInicio} - ${restricoes.horarioFim}`);
+            } else if (restricoes.horarioInicio) {
+                partes.push(`A partir de ${restricoes.horarioInicio}`);
+            } else if (restricoes.horarioFim) {
+                partes.push(`Até ${restricoes.horarioFim}`);
+            }
+            
+            return partes.join(' • ');
+        }
+
+        function toggleVisibilidadeCategoria(categoriaId) {
+            const categoria = cardapioData.categorias.find(c => c.id === categoriaId);
+            if (!categoria) return;
+            
+            categoria.ativo = !categoria.ativo;
+            renderizarCardapio();
+        }
+
+        function toggleDisponibilidadeCombo(comboId) {
+            const comboIndex = cardapioData.combos.findIndex(c => c.id === comboId);
+            if (comboIndex !== -1) {
+                cardapioData.combos[comboIndex].ativo = !cardapioData.combos[comboIndex].ativo;
+                renderizarCardapio();
+            }
+        }
+
+        function editarCombo(comboId) {
+            abrirModalCombo(comboId);
+        }
+
+        function removerCombo(comboId) {
+            const combo = cardapioData.combos.find(c => c.id === comboId);
+            
+            if (confirm(`Tem certeza que deseja remover o combo "${combo.nome}"?`)) {
+                const comboIndex = cardapioData.combos.findIndex(c => c.id === comboId);
+                if (comboIndex !== -1) {
+                    cardapioData.combos.splice(comboIndex, 1);
+                    renderizarCardapio();
+                }
+            }
+        }
+
         function editarCategoria(categoriaId) {
+            // Impedir edição de categoria padrão Combos
+            const categoria = cardapioData.categorias.find(c => c.id === categoriaId);
+            if (categoria && categoria.padrao) {
+                alert('A categoria "Combos" é uma categoria padrão e não pode ser editada. Você pode apenas ocultá-la ou adicionar novos combos.');
+                return;
+            }
             abrirModalCategoria(categoriaId);
         }
 
         function removerCategoria(categoriaId) {
             const categoria = cardapioData.categorias.find(c => c.id === categoriaId);
+            
+            // Impedir remoção de categoria padrão Combos
+            if (categoria && categoria.padrao) {
+                alert('A categoria "Combos" é uma categoria padrão e não pode ser removida. Você pode apenas ocultá-la.');
+                return;
+            }
+            
             const produtosDaCategoria = cardapioData.produtos.filter(p => p.categoriaId === categoriaId);
             
             if (produtosDaCategoria.length > 0) {
@@ -1961,22 +3037,724 @@
             }
         }
 
-        function abrirDetalheMesa(mesaId) {
-            const mesa = salaoData.mesas.find(m => m.id === mesaId);
-            if (!mesa) return;
+        // Funções de Promoções
+        function renderizarListaDescontos() {
+            const container = document.getElementById('lista-descontos');
+            if (!container) return;
 
-            if (mesa.status === 'livre') {
-                mostrarOpcoesOcuparReservar(mesaId);
+            const promocoes = cardapioData.promocoes || [];
+
+            if (promocoes.length === 0) {
+                container.innerHTML = `
+                    <div class="border border-gray-200 rounded-md p-8 text-center">
+                        <i class="fas fa-tag text-gray-400 text-2xl mb-4"></i>
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Nenhum desconto cadastrado</h5>
+                        <p class="text-sm text-gray-500 mb-4">Crie descontos e promoções personalizadas para seus produtos</p>
+                        <button onclick="abrirModalDesconto()" class="bg-green-500 text-white px-4 py-2 rounded-md font-medium hover:bg-green-600 transition-colors text-sm">
+                            <i class="fas fa-plus mr-2 text-xs"></i>
+                            Criar Primeiro Desconto
+                        </button>
+                    </div>
+                `;
                 return;
             }
 
-            if (mesa.status === 'reservada') {
-                mostrarOpcoesReservada(mesaId);
+            const descontosHTML = promocoes.map(promo => {
+                const desconto = calcularDescontoTextoPromocao(promo);
+                const escopo = getEscopoTexto(promo);
+                const restricoes = formatarRestricoesPromocao(promo);
+
+                return `
+                    <div class="border border-green-200 rounded-lg p-4 bg-green-50">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h5 class="text-sm font-semibold text-gray-900">${promo.nome}</h5>
+                                <p class="text-xs text-gray-600 mt-1">${promo.descricao}</p>
+                            </div>
+                            <div class="flex items-center space-x-2 ml-4">
+                                <button onclick="toggleDisponibilidadePromocao(${promo.id})" class="text-gray-400 hover:text-${promo.ativo ? 'red' : 'green'}-600 transition-colors" title="${promo.ativo ? 'Desativar' : 'Ativar'}">
+                                    <i class="fas fa-${promo.ativo ? 'eye-slash' : 'eye'} text-sm"></i>
+                                </button>
+                                <button onclick="editarPromocao(${promo.id})" class="text-gray-400 hover:text-gray-600 transition-colors" title="Editar">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </button>
+                                <button onclick="removerPromocao(${promo.id})" class="text-gray-400 hover:text-red-600 transition-colors" title="Remover">
+                                    <i class="fas fa-trash text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Tipo:</span>
+                                <span class="font-medium text-green-700">${desconto}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Escopo:</span>
+                                <span class="font-medium text-green-700">${escopo}</span>
+                            </div>
+                            ${restricoes ? `
+                                <div class="flex items-start justify-between">
+                                    <span class="text-gray-600">Restrições:</span>
+                                    <span class="font-medium text-green-700 text-right">${restricoes}</span>
+                                </div>
+                            ` : ''}
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Status:</span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${promo.ativo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                    ${promo.ativo ? 'Ativa' : 'Inativa'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = descontosHTML;
+        }
+
+        function abrirModalDesconto(descontoId = null) {
+            const isEdicao = descontoId !== null;
+            const desconto = isEdicao ? cardapioData.promocoes.find(d => d.id === descontoId) : null;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-t-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 translate-y-full opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('translate-y-full', 'opacity-0');
+                modal.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+
+            const categoriasOptions = cardapioData.categorias
+                .filter(c => c.id !== 'promocoes')
+                .map(cat => `<option value="${cat.id}" ${desconto?.categoriaId === cat.id ? 'selected' : ''}>${cat.nome}</option>`)
+                .join('');
+
+            const produtosOptions = cardapioData.produtos
+                .map(prod => `<option value="${prod.id}" ${desconto?.produtoId === prod.id ? 'selected' : ''}>${prod.nome}</option>`)
+                .join('');
+
+            const modalHTML = `
+                <div class="px-6 py-4 border-b border-gray-200 rounded-t-xl bg-gradient-to-r from-green-50 to-emerald-50">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            <i class="fas fa-tag text-green-600 mr-2"></i>
+                            ${isEdicao ? 'Editar Desconto' : 'Novo Desconto'}
+                        </h3>
+                        <button onclick="fecharModalDesconto()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="form-desconto" class="p-6 space-y-4">
+                    <!-- Nome -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nome da Promoção</label>
+                        <input type="text" id="nome-desconto" value="${desconto?.nome || ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Ex: Happy Hour, Black Friday, etc" required>
+                    </div>
+
+                    <!-- Descrição -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+                        <textarea id="descricao-desconto" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none" placeholder="Descreva a promoção..." required>${desconto?.descricao || ''}</textarea>
+                    </div>
+
+                    <!-- Tipo de Desconto -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Desconto</label>
+                        <select id="tipo-desconto" onchange="atualizarCamposDescontoConfig()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                            <option value="percentual" ${desconto?.tipoDesconto === 'percentual' ? 'selected' : ''}>Percentual (%)</option>
+                            <option value="valor_fixo" ${desconto?.tipoDesconto === 'valor_fixo' ? 'selected' : ''}>Valor Fixo (R$)</option>
+                            <option value="preco_fixo" ${desconto?.tipoDesconto === 'preco_fixo' ? 'selected' : ''}>Preço Fixo (R$)</option>
+                            <option value="compre_leve" ${desconto?.tipoDesconto === 'compre_leve' ? 'selected' : ''}>Compre X, Leve Y</option>
+                        </select>
+                    </div>
+
+                    <!-- Valor Desconto (dinâmico) -->
+                    <div id="campo-valor-desconto">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Valor do Desconto</label>
+                        <input type="number" id="valor-desconto" value="${desconto?.valor || ''}" step="0.01" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="0,00" required>
+                    </div>
+
+                    <!-- Escopo (aplicação do desconto) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Aplicar Desconto Em:</label>
+                        <select id="escopo-desconto" onchange="atualizarCamposEscopo()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                            <option value="categoria" ${desconto?.escopoDado === 'categoria' ? 'selected' : ''}>Categoria</option>
+                            <option value="produto" ${desconto?.escopoDado === 'produto' ? 'selected' : ''}>Produto</option>
+                            <option value="pedido_minimo" ${desconto?.escopoDado === 'pedido_minimo' ? 'selected' : ''}>Pedido Mínimo</option>
+                        </select>
+                    </div>
+
+                    <!-- Campos de Escopo (dinâmicos) -->
+                    <div id="campos-escopo">
+                        <!-- Será preenchido dinamicamente -->
+                    </div>
+
+                    <!-- Restrições -->
+                    <div class="border-t border-gray-200 pt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">
+                            <i class="fas fa-calendar-alt text-gray-400 mr-1"></i>
+                            Restrições
+                        </label>
+                        
+                        <!-- Dias da Semana -->
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-600 mb-2">Dias da semana válidos</label>
+                            <div class="flex flex-wrap gap-2">
+                                ${['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((dia, index) => {
+                                    const checked = desconto?.restricoes?.diasSemana?.includes(index) ? 'checked' : '';
+                                    return `
+                                        <label class="flex items-center space-x-1 px-3 py-1.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                                            <input type="checkbox" class="dia-semana-desconto text-green-500 focus:ring-green-500 rounded" value="${index}" ${checked}>
+                                            <span class="text-sm">${dia}</span>
+                                        </label>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Horários -->
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Horário início</label>
+                                <input type="time" id="horario-inicio-desconto" value="${desconto?.restricoes?.horarioInicio || ''}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Horário fim</label>
+                                <input type="time" id="horario-fim-desconto" value="${desconto?.restricoes?.horarioFim || ''}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-green-500">
+                            </div>
+                        </div>
+
+                        <!-- Quantidade Mínima -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Quantidade mínima de itens</label>
+                            <input type="number" id="quantidade-minima-desconto" value="${desconto?.restricoes?.quantidadeMinima || ''}" min="0" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-green-500" placeholder="Deixe vazio para sem limite">
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex space-x-3 pt-4 border-t border-gray-200">
+                        <button type="button" onclick="fecharModalDesconto()" class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
+                            ${isEdicao ? 'Salvar' : 'Criar Desconto'}
+                        </button>
+                    </div>
+                </form>
+            `;
+
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalDescontoAberto = { overlay, modal, descontoId };
+            
+            document.getElementById('form-desconto').addEventListener('submit', function(e) {
+                e.preventDefault();
+                salvarPromocao();
+            });
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalDesconto();
+                }
+            });
+
+            // Inicializar campos dinâmicos
+            atualizarCamposEscopo();
+            atualizarCamposDescontoConfig();
+        }
+
+        function fecharModalDesconto() {
+            if (window.modalDescontoAberto) {
+                const { overlay, modal } = window.modalDescontoAberto;
+                
+                modal.classList.remove('translate-y-0', 'opacity-100');
+                modal.classList.add('translate-y-full', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalDescontoAberto = null;
+                }, 300);
+            }
+        }
+
+        function atualizarCamposDescontoConfig() {
+            const tipoDesconto = document.getElementById('tipo-desconto')?.value || 'percentual';
+            const campoValor = document.getElementById('campo-valor-desconto');
+            
+            if (!campoValor) return;
+
+            let labelTexto = 'Valor do Desconto';
+            let placeholderTexto = '0,00';
+
+            switch(tipoDesconto) {
+                case 'percentual':
+                    labelTexto = 'Percentual de Desconto (%)';
+                    placeholderTexto = 'Ex: 10';
+                    break;
+                case 'valor_fixo':
+                    labelTexto = 'Valor do Desconto (R$)';
+                    placeholderTexto = 'Ex: 5,00';
+                    break;
+                case 'preco_fixo':
+                    labelTexto = 'Preço Final (R$)';
+                    placeholderTexto = 'Ex: 29,90';
+                    break;
+                case 'compre_leve':
+                    labelTexto = 'Quantidade a Comprar';
+                    placeholderTexto = 'Ex: 2';
+                    break;
+            }
+
+            const inputValor = campoValor.querySelector('input');
+            if (inputValor) {
+                inputValor.placeholder = placeholderTexto;
+            }
+
+            campoValor.querySelector('label').textContent = labelTexto;
+        }
+
+        function atualizarCamposEscopo() {
+            const escopo = document.getElementById('escopo-desconto')?.value || 'categoria';
+            const camposEscopo = document.getElementById('campos-escopo');
+            
+            if (!camposEscopo) return;
+
+            const categoriasOptions = cardapioData.categorias
+                .filter(c => c.id !== 'promocoes')
+                .map(cat => `<option value="${cat.id}">${cat.nome}</option>`)
+                .join('');
+
+            const produtosOptions = cardapioData.produtos
+                .map(prod => `<option value="${prod.id}">${prod.nome}</option>`)
+                .join('');
+
+            let html = '';
+
+            switch(escopo) {
+                case 'categoria':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
+                            <select id="categoria-escopo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                                <option value="">Selecione uma categoria...</option>
+                                ${categoriasOptions}
+                            </select>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'produto':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Produto</label>
+                            <select id="produto-escopo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                                <option value="">Selecione um produto...</option>
+                                ${produtosOptions}
+                            </select>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'pedido_minimo':
+                    html = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Valor Mínimo do Pedido (R$)</label>
+                            <input type="number" id="pedido-minimo-escopo" step="0.01" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Ex: 50,00" required>
+                            <p class="text-xs text-gray-500 mt-1">Desconto será aplicado em pedidos acima deste valor</p>
+                        </div>
+                    `;
+                    break;
+            }
+
+            camposEscopo.innerHTML = html;
+        }
+
+        function salvarPromocao() {
+            const nome = document.getElementById('nome-desconto').value.trim();
+            const descricao = document.getElementById('descricao-desconto').value.trim();
+            const tipoDesconto = document.getElementById('tipo-desconto').value;
+            const valor = parseFloat(document.getElementById('valor-desconto').value);
+            const escopo = document.getElementById('escopo-desconto').value;
+
+            if (!nome || !descricao || isNaN(valor) || valor <= 0) {
+                alert('Preencha todos os campos obrigatórios corretamente.');
                 return;
             }
 
-            // Mesa ocupada - abrir modal de detalhes
-            abrirModalDetalheMesa(mesaId);
+            // Validar campos de escopo
+            let categoriaId = null;
+            let produtoId = null;
+
+            if (escopo === 'categoria') {
+                categoriaId = parseInt(document.getElementById('categoria-escopo').value);
+                if (!categoriaId) {
+                    alert('Selecione uma categoria.');
+                    return;
+                }
+            } else if (escopo === 'produto') {
+                produtoId = parseInt(document.getElementById('produto-escopo').value);
+                if (!produtoId) {
+                    alert('Selecione um produto.');
+                    return;
+                }
+            }
+
+            // Coletar restrições
+            const diasSemana = Array.from(document.querySelectorAll('.dia-semana-desconto:checked')).map(cb => parseInt(cb.value));
+            const horarioInicio = document.getElementById('horario-inicio-desconto').value || null;
+            const horarioFim = document.getElementById('horario-fim-desconto').value || null;
+            const quantidadeMinima = parseInt(document.getElementById('quantidade-minima-desconto').value) || null;
+
+            const isEdicao = window.modalDescontoAberto?.descontoId !== null;
+
+            const promocaoData = {
+                nome,
+                descricao,
+                ativo: true,
+                tipoDesconto,
+                valor,
+                escopoDado: escopo,
+                categoriaId,
+                produtoId,
+                restricoes: {
+                    diasSemana,
+                    horarioInicio,
+                    horarioFim,
+                    quantidadeMinima
+                }
+            };
+
+            if (isEdicao) {
+                const descontoId = window.modalDescontoAberto.descontoId;
+                const promocaoIndex = cardapioData.promocoes.findIndex(p => p.id === descontoId);
+                
+                if (promocaoIndex !== -1) {
+                    cardapioData.promocoes[promocaoIndex] = {
+                        ...cardapioData.promocoes[promocaoIndex],
+                        ...promocaoData
+                    };
+                }
+            } else {
+                const novoId = Math.max(...(cardapioData.promocoes.map(p => p.id) || [0]), 0) + 1;
+                
+                cardapioData.promocoes.push({
+                    id: novoId,
+                    ...promocaoData
+                });
+            }
+
+            renderizarListaDescontos();
+            renderizarCardapio();
+            fecharModalDesconto();
+        }
+
+        function editarPromocao(promocaoId) {
+            abrirModalDesconto(promocaoId);
+        }
+
+        function toggleDisponibilidadePromocao(promocaoId) {
+            const promocaoIndex = cardapioData.promocoes.findIndex(p => p.id === promocaoId);
+            if (promocaoIndex !== -1) {
+                cardapioData.promocoes[promocaoIndex].ativo = !cardapioData.promocoes[promocaoIndex].ativo;
+                renderizarListaDescontos();
+                renderizarCardapio();
+            }
+        }
+
+        function removerPromocao(promocaoId) {
+            const promocao = cardapioData.promocoes.find(p => p.id === promocaoId);
+            
+            if (confirm(`Tem certeza que deseja remover a promoção "${promocao.nome}"?`)) {
+                const promocaoIndex = cardapioData.promocoes.findIndex(p => p.id === promocaoId);
+                if (promocaoIndex !== -1) {
+                    cardapioData.promocoes.splice(promocaoIndex, 1);
+                    renderizarListaDescontos();
+                    renderizarCardapio();
+                }
+            }
+        }
+
+        // Alias para compatibilidade
+        function abrirModalPromocao(promocaoId = null) {
+            abrirModalDesconto(promocaoId);
+        }
+
+        // Funções de Senha Operacional
+        function toggleEditarSenhaOperacional() {
+            const form = document.getElementById('form-senha-operacional');
+            const btn = document.getElementById('btn-editar-senha');
+            
+            form.classList.toggle('hidden');
+            
+            if (!form.classList.contains('hidden')) {
+                document.getElementById('input-nova-senha').focus();
+            }
+        }
+
+        function cancelarEditarSenhaOperacional() {
+            const form = document.getElementById('form-senha-operacional');
+            form.classList.add('hidden');
+            
+            document.getElementById('input-nova-senha').value = '';
+            document.getElementById('input-confirmar-senha').value = '';
+        }
+
+        function confirmarSenhaOperacional() {
+            const novaSenha = document.getElementById('input-nova-senha').value.trim();
+            const confirmarSenha = document.getElementById('input-confirmar-senha').value.trim();
+            
+            if (!novaSenha || novaSenha.length !== 4) {
+                alert('Digite exatamente 4 dígitos na nova senha.');
+                return;
+            }
+            
+            if (!/^\d+$/.test(novaSenha)) {
+                alert('A senha deve conter apenas dígitos numéricos.');
+                return;
+            }
+            
+            if (novaSenha !== confirmarSenha) {
+                alert('As senhas não correspondem. Verifique e tente novamente.');
+                return;
+            }
+            
+            sistemaDados.senhaOperacional = novaSenha;
+            
+            document.getElementById('input-nova-senha').value = '';
+            document.getElementById('input-confirmar-senha').value = '';
+            document.getElementById('form-senha-operacional').classList.add('hidden');
+            
+            atualizarStatusSenha();
+            
+            alert('Senha operacional configurada com sucesso!');
+        }
+
+        function atualizarStatusSenha() {
+            const status = document.getElementById('status-senha-operacional');
+            const btn = document.getElementById('btn-editar-senha');
+            
+            if (sistemaDados.senhaOperacional) {
+                status.textContent = '✓ Configurada';
+                status.className = 'text-sm font-medium text-green-600';
+                btn.innerHTML = '<i class="fas fa-edit mr-2"></i>Alterar Senha';
+            } else {
+                status.textContent = 'Não configurada';
+                status.className = 'text-sm font-medium text-gray-600';
+                btn.innerHTML = '<i class="fas fa-edit mr-2"></i>Configurar Senha';
+            }
+        }
+
+        // Funções de Dias de Folga
+        function abrirModalDiaFolga(diaId = null) {
+            const isEdicao = diaId !== null;
+            const dia = isEdicao ? sistemaDados.diasFolga.find(d => d.id === diaId) : null;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center p-4';
+            
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-t-xl shadow-2xl w-full max-w-md transform transition-all duration-300 translate-y-full opacity-0';
+            
+            setTimeout(() => {
+                modal.classList.remove('translate-y-full', 'opacity-0');
+                modal.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+            
+            const modalHTML = `
+                <div class="px-6 py-4 border-b border-gray-200 rounded-t-xl">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            ${isEdicao ? 'Editar Dia de Folga' : 'Novo Dia de Folga'}
+                        </h3>
+                        <button onclick="fecharModalDiaFolga()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="form-dia-folga" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data</label>
+                        <input type="date" id="data-folga" value="${dia?.data || ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Título (Opcional)</label>
+                        <input type="text" id="titulo-folga" value="${dia?.titulo || ''}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="Ex: Feriado, Manutenção, Evento fechado">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Descrição (Opcional)</label>
+                        <textarea id="descricao-folga" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none" placeholder="Informações adicionais sobre o dia de folga...">${dia?.descricao || ''}</textarea>
+                    </div>
+                    
+                    <div class="flex space-x-3 pt-4">
+                        <button type="button" onclick="fecharModalDiaFolga()" class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                            ${isEdicao ? 'Salvar' : 'Adicionar'}
+                        </button>
+                    </div>
+                </form>
+            `;
+            
+            modal.innerHTML = modalHTML;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            window.modalDiaFolgaAberto = { overlay, modal, diaId };
+            
+            document.getElementById('form-dia-folga').addEventListener('submit', function(e) {
+                e.preventDefault();
+                salvarDiaFolga();
+            });
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    fecharModalDiaFolga();
+                }
+            });
+        }
+
+        function fecharModalDiaFolga() {
+            if (window.modalDiaFolgaAberto) {
+                const { overlay, modal } = window.modalDiaFolgaAberto;
+                
+                modal.classList.remove('translate-y-0', 'opacity-100');
+                modal.classList.add('translate-y-full', 'opacity-0');
+                
+                setTimeout(() => {
+                    if (overlay && overlay.parentNode) {
+                        overlay.remove();
+                    }
+                    window.modalDiaFolgaAberto = null;
+                }, 300);
+            }
+        }
+
+        function salvarDiaFolga() {
+            const data = document.getElementById('data-folga').value;
+            const titulo = document.getElementById('titulo-folga').value.trim();
+            const descricao = document.getElementById('descricao-folga').value.trim();
+            
+            if (!data) {
+                alert('Selecione uma data para o dia de folga.');
+                return;
+            }
+            
+            const isEdicao = window.modalDiaFolgaAberto?.diaId !== null;
+            
+            if (isEdicao) {
+                const diaId = window.modalDiaFolgaAberto.diaId;
+                const diaIndex = sistemaDados.diasFolga.findIndex(d => d.id === diaId);
+                
+                if (diaIndex !== -1) {
+                    sistemaDados.diasFolga[diaIndex] = {
+                        ...sistemaDados.diasFolga[diaIndex],
+                        data,
+                        titulo,
+                        descricao
+                    };
+                }
+            } else {
+                const novoId = Math.max(...(sistemaDados.diasFolga.map(d => d.id) || [0]), 0) + 1;
+                
+                sistemaDados.diasFolga.push({
+                    id: novoId,
+                    data,
+                    titulo,
+                    descricao
+                });
+            }
+            
+            renderizarListaDiasFolga();
+            fecharModalDiaFolga();
+        }
+
+        function renderizarListaDiasFolga() {
+            const container = document.getElementById('lista-dias-folga');
+            if (!container) return;
+
+            if (sistemaDados.diasFolga.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 text-gray-500">
+                        <i class="fas fa-calendar-times text-2xl mb-2"></i>
+                        <p class="text-sm">Nenhum dia de folga cadastrado</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const diasHTML = sistemaDados.diasFolga
+                .sort((a, b) => new Date(a.data) - new Date(b.data))
+                .map(dia => {
+                    const dataObj = new Date(dia.data);
+                    const dataFormatada = dataObj.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    const diaSemana = dataFormatada.split(',')[0];
+                    
+                    return `
+                        <div class="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <i class="fas fa-calendar-alt text-orange-500 text-sm"></i>
+                                        <span class="text-sm font-medium text-gray-900">${dataFormatada}</span>
+                                    </div>
+                                    ${dia.titulo ? `
+                                        <div class="text-sm text-gray-700 ml-6 font-medium">${dia.titulo}</div>
+                                    ` : ''}
+                                    ${dia.descricao ? `
+                                        <div class="text-xs text-gray-600 ml-6 mt-1">${dia.descricao}</div>
+                                    ` : ''}
+                                </div>
+                                <div class="flex items-center space-x-2 ml-4">
+                                    <button onclick="editarDiaFolga(${dia.id})" class="text-gray-400 hover:text-gray-600 transition-colors" title="Editar">
+                                        <i class="fas fa-edit text-xs"></i>
+                                    </button>
+                                    <button onclick="removerDiaFolga(${dia.id})" class="text-gray-400 hover:text-red-600 transition-colors" title="Remover">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            container.innerHTML = diasHTML;
+        }
+
+        function editarDiaFolga(diaId) {
+            abrirModalDiaFolga(diaId);
+        }
+
+        function removerDiaFolga(diaId) {
+            const dia = sistemaDados.diasFolga.find(d => d.id === diaId);
+            const dataObj = new Date(dia.data);
+            const dataFormatada = dataObj.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            if (confirm(`Tem certeza que deseja remover o dia de folga em ${dataFormatada}?`)) {
+                const diaIndex = sistemaDados.diasFolga.findIndex(d => d.id === diaId);
+                if (diaIndex !== -1) {
+                    sistemaDados.diasFolga.splice(diaIndex, 1);
+                    renderizarListaDiasFolga();
+                }
+            }
+        }
+
+        // Alias para compatibilidade
+        function abrirModalPromocao(promocaoId = null) {
+            abrirModalDesconto(promocaoId);
         }
 
         function mostrarOpcoesOcuparReservar(mesaId) {
@@ -2500,6 +4278,25 @@
                     modal.innerHTML = gerarHTMLDetalheMesa(mesa);
                 }
             }
+        }
+
+        // Funções de Mesa
+        function abrirDetalheMesa(mesaId) {
+            const mesa = salaoData.mesas.find(m => m.id === mesaId);
+            if (!mesa) return;
+
+            if (mesa.status === 'livre') {
+                mostrarOpcoesOcuparReservar(mesaId);
+                return;
+            }
+
+            if (mesa.status === 'reservada') {
+                mostrarOpcoesReservada(mesaId);
+                return;
+            }
+
+            // Mesa ocupada - abrir modal de detalhes
+            abrirModalDetalheMesa(mesaId);
         }
 
         // Funções de Cálculo
@@ -3150,5 +4947,5 @@
             detectarModaisAbertos();
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c0fea2b0105e0fb',t:'MTc2ODkyNjE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3984d7817709d2',t:'MTc3NDczMTE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
